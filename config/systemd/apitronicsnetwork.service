@@ -1,0 +1,13 @@
+[Unit]
+Description=Apitronics Network Manager
+After=couchdb.service openntpd.service systemd-remount-fs.service
+Requires=couchdb.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=15s
+ExecStart=/bin/python2.7 /root/Hive/networkController/worker.py
+
+[Install]
+WantedBy=multi-user.target
