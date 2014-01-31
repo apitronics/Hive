@@ -66,7 +66,7 @@ ev.once('2', function() {
 ev.once('3', function() {
   honeyJarSettings.lastHarvest = honeyJarSettings.newHarvestTime
   delete honeyJarSettings.newHarvestTime
-  configDb.get('HoneyJarsSettings', honeyJarSettings, function() {
+  configDb.insert(honeyJarSettings, 'HoneyJarsSettings', function(err, body) {
     console.log('ok')
   })
 })
