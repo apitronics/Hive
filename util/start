@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var sys = require('sys')
+var exec = require('child_process').exec;
+function puts(error, stdout, stderr) { sys.puts(stdout) }
+var cmd = ''
+
+program
+  .version('0.0.1')
+  .parse(process.argv);
+
+cmd += 'cd ../Queen; \n'
+cmd += 'sudo nodemon server.js & \n'
+cmd += 'cd ../Honeycomb; \n'
+cmd += 'sudo nodemon server.js & \n'
+cmd += 'cd ../HoneyJars; \n '
+cmd += 'sudo nodemon server.js & \n'
+cmd += 'cd ../Beekeeper; \n'
+cmd += 'sudo nodemon server.js & \n'
+
+console.log(cmd)
+exec(cmd, puts)

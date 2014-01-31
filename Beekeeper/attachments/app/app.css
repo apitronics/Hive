@@ -1,0 +1,46 @@
+.body {
+  margin-top: 40px;
+}
+
+.modal {
+  display: none;
+}
+
+.table th {
+  border: none !important;
+}
+
+.form {
+  margin: 20px;
+}
+
+.form ul {
+  list-style-type: none;
+}
+  
+.form .btn {
+  margin: 5px 0px 20px 20px;
+}
+
+.timestamp {
+  color: #BBB;
+}
+
+.field-kind {
+  display: none;
+}
+.field-bee {
+  display: none;
+}
+
+@media (max-width: 979px) {
+    
+  .navbar-fixed-top {
+    margin-bottom: 0px !important;
+  }
+  
+  .body {
+    margin-top: 0px;
+  }
+
+}

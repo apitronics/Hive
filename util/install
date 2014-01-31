@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var sys = require('sys')
+var exec = require('child_process').exec;
+function puts(error, stdout, stderr) { sys.puts(stdout) }
+var cmd = ''
+var Settings = require('../Settings')
+var sensorDefs = require('./sensorDefs.js')
+
+program
+  .version('0.0.1')
+  .option('-s, --server', '', '')
+  .parse(process.argv);
+
+var server = (program.server) 
+  ? program.server
+  : Settings.CouchDB.URL
+
+cmd += 'curl -XPUT ' + server + '/config; \n'
+cmd += 'curl -XPUT ' + server + '/incubator; \n'
+cmd += 'curl -XPUT ' + server + '/apps; \n'
+cmd += 'couchapp push ../CouchViews/config.js ' + server + '/config; \n'
+cmd += 'couchapp push ../CouchViews/incubator.js ' + server + '/incubator; \n'
+cmd += 'couchapp push ../Beekeeper/couchapp.js ' + server + '/apps; \n'
+
+sensorDefs.forEach(function(sensorDef) {
+  cmd += 'curl -XPUT ' + server + '/config/' + sensorDef._id + ' -d \'' + JSON.stringify(sensorDef) + '\'; \n'
+})
+
+cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0}\''
+
+console.log(cmd)
+exec(cmd, puts)

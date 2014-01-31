@@ -1,0 +1,20 @@
+
+.SensorReadingsGraph .graph-loading { margin: auto;}
+
+.SensorReadingsGraph .ui-timepicker-div .SensorReadingsGraph .ui-widget-header { margin-bottom: 8px; }
+.SensorReadingsGraph .ui-timepicker-div dl { text-align: left; }
+.SensorReadingsGraph .ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.SensorReadingsGraph .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.SensorReadingsGraph .ui-timepicker-div td { font-size: 90%; }
+.SensorReadingsGraph .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.SensorReadingsGraph .ui-timepicker-rtl{ direction: rtl; }
+.SensorReadingsGraph .ui-timepicker-rtl dl { text-align: right; }
+.SensorReadingsGraph .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+
+.SensorReadingsGraph .no-data {
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+

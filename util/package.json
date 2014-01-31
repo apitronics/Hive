@@ -1,0 +1,10 @@
+{
+  "name": "Hive",
+  "description": "build tools for Hive",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "commander": "2.1.0",
+    "request": "2.27.0"
+  }
+}

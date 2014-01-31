@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+var sys = require('sys')
+var exec = require('child_process').exec;
+var request = require('request')
+var program = require('commander');
+var fs = require('fs')
+function puts(error, stdout, stderr) { sys.puts(stdout) } 
+
+program
+  .version('0.0.1')
+  .option('-c, --server [server]', '', '')
+  .parse(process.argv);
+
+// Delete all databases not used by CouchDB for internal uses
+request.get({uri: program.server + '/_all_dbs', json: true}, function(error, response, body) {
+  if(typeof body == 'object' && body.hasAttribute('rows') && body.rows.length > 0) {
+    body.forEach(function(db) {
+      if(db != "_replicator" && db != "_users") {
+        exec('curl -XDELETE ' + program.server + '/' + db, puts)
+      }
+    })
+  }
+  else {
+    console.log('no databases?...')
+    //console.log(error)
+    //console.log(response)
+    //console.log(body)
+  }
+})
+
+// Remove any replicator docs
+var uri = program.server + '/_replicator/_all_docs'
+request.get({uri: uri, json: true}, function(error, response, body) {
+  if(typeof body == 'object' && body.hasAttribute('rows') && body.rows.length > 0) {
+    body.rows.forEach(function(row) {
+      if(row.id != "_design/_replicator") {
+        exec('curl -XDELETE ' + program.server + '/_replicator/' + row.id + '?rev=' + row.value.rev, puts)
+      }
+    })
+  }
+  else {
+    console.log('no replicator docs...')
+    //console.log(error)
+    //console.log(response)
+    //console.log(body)
+  }
+})
+

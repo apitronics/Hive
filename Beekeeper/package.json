@@ -1,0 +1,11 @@
+{
+  "name": "Beekeeper",
+  "description": "",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "couchapp": "0.10.0",
+    "express": "3.4.2",
+    "http-proxy": "0.10.3"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "HoneyComb",
+  "description": "Receives data (honey) from Bees as HTTP calls",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.4.2",
+    "underscore": "1.5.2",
+    "moment": "2.4.0",
+    "backbone": "1.1.0",
+    "underscore": "1.5.2",
+    "nano": "4.1.4"
+  }
+}

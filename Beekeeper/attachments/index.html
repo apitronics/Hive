@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Hive</title>
+  <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" />
+  <link href="vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen" />
+  <link href="vendor/backbone-forms-bootstrap.css" rel="stylesheet" media="screen" />
+  <link href="vendor/morris.css" rel="stylesheet" media="screen" />
+  <link href="vendor/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.css" rel="stylesheet" media="screen" />
+  <link href="app/app.css" rel="stylesheet" />
+
+  <!--
+    DEPENDENCIES
+  -->
+
+  <script src="vendor/jquery-1.7.2.js"></script>
+  <script src="vendor/underscore-1.4.4.js"></script>
+  <script src="vendor/backbone-1.0.0.js"></script>
+  <script src="vendor/backbone-forms.js"></script>
+  <!--script src="vendor/backbone-forms-bootstrap.js"></script-->
+  <script src="vendor/list.js"></script>
+  <script src="vendor/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+  <script src="vendor/sha1.js"></script>
+  <script src="vendor/jquery.couch.js"></script>
+  <script src="vendor/backbone.couchdb.js"></script>
+  <script src="vendor/html-encode.js"></script>
+  <script src="vendor/jquery.url.js"></script>
+  <script src="vendor/moment.min.js"></script>
+  <script src="vendor/moment-timezone.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.js"></script>
+  <script src="vendor/raphael-min.js"></script>
+  <script src="vendor/morris.js"></script>
+  <script src="vendor/spin.min.js"></script>
+  <script src="vendor/jquery.spin.js"></script>
+  <script src="vendor/jquery-ui-timepicker-addon.js"></script>
+
+  <!--
+    App
+  -->
+
+  <script src="app/App.js"></script>
+  <script src="app/Router.js"></script>
+
+  <script src="app/Models/Bee.js"></script>
+  <script src="app/Models/Reading.js"></script>
+  <script src="app/Models/HourlyReading.js"></script>
+  <script src="app/Models/Sensor.js"></script>
+  <script src="app/Models/SensorDefinition.js"></script>
+  <script src="app/Models/Trigger.js"></script>
+
+  <script src="app/Collections/Bees.js"></script>
+  <script src="app/Collections/BeeSensors.js"></script>
+  <script src="app/Collections/BeeTriggers.js"></script>
+  <script src="app/Collections/SensorReadings.js"></script>
+  <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
+  <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
+
+  <script src="app/Views/BeeRow.js"></script>
+  <script src="app/Views/BeeForm.js"></script>
+  <script src="app/Views/BeesTable.js"></script>
+  <script src="app/Views/BeeSensorsTable.js"></script>
+  <script src="app/Views/BeeTriggersTable.js"></script>
+  <script src="app/Views/SensorRow.js"></script>
+  <script src="app/Views/TriggerRow.js"></script>
+  <script src="app/Views/SensorReadingsGraph.js"></script>
+  <link  href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
+  <script src="app/Views/SensorJarHourlyAverageReadingsGraph.js"></script>
+  <script src="app/Views/TriggerForm.js"></script>
+
+  
+</head>
+
+<body>
+
+
+</body>
+
+
+  <!-- 
+    Templates 
+  -->
+
+
+  <script type="text/template" id="template-app">
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Your Hive</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Bees</a></li>
+              <li><a href="#settings">Settings</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="container body">
+      <!-- Content -->
+    </div>
+     
+    <!-- Modal -->
+    <div class="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" aria-hidden="true">×</button>
+      </div>
+      <div class='content'>
+        <!-- Content -->
+      </div>
+    </div>
+  </script>
+ 
+  <script type="text/template" id="template-BeesTable">
+    <th> <h1>Bees</h1> </th>
+
+  </script>
+
+  <script type="text/template" id="template-BeeRow">
+   <td> <a href="#bee/<%= _id %>"><%= name %></a> </td>
+   <td> <a href="#bee/edit/<%= _id %>">edit</a> </td>
+  </script>
+ 
+  <script type="text/template" id="template-BeeSensorsTable">
+    <th> <h1>Sensors</h1> </th>
+  </script>
+
+  <script type="text/template" id="template-BeeTriggersTable">
+    <th> 
+      <h1 style='float:left;'>
+        Triggers
+      </h1>
+      <a style='float: left; margin: 16px;' class='btn' href='#trigger/add/<%= beeId %>'> 
+        <i class='icon-plus-sign'></i> Create a new Trigger
+      </a>
+    </th>
+  </script>
+
+  <script type="text/template" id="template-SensorRow">
+    <td>
+      <a href="#sensor/<%= _id %>"><%= name %></a> 
+    </td>
+    <td>
+      <%= reading %> <span class='timestamp'>at <%= timestamp %></span>
+    </td>
+  </script>
+
+  <script type="text/template" id="template-TriggerRow">
+    <td>
+      <a href="#trigger/<%= _id %>"><%= label %></a> 
+    </td>
+  </script>
+
+  <script type="text/template" id="template-SensorReadingsGraph">
+    <h1><%= name %></h1>
+    <div class="graph-container">
+      <div class="graph-loading"> </div>
+      <div id="graph"></div>
+    </div>
+    <form class="form-controls" style="width:475px; margin: auto">
+      <input type="text" class="datetimepicker start-date" value="<%= startDate %>" /> <-> <input type="text" class="datetimepicker end-date" value="<%= endDate %>" /> <div class="btn generate" style="width:445px; float:left; clear:both; margin:5px auto">generate</div>
+    </form>
+  </script>
+ 
+
+  <!-- 
+    START THE APP
+  -->
+
+  <script>
+    $(document).ready(function() {
+      App.start()
+    })
+  </script>
+
+</html>

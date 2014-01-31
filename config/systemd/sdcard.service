@@ -1,9 +1,0 @@
-[Unit]
-Description=Mount SD Card
-#Before = couchdb.service
-
-[Service]
-Type=oneshot
-ExecStart=/bin/mount /dev/mmcblk0 /var/lib/couchdb
-[Install]
-WantedBy=multi-user.target
