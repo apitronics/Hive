@@ -6,6 +6,8 @@
   "dependencies": {
     "couchapp": "0.10.0",
     "express": "3.4.2",
+    "node-diskfree": "0.1.0",
+    "moment": "2.5.1",
     "http-proxy": "0.10.3"
   }
 }

@@ -2,6 +2,8 @@ var http = require('http')
 var express = require('express')
 var httpProxy = require('http-proxy')
 var Settings = require('../Settings')
+var tellCouchDbAboutDisks = require('./helpers/tell-couchdb-about-disks')
+var harvestHoneyJars = require('../HoneyJars/harvest')
 
 
 /*
@@ -38,3 +40,12 @@ var options = {
 
 httpProxy.createServer(options).listen(8000)
 console.log('Beekeeper\'s httpProxy listening at port 8000')
+
+setInterval(function() {
+  tellCouchDbAboutDisks()
+}, 100*60*60)
+
+setInterval(function() {
+  harvestHoneyJars()
+}, 100*60*60)
+
