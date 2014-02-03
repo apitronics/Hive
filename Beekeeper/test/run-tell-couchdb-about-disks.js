@@ -2,11 +2,10 @@ var Settings = require('../Settings')
 var http = require('http')
 var express = require('express')
 var httpProxy = require('http-proxy')
-var tellCouchDbAboutDisks = require('./lib/TellCouchDbAboutDisks')
-var harvestHoneyJars = require('./lib/HarvestHoneyJars')
+var tellCouchDbAboutDisks = require('./helpers/tell-couchdb-about-disks')
+var harvestHoneyJars = require('../HoneyJars/harvest')
 couchDb = require('nano')(Settings.CouchDB.URL)
 var configDb = couchDb.db.use('config')
-
 
 
 /*
