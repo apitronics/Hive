@@ -46,7 +46,7 @@ The address property can be any string the Bee's firmware chooses to uniquely id
 
 ## How to hatch an Egg
 
-`Egg` documents that live in the `incubator` database that do not have the `hatched` flag set to `true` are assignable to Swarms. You can assign Bee to a Swarm by "hatching" the `Egg` document where you reference the Egg by its `beeAddress`. 
+___Note: The Queen hatches Eggs as they are received. Eggs may hatch in the future as directed by the user.___ `Egg` documents that live in the `incubator` database that do not have the `hatched` flag set to `true` are assignable to Swarms. You can assign Bee to a Swarm by "hatching" the `Egg` document where you reference the Egg by its `beeAddress`. 
 
 ```
 curl -XPOST http://hive.local:125/egg/hatch -H "Content-Type: Application/json" -d '
@@ -67,7 +67,7 @@ When a Bee has been hatched, Honeycomb can find the configuration and correspond
 ```
 curl -XPOST http://hive.local:126 -H "Content-Type: Application/json" -d '
   {
-    "address": "60:c5:47:04:f1:06",
+    "address": "60:c5:47:04:f1:94",
     "data": { 
       "10:45:15, 13/12/13": "3e0fab7d018c8a32e076c0076c1c1c1c",
       "10:45:30, 13/12/13": "3e0fab7d018c8a32e076c0076c1c1c1c",
