@@ -10,7 +10,9 @@ var configDb = nano.use('config')
 request = require('request-json');
 var honeyComb = request.newClient(Settings.Honeycomb.URL);
 
-var days = 1
+
+var days = 6
+var offset = 6*(24*60*60)
 var sampleRateInMinutes = 5
 // Should be a total of 2016 honey packets
 //var sendRateInSeconds = 5
@@ -18,7 +20,7 @@ var sampleRateInMinutes = 5
 
 // moment(dateTime, "HH:mm:ss, DD/MM/YY").unix()
 
-var now = moment().unix()
+var now = moment().unix() - offset
 var travelBackTo = now - days*24*60*60
 // Start now, move back
 var position = now 
