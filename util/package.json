@@ -5,6 +5,8 @@
   "private": true,
   "dependencies": {
     "commander": "2.1.0",
+    "moment": "2.5.1",
+    "node-diskfree": "0.1.0",
     "request": "2.27.0"
   }
 }
