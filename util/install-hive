@@ -20,7 +20,8 @@ sensorDefs.forEach(function(sensorDef) {
   cmd += 'curl -XPUT ' + server + '/config/' + sensorDef._id + ' -d \'' + JSON.stringify(sensorDef) + '\'; \n'
 })
 
-cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0, "status": "on"}\''
+cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0, "status": "on"}\'; \n'
+cmd += 'curl -XPUT ' + server + '/config/drives' + ' -d \'{}\'; \n'
 
 console.log(cmd)
 exec(cmd, puts)
