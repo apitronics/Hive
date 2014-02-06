@@ -6,6 +6,8 @@ var _ = require('underscore')
 
 module.exports = function(callback) {
 
+  // in case callback is undefined
+  callback = (callback == undefined) ? function(){} : callback
 
   var drivesDoc
   var drivesInfo
@@ -36,6 +38,7 @@ module.exports = function(callback) {
 
 
   function getDrivesInfo(done) {
+
     df.drivesDetail(drives, function (err, data) {
       if(!err) { 
         drivesInfo = data
@@ -63,7 +66,7 @@ module.exports = function(callback) {
 
   }
 
-
+  // go 
   getDrivesDoc(function() {
     getDrives(function() {
       getDrivesInfo(function() {

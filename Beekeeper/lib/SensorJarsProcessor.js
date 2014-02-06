@@ -3,11 +3,11 @@
  */
 
 var moment = require('moment')
-var Settings = require('../Settings')
+var Settings = require('../../Settings')
 var nano = require('nano')(Settings.CouchDB.URL)
 var _ = require('underscore')
 var Backbone = require('backbone')
-var HiveBackbone = require('../HiveBackbone/HiveBackbone')
+var HiveBackbone = require('../../HiveBackbone/HiveBackbone')
 
 module.exports =  Backbone.Model.extend({
 
@@ -115,7 +115,10 @@ module.exports =  Backbone.Model.extend({
   // Reduce this.points given the jar
   processJar: function() {
     var jar = this.jars[this._jarsIndex]
-    var Reduce = require('./reduce_modules/' +  jar.get('type'))
+    // todo - right now our reduce is just one kind. We'll want other kinds of reduce in the future,
+    // particularly for sensors that have different kind of data than just temperature.
+    //var Reduce = require('./reduce_modules/' +  jar.get('type'))
+    var Reduce = require('./HourlyAverageReduce')
     var jarReduce = new Reduce
     this._jarContents = jarReduce.process(this._points, jar.blockSize)
     this.trigger('processJar:done')

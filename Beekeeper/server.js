@@ -2,7 +2,7 @@ var Settings = require('../Settings')
 var http = require('http')
 var express = require('express')
 var httpProxy = require('http-proxy')
-var tellCouchDbAboutDisks = require('./lib/TellCouchDbAboutDisks')
+var tellCouchDbAboutDisks = require('./lib/TellCouchDbAboutDrives')
 var harvestHoneyJars = require('./lib/HarvestHoneyJars')
 couchDb = require('nano')(Settings.CouchDB.URL)
 var configDb = couchDb.db.use('config')
@@ -44,15 +44,26 @@ var options = {
 httpProxy.createServer(options).listen(8000)
 console.log('Beekeeper\'s httpProxy listening at port 8000')
 
+/*
+ * Set up some processes
+ */
+
 setInterval(function() {
   tellCouchDbAboutDisks()
 }, 100*60*60)
+tellCouchDbAboutDisks()
+
+
+// @todo Make status and interval configurable in settings for HoneyJars, default to 1 hour interval and on for now.
+//configDb.get('HoneyJarsSettings', function(err, honeyJarsSettings) {
+  //if(honeyJarsSettings.status == 'on') {
 
 setInterval(function() {
-  configDb.get('HoneyJarsSettings', function(err, honeyJarsSettings) {
-    if(honeyJarsSettings.status == 'on') {
-      harvestHoneyJars()
-    }
-  })
+  harvestHoneyJars()
 }, 100*60*60)
+harvestHoneyJars()
+
+    //}, honeyJarsSettings.interval)
+  //}
+//})
 
