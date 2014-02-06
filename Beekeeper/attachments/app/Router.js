@@ -21,25 +21,44 @@ $(function() {
       var settings = new App.Models.Settings()
       var settingsForm = new App.Views.SettingsForm()
 
+      var drives = new App.Collections.Drives()
+      var drivesTable = new App.Views.DrivesTable()
+
       settingsForm.once('done', function() {
         Backbone.history.navigate('', {trigger: true})
       })
       
       App.clear()
       App.append(settingsForm.el)
+      App.append(drivesTable.el)
 
-      ev.once('0', function() {
+      ev.once('A0', function() {
         settings.fetch({success: function() {
-          ev.trigger('1')
+          ev.trigger('A1')
         }})
       })
 
-      ev.once('1', function() {
+      ev.once('A1', function() {
         settingsForm.model = settings
         settingsForm.render()
       })
 
-      ev.trigger('0')
+      ev.once('B0', function() {
+        drives.on('sync', function() {
+            ev.trigger('B1')
+        })
+        drives.fetch({success: function() {
+          ev.trigger('B1')
+        }})
+      })
+
+      ev.once('B1', function () {
+        drivesTable.collection = drives
+        drivesTable.render()
+      })
+
+      ev.trigger('A0')
+      ev.trigger('B0')
 
     },
 

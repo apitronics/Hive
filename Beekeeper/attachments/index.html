@@ -50,6 +50,7 @@
   <script src="app/Models/SensorDefinition.js"></script>
   <script src="app/Models/Trigger.js"></script>
   <script src="app/Models/Settings.js"></script>
+  <script src="app/Models/Drive.js"></script>
 
   <script src="app/Collections/Bees.js"></script>
   <script src="app/Collections/BeeSensors.js"></script>
@@ -57,6 +58,7 @@
   <script src="app/Collections/SensorReadings.js"></script>
   <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
   <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
+  <script src="app/Collections/Drives.js"></script>
 
   <script src="app/Views/SettingsForm.js"></script>
   <script src="app/Views/BeeRow.js"></script>
@@ -70,6 +72,8 @@
   <link  href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
   <script src="app/Views/SensorJarHourlyAverageReadingsGraph.js"></script>
   <script src="app/Views/TriggerForm.js"></script>
+  <script src="app/Views/DrivesTable.js"></script>
+  <script src="app/Views/DriveRow.js"></script>
 
   
 </head>
@@ -121,7 +125,18 @@
       </div>
     </div>
   </script>
- 
+
+  <script type="text/template" id="template-DrivesTable">
+    <th> <h2>Drives</h2> </th>
+
+  </script>
+
+  <script type="text/template" id="template-DriveRow">
+   <td> <%= name %> </td>
+   <td>used: <%= used %> </td>
+   <td>available: <%= available %> </td>
+  </script>
+
   <script type="text/template" id="template-BeesTable">
     <th> <h1>Bees</h1> </th>
 

@@ -11,7 +11,7 @@
 }
 
 .form {
-  margin: 20px;
+  
 }
 
 .form ul {
@@ -33,10 +33,24 @@
   display: none;
 }
 
+.settings { 
+  float: left;
+  width: 20%;
+}
+
+table.drives {
+  float:right;
+  width: 70%;
+}
+
 @media (max-width: 979px) {
     
   .navbar-fixed-top {
     margin-bottom: 0px !important;
+  }
+
+  table.drives {
+    width: 100%;
   }
   
   .body {

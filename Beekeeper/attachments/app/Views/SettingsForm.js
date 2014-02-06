@@ -2,7 +2,9 @@ $(function() {
 
   App.Views.SettingsForm = Backbone.View.extend({
     
-    className: "form",
+    title: "Settings",
+
+    className: "settings form",
 
     events: {
       "click #save": "setForm",
@@ -12,6 +14,7 @@ $(function() {
     render: function() {
       // create the form
       this.form = new Backbone.Form({ model: this.model })
+      this.$el.append('<h2>' + this.title + '</h2>')
       this.$el.append(this.form.render().el)
       // give the form a submit button
       var $button = $('<a class="btn" id="save">save</a>')
