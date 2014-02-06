@@ -2,7 +2,7 @@ var express = require('express');
 var _ = require('underscore')
 var Backbone = require('backbone')
 var HiveBackbone = require('../HiveBackbone/HiveBackbone')
-var honeyPacketProcessor = require('./HoneyPacketProcessor')
+var honeyPacketProcessor = require('./lib/HoneyPacketProcessor')
 var server = express();
 
 server.use(express.bodyParser())

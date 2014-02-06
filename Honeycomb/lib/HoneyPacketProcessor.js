@@ -1,7 +1,7 @@
 var moment = require('moment')
 var _ = require('underscore')
 var Backbone = require('backbone')
-var HiveBackbone = require('../HiveBackbone/HiveBackbone')
+var HiveBackbone = require('../../HiveBackbone/HiveBackbone')
 
 module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
   console.log("::HONEY PACKET PARSING::")
