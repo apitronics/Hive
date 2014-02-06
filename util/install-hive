@@ -21,6 +21,7 @@ sensorDefs.forEach(function(sensorDef) {
 })
 
 cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0, "status": "on"}\'; \n'
+cmd += 'curl -XPUT ' + server + '/config/Settings' + ' -d \'{"gmailUserName": "", "gmailPassword":"", "gmailEmailAddress":"", "sendAlertsTo":""}\'; \n'
 cmd += 'curl -XPUT ' + server + '/config/drives' + ' -d \'{}\'; \n'
 
 console.log(cmd)

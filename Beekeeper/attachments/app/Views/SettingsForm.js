@@ -1,12 +1,11 @@
 $(function() {
 
-  App.Views.BeeForm = Backbone.View.extend({
+  App.Views.SettingsForm = Backbone.View.extend({
     
     className: "form",
 
     events: {
       "click #save": "setForm",
-      //"click #delete": "delete",
       "submit form" : "setFormFromEnterKey"
     },
 
@@ -15,7 +14,6 @@ $(function() {
       this.form = new Backbone.Form({ model: this.model })
       this.$el.append(this.form.render().el)
       // give the form a submit button
-      //var $button = $('<a class="btn" id="save">save</a><a class="btn" id="delete">delete</a>')
       var $button = $('<a class="btn" id="save">save</a>')
       this.$el.append($button)
     },
@@ -35,7 +33,7 @@ $(function() {
       form.form.commit()
       // Send the updated model to the server
       form.model.once('sync', function() {
-        form.trigger('Form:done')
+        form.trigger('done')
       })
       form.model.save()
     },

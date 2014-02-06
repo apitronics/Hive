@@ -10,6 +10,37 @@ $(function() {
       'sensor/:sensorId' : 'Sensor',
       'trigger/add/:beeId' : 'TriggerAdd',
       'trigger/:triggerId' : 'Trigger',
+      'settings' : 'Settings'
+    },
+
+    
+    Settings: function() {
+      
+      var ev = new Backbone.Model()
+      
+      var settings = new App.Models.Settings()
+      var settingsForm = new App.Views.SettingsForm()
+
+      settingsForm.once('done', function() {
+        Backbone.history.navigate('', {trigger: true})
+      })
+      
+      App.clear()
+      App.append(settingsForm.el)
+
+      ev.once('0', function() {
+        settings.fetch({success: function() {
+          ev.trigger('1')
+        }})
+      })
+
+      ev.once('1', function() {
+        settingsForm.model = settings
+        settingsForm.render()
+      })
+
+      ev.trigger('0')
+
     },
 
 
