@@ -1,5 +1,6 @@
 *.pyc
 *.pkl
 Settings.js
+UpdateHistory.js
 node_modules
 .DS_STORE
