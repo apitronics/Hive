@@ -14,7 +14,9 @@ var configDb = couchDb.db.use('config')
  */
 
 var PortJack = express()
-PortJack.get(/^(.+)$/, function(req, res) { res.sendfile(Settings.Beekeeper.path + '/redirect.html'); })
+PortJack.get(/^(.+)$/, function(req, res) { 
+  res.sendfile(Settings.Beekeeper.path + '/redirect.html')
+})
 PortJack.listen(80)
 console.log('Beekeeper\'s PortJack listening on port 80')
 
@@ -24,7 +26,9 @@ console.log('Beekeeper\'s PortJack listening on port 80')
  */
 
 var ui = express()
-ui.get(/^(.+)$/, function(req, res) { res.sendfile(Settings.Beekeeper.path + '/attachments/' + req.params[0]); })
+ui.get(/^(.+)$/, function(req, res) { 
+  res.sendfile(Settings.Beekeeper.path + '/attachments/' + req.params[0]) 
+})
 ui.listen(8800)
 console.log('Beekeeper\' UI listening on port 8800')
 
@@ -48,20 +52,23 @@ console.log('Beekeeper\'s httpProxy listening at port 8000')
  * Set up some processes
  */
 
-setInterval(function() {
+setTimeout(function() {
+  setInterval(function() {
+    tellCouchDbAboutDisks()
+  }, 100*60*60)
   tellCouchDbAboutDisks()
-}, 100*60*60)
-tellCouchDbAboutDisks()
+}, 100*60*5)
 
 
 // @todo Make status and interval configurable in settings for HoneyJars, default to 1 hour interval and on for now.
 //configDb.get('HoneyJarsSettings', function(err, honeyJarsSettings) {
   //if(honeyJarsSettings.status == 'on') {
-
-setInterval(function() {
+setTimeout(function() {
+  setInterval(function() {
+    harvestHoneyJars()
+  }, 100*60*60)
   harvestHoneyJars()
-}, 100*60*60)
-harvestHoneyJars()
+}, 100*60*5)
 
     //}, honeyJarsSettings.interval)
   //}
