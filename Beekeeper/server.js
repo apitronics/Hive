@@ -14,7 +14,7 @@ var configDb = couchDb.db.use('config')
  */
 
 var PortJack = express()
-PortJack.get(/^(.+)$/, function(req, res) { res.sendfile('./redirect.html'); })
+PortJack.get(/^(.+)$/, function(req, res) { res.sendfile(Settings.Beekeeper.path + '/redirect.html'); })
 PortJack.listen(80)
 console.log('Beekeeper\'s PortJack listening on port 80')
 
@@ -24,7 +24,7 @@ console.log('Beekeeper\'s PortJack listening on port 80')
  */
 
 var ui = express()
-ui.get(/^(.+)$/, function(req, res) { res.sendfile('./attachments/' + req.params[0]); })
+ui.get(/^(.+)$/, function(req, res) { res.sendfile(Settings.Beekeeper.path + '/attachments/' + req.params[0]); })
 ui.listen(8800)
 console.log('Beekeeper\' UI listening on port 8800')
 
