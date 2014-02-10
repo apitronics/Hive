@@ -1,6 +1,6 @@
 $(function() {
 
-  App.Views.TriggerForm = Backbone.View.extend({
+  App.Views.RecipeForm = Backbone.View.extend({
     
     className: "form",
 

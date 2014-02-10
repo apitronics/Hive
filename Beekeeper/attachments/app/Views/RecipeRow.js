@@ -1,10 +1,10 @@
 $(function() {
 
-  App.Views.TriggerRow = Backbone.View.extend({
+  App.Views.RecipeRow = Backbone.View.extend({
 
     tagName: "tr",
 
-    template : _.template($("#template-TriggerRow").html()),
+    template : _.template($("#template-RecipeRow").html()),
 
     render: function () {
       var vars = this.model.toJSON()

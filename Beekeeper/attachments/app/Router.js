@@ -8,8 +8,8 @@ $(function() {
       'bee/edit/:beeId' : 'BeeForm',
       'sensor/:sensorId/:starteDate/:endDate' : 'BeeSensor',
       'sensor/:sensorId' : 'Sensor',
-      'trigger/add/:beeId' : 'TriggerAdd',
-      'trigger/:triggerId' : 'Trigger',
+      'recipe/add/:beeId' : 'RecipeAdd',
+      'recipe/:triggerId' : 'Recipe',
       'settings' : 'Settings'
     },
 
@@ -106,14 +106,14 @@ $(function() {
       
       var bee = new App.Models.Bee({"_id": beeId})
       var beeSensors = new App.Collections.BeeSensors()
-      var beeTriggers = new App.Collections.BeeTriggers()
+      var beeRecipes = new App.Collections.BeeRecipes()
       
       var beeSensorsTable = new App.Views.BeeSensorsTable()
-      var beeTriggersTable = new App.Views.BeeTriggersTable()
+      var beeRecipesTable = new App.Views.BeeRecipesTable()
       
       App.clear()
       App.append(beeSensorsTable.el)
-      App.append(beeTriggersTable.el)
+      App.append(beeRecipesTable.el)
       
       //
       // Thread AX
@@ -137,18 +137,18 @@ $(function() {
       // Thread BX
       //
 
-      // Fetch the beeTriggers
+      // Fetch the beeRecipes
       ev.once('B0', function() {   
-        beeTriggers.params.beeId = beeId
-        beeTriggers.fetch({success: function(collection, response, options){
+        beeRecipes.params.beeId = beeId
+        beeRecipes.fetch({success: function(collection, response, options){
           ev.trigger('B1')
         }})
       })
       
       // Render the beeSensorsTable
       ev.once('B1', function() { 
-        beeTriggersTable.collection = beeTriggers 
-        beeTriggersTable.render()
+        beeRecipesTable.collection = beeRecipes 
+        beeRecipesTable.render()
       })
       
       ev.once('C0', function() {
@@ -159,7 +159,7 @@ $(function() {
         App.setTitle(bee.get('name'))
       })
       //
-      // Trigger threads
+      // Recipe threads
       // 
       
       ev.trigger('A0')
@@ -277,53 +277,53 @@ $(function() {
       
     },
 
-    TriggerAdd: function(beeId) {
+    RecipeAdd: function(beeId) {
         
       App.setTitle('')
       
-      var trigger = new App.Models.Trigger()
-      trigger.once('sync', function() {
-        Backbone.history.navigate('bee/' + beeId, {trigger: true})
+      var recipe = new App.Models.Recipe()
+      recipe.once('sync', function() {
+        Backbone.history.navigate('bee/' + beeId, {recipe: true})
       })
-      trigger.set('bee', beeId)
+      recipe.set('bee', beeId)
       var beeSensors = new App.Collections.BeeSensors()
       beeSensors.beeId = beeId
       beeSensors.fetch()
       beeSensors.on('sync', function() {
-        trigger.schema.sensor.options = _.map(beeSensors.models, function(model) {
+        recipe.schema.sensor.options = _.map(beeSensors.models, function(model) {
           return {val: model.id, label: model.get('name') }
         })
-        var triggerForm = new App.Views.TriggerForm({model: trigger})
-        triggerForm.render()
-        App.$el.children('.body').html(triggerForm.el)
+        var recipeForm = new App.Views.RecipeForm({model: recipe})
+        recipeForm.render()
+        App.$el.children('.body').html(recipeForm.el)
       })
     },
 
-    Trigger: function(triggerId) {
+    Recipe: function(recipeId) {
         
       App.setTitle('')
       
-      var trigger = new App.Models.Trigger()
-      trigger.id = triggerId
-      // When the trigger loads, proceed loading the form
-      trigger.once('sync', function() {
-        // The next time the trigger is saved will be from the form so forward the user
-        trigger.once('sync', function() {
-          Backbone.history.navigate('bee/' + trigger.get('bee'), {trigger: true})
+      var recipe = new App.Models.Recipe()
+      recipe.id = recipeId
+      // When the recipe loads, proceed loading the form
+      recipe.once('sync', function() {
+        // The next time the recipe is saved will be from the form so forward the user
+        recipe.once('sync', function() {
+          Backbone.history.navigate('bee/' + recipe.get('bee'), {recipe: true})
         })
         var beeSensors = new App.Collections.BeeSensors()
-        beeSensors.beeId = trigger.get('bee')
+        beeSensors.beeId = recipe.get('bee')
         beeSensors.fetch()
         beeSensors.on('sync', function() {
-          trigger.schema.sensor.options = _.map(beeSensors.models, function(model) {
+          recipe.schema.sensor.options = _.map(beeSensors.models, function(model) {
             return {val: model.id, label: model.get('name') }
           })
-          var triggerForm = new App.Views.TriggerForm({model: trigger})
-          triggerForm.render()
-          App.$el.children('.body').html(triggerForm.el)
+          var recipeForm = new App.Views.RecipeForm({model: recipe})
+          recipeForm.render()
+          App.$el.children('.body').html(recipeForm.el)
         })
       })
-      trigger.fetch()
+      recipe.fetch()
     }
 
   }))

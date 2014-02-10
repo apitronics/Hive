@@ -31,9 +31,9 @@ ddoc.views = {
     }
   },
 
-  TriggersByBeeId: {
+  RecipesByBeeId: {
     map: function(doc) {
-      if (doc.kind == 'Trigger') {
+      if (doc.kind == 'Recipe') {
         emit(doc.beeId, true)
       }
     }
