@@ -34,3 +34,7 @@ cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
 echo "restarting couchdb"
 couchdb -d;
 couchdb;
+
+cp Settings.default.js ../Settings.js
+
+echo "Script has finished. Edit ../Settings.js and then run ./install-hive.js"

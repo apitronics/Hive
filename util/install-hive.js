@@ -5,7 +5,7 @@ var exec = require('child_process').exec;
 function puts(error, stdout, stderr) { sys.puts(stdout) }
 var cmd = ''
 var Settings = require('../Settings')
-var sensorDefs = require('./SensorDefs.js')
+var sensorDefinitions = require('./SensorDefinitions.json')
 
 var server = Settings.CouchDB.URL
 
@@ -16,7 +16,8 @@ cmd += 'couchapp push ../CouchViews/config.js ' + server + '/config; \n'
 cmd += 'couchapp push ../CouchViews/incubator.js ' + server + '/incubator; \n'
 cmd += 'couchapp push ../Beekeeper/couchapp.js ' + server + '/apps; \n'
 
-sensorDefs.forEach(function(sensorDef) {
+sensorDefinitions.rows.forEach(function(sensorDefinition) {
+  var sensorDef = sensorDefinition.doc
   cmd += 'curl -XPUT ' + server + '/config/' + sensorDef._id + ' -d \'' + JSON.stringify(sensorDef) + '\'; \n'
 })
 
