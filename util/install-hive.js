@@ -5,7 +5,7 @@ var exec = require('child_process').exec;
 function puts(error, stdout, stderr) { sys.puts(stdout) }
 var cmd = ''
 var Settings = require('../Settings')
-var sensorDefs = require('./sensorDefs.js')
+var sensorDefs = require('./SensorDefs.js')
 
 var server = Settings.CouchDB.URL
 
