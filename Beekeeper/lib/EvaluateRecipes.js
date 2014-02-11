@@ -35,7 +35,7 @@ module.exports = function(callback) {
   })
 
   ev.on('2', function() {
-    callback()
+    callback('success')
   })
 
   ev.trigger('0')

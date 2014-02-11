@@ -71,7 +71,7 @@ module.exports = function(callback) {
     getDrives(function() {
       getDrivesInfo(function() {
         saveNewDrivesDoc(function () {
-          callback(null, drivesDoc)
+          callback('success')
   })})})})
 
  
