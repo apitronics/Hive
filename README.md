@@ -5,7 +5,7 @@
 - Beekeeper (port 8800, 80, and 8000) : The Web UI for human users where they can view and manipulate the the GroundHive. Port 80 forwards to 8000 where 8800 (Beekeeper's Web UI) and 5984 (CouchDB) are routed together so that browsers can access them all without running into the Cross Origin Request limitation in Web Browsers. If the client device does not have mDNS support, port 80 forwards the client to the `:5984/apps/_design/beekeeper/index.html`, the CouchApp version of the Beekeeper app.
 
 
-# Install
+# Manual Install
 - Run `npm install` in all folders unless they don't have a package.json file.
 - `cp Settings.default.js; vim Settings.js;` -> Edit your settings.
 - `cd utils; ./install` -> Install
