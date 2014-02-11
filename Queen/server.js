@@ -1,3 +1,4 @@
+var log = require('../util/log.js')
 var express = require('express');
 var Backbone = require('backbone')
 var request = require('request-json')
@@ -23,7 +24,7 @@ server.post('/egg/new', function(req, res){
           res.send('ok')
         }
         else {
-          console.log(err)
+          log('Queen', "Error: " + err)
           res.send('fail')
         }
       }
@@ -37,14 +38,12 @@ server.post('/egg/hatch', function(req, res){
 
   var ev = new Backbone.Model()
   var beeAddress = req.body.beeAddress
-  console.log(beeAddress)
   var egg = new HiveBackbone.Models.Egg()
   var bee = new HiveBackbone.Models.Bee({address: beeAddress, name: req.body.name})
   var sensors = new HiveBackbone.Collections.Sensors() 
 
   // Find the unhatched Egg by beeAddress
   ev.on('0', function() {
-    console.log('EV:0')
     var unhatchedEggsByBeeAddress = new HiveBackbone.Collections.UnhatchedEggsByBeeAddress()
     unhatchedEggsByBeeAddress.params.beeAddress = beeAddress
     unhatchedEggsByBeeAddress.once('sync', function() {
@@ -56,7 +55,6 @@ server.post('/egg/hatch', function(req, res){
 
   // Create the Bee in the config database
   ev.on('1', function() {
-    console.log('EV:1')
     bee.once('sync', function() {
       ev.trigger('2')
     })
@@ -65,7 +63,6 @@ server.post('/egg/hatch', function(req, res){
 
   // Produce Sensor docs from Egg
   ev.on('2', function() {
-    console.log('EV:2')
     var i = 0
     egg.attributes.sensors.forEach(function(sensor) {
       var sensor = new HiveBackbone.Models.Sensor({
@@ -81,8 +78,6 @@ server.post('/egg/hatch', function(req, res){
 
   // Create the Sensors in the config database
   ev.on('3', function() {
-    console.log('EV:3')
-    console.log(sensors.models.length)
     sensors.once('sync', function() {
       ev.trigger('4')
     })
@@ -99,7 +94,6 @@ server.post('/egg/hatch', function(req, res){
   })
 
   ev.on('5', function() {
-    console.log('EV:5')
     res.send('')
   })
 
@@ -107,5 +101,5 @@ server.post('/egg/hatch', function(req, res){
 })
 
 
-server.listen(125);
-console.log('Queen server listening on port 125');
+server.listen(125)
+log('Queen', 'server listening on port 125')
