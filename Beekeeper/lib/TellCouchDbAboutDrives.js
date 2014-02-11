@@ -5,9 +5,7 @@ var df = require('node-diskfree')
 var _ = require('underscore')
 
 module.exports = function(callback) {
-
-  // in case callback is undefined
-  callback = (callback == undefined) ? function(){} : callback
+  
 
   var drivesDoc
   var drivesInfo
@@ -21,7 +19,7 @@ module.exports = function(callback) {
         drivesDoc = body
         done()
       }
-      else { callback('fail: getDrivesDoc') }
+      else { callback('fail' , 'fail at getDrivesDoc') }
     })
 
   }
@@ -44,7 +42,7 @@ module.exports = function(callback) {
         drivesInfo = data
         done()
       }
-      else { callback('fail: getDrivesInfo') } 
+      else { callback('fail', 'fail at getDrivesInfo') } 
     })
 
   }
@@ -61,7 +59,7 @@ module.exports = function(callback) {
         drivesDoc = body
         done()
       }
-      else { callback('fail: saveNewDrivesDoc') }
+      else { callback('fail', 'fail at saveNewDrivesDoc') }
     })
 
   }
@@ -71,7 +69,7 @@ module.exports = function(callback) {
     getDrives(function() {
       getDrivesInfo(function() {
         saveNewDrivesDoc(function () {
-          callback('success')
+          callback(null, 'success')
   })})})})
 
  

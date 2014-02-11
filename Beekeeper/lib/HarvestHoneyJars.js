@@ -68,7 +68,7 @@ module.exports = function(callback) {
     honeyJarSettings.lastHarvest = honeyJarSettings.newHarvestTime
     delete honeyJarSettings.newHarvestTime
     configDb.insert(honeyJarSettings, 'HoneyJarsSettings', function(err, body) {
-      callback('success')
+      callback(null, 'success')
     })
   })
 

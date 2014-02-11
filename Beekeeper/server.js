@@ -55,10 +55,10 @@ log('Beekeeper', 'httpProxy listening at port 8000')
  */
 
 setTimeout(function() {
-  tellCouchDbAboutDrives(function(message) {
+  tellCouchDbAboutDrives(function(err, message) {
     log("TellCouchDbAboutDrives", message)
     setInterval(function() {
-      tellCouchDbAboutDrives(function(message) {
+      tellCouchDbAboutDrives(function(err, message) {
         log("TellCouchDbAboutDrives", message)
       })
     }, 1000*60*60)
@@ -66,10 +66,10 @@ setTimeout(function() {
 }, 1000*60*1)
 
 setTimeout(function() {
-  harvestHoneyJars(function(message) {
+  harvestHoneyJars(function(err, message) {
     log("HarvestHoneyJars", message)
     setInterval(function() {
-      harvestHoneyJars(function(message) {
+      harvestHoneyJars(function(err, message) {
         log("HarvestHoneyJars", message)
       })
     }, 1000*60*60)
