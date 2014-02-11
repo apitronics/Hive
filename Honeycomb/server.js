@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express')
+var log = require('../util/log.js')
 var _ = require('underscore')
 var Backbone = require('backbone')
 var HiveBackbone = require('../HiveBackbone/HiveBackbone')
@@ -24,14 +25,9 @@ server.post('/*', function(req, res){
   
   // Look up the Bee that has this address
   ev.on('go:0', function() {
-    console.log('go:0')
     bees.params.beeAddress = data.address 
     bees.on('sync', function() {
-      console.log('bees.models.length:')
-      console.log(bees.models.length)
       bee = bees.models[0]
-      console.log('bee')
-      console.log(bee.toJSON())
       ev.trigger('go:1')
     })
     bees.fetch()
@@ -42,8 +38,6 @@ server.post('/*', function(req, res){
     console.log('go:1')
     sensors.params.beeId = bee.id 
     sensors.on('sync', function() {
-      console.log("sensors.models.length")
-      console.log(sensors.models.length)
       ev.trigger('go:2')
     })
     sensors.fetch()
@@ -51,7 +45,6 @@ server.post('/*', function(req, res){
 
   // Get all SensorDefinitions
   ev.on('go:2', function() {
-    console.log('go:2')
     // Collect the Firmware UUIDs we need
     // 
     // @todo Get only relevant SensorDefinitions, SensorDefinition.firmwareUUID and and Sensor.
@@ -67,7 +60,6 @@ server.post('/*', function(req, res){
       }
     })
     */
-    console.log(sensorDefinitions.params)
     sensorDefinitions.on('sync', function() {
       ev.trigger('go:3')
     })
@@ -77,7 +69,6 @@ server.post('/*', function(req, res){
 
   // Run each Honey Packet in data through the honeyPacketProcessor 
   ev.on('go:3', function() {
-    console.log('go:3')
     _.each(data.data, function(packet, dateTime, list) {
       readings.add(honeyPacketProcessor(dateTime, packet, sensors, sensorDefinitions))
     })
@@ -86,9 +77,6 @@ server.post('/*', function(req, res){
 
   // Save readings
   ev.on('go:4', function() {
-    readings.once('sync', function() {
-      console.log('readings saved')
-    })
     readings.save()
   })
 
@@ -96,4 +84,4 @@ server.post('/*', function(req, res){
 })
 
 server.listen(126);
-console.log('Honeycomb server listening on port 126');
+log('Honeycomb', 'server listening on port 126')
