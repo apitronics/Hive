@@ -50,14 +50,17 @@ var options = {
 httpProxy.createServer(options).listen(8000)
 log('Beekeeper', 'httpProxy listening at port 8000')
 
+
 /*
  * Set up some processes
  */
 
 setTimeout(function() {
+  log("TellCouchDbAboutDrives", "starting")
   tellCouchDbAboutDrives(function(err, message) {
     log("TellCouchDbAboutDrives", message)
     setInterval(function() {
+      log("TellCouchDbAboutDrives", "starting")
       tellCouchDbAboutDrives(function(err, message) {
         log("TellCouchDbAboutDrives", message)
       })
@@ -66,9 +69,11 @@ setTimeout(function() {
 }, 1000*60*1)
 
 setTimeout(function() {
+  log("HarvestHoneyJars", "starting")
   harvestHoneyJars(function(err, message) {
     log("HarvestHoneyJars", message)
     setInterval(function() {
+      log("HarvestHoneyJars", "starting")
       harvestHoneyJars(function(err, message) {
         log("HarvestHoneyJars", message)
       })
