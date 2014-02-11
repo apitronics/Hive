@@ -33,7 +33,7 @@ cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
 
 echo "restarting couchdb"
 couchdb -d;
-couchdb;
+couchdb -b;
 
 cp Settings.default.js ../Settings.js
 
