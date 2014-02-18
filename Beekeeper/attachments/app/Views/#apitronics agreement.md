@@ -1,2 +1,0 @@
-- There is no definition of the assigned IP.    I think there should be lots of detail in that. 
-- need language that this agreement shall not prohibit you from competing against the company after your services for the  company terminate.
