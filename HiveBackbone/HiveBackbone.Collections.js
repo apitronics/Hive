@@ -62,11 +62,11 @@ module.exports = {
       switch (method) {
         case 'read':
           db.list({"startkey": collection.params.startkey, "endkey": collection.params.endkey, include_docs:true}, function(err, body) {
-            //console.log(err)
-            //console.log(body)
-            body.rows.forEach(function(row) {
-              collection.add(row.doc)
-            })
+            if(body.hasOwnProperty('rows') && body.rows.length > 0) {
+              body.rows.forEach(function(row) {
+                collection.add(row.doc)
+              })
+            }
             collection.trigger('sync')
           })
           break;
