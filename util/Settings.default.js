@@ -11,7 +11,7 @@ module.exports = {
     path: "/root/GroundHive/Beekeeper"
   },
   CouchDB: {
-    URL: "http://admin:password@127.0.0.1:5984",
+    URL: "http://127.0.0.1:5984",
   },
   'processRecipesFrequencyInMinutes': 5,
   'harvestHoneyJarsFrequencyInMinutes': 5,
