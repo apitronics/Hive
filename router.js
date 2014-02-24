@@ -14,10 +14,10 @@ var configDb = couchDb.db.use('config')
 
 var options = {
   router: {
-    'hive.local/queen': '127.0.0.1:125',
-    'hive.local/honeycomb': '127.0.0.1:126',
-    'hive.local/beekeeper': '127.0.0.1:8800', 
-    'hive.local/*': Settings.CouchDB.URL 
+    Settings.domain + '/queen': '127.0.0.1:125',
+    Settings.domain + '/honeycomb': '127.0.0.1:126',
+    Settings.domain + '/beekeeper': '127.0.0.1:8800', 
+    Settings.domain + '/*': Settings.CouchDB.URL 
   }
 }
 

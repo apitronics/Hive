@@ -1,5 +1,6 @@
 module.exports = {
-  path: "./",
+  domain: "hive.local",
+  path: "/root/GroundHive",
   Queen: {
   	URL: "http://127.0.0.1:125"
   },
