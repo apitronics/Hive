@@ -76,8 +76,18 @@ $(function() {
         // GRAPH App.sensorReadingsGraph.data
         console.log("Now graphing " + sensorReadingsGraph.data.length + " data points.")
         var ts = Math.round((new Date()).getTime() / 1000)
+
         Morris.Line({
           element: 'graph',
+          hoverCallback: function(index, options, content) {
+            var point = sensorReadingsGraph.data[index]
+            var $content = point['value'] + '</br>'
+            $content += ' at '  + '</br>'
+            $content += moment((point['date']/1000).toString(),'X').format('hh:mm:ss')  + '</br>'
+            $content += ' on '  + '</br>'
+            $content += moment((point['date']/1000).toString(),'X').format('YYYY-MM-DD')  + '</br>'
+            return $content
+          },
           data: this.data,
           lineWidth: 0,
           pointSize: 2,
@@ -90,12 +100,14 @@ $(function() {
           ykeys: ['value'],
           labels: ['value'],
           dateFormat: function (x) { return new Date(x).toDateString(); }
-        });
+        })
+
         console.log("Graphed in " + (Math.round((new Date()).getTime() / 1000) - ts) + " seconds.")
         // $('.graph-loading').fadeOut() wont' work ever it seems :-/
         $('.graph-loading').hide()
         this.trigger('sensorReadingsGraphRendered')
       }
+
     },
 
     newDateTimeSpan: function(){
