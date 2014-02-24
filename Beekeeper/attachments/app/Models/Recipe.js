@@ -19,7 +19,9 @@ $(function() {
     },
     
     defaults: {
-      kind: 'Recipe'
+      kind: 'Recipe',
+      trigger: "UpperAndLowerBounds",
+      action: "SendEmail"
     },
 
     schema: {
@@ -36,10 +38,10 @@ $(function() {
       alertPhoneNumberCarrier: {
         type: "Select",
         options: {
-          "Sprint": "@messaging.sprintpcs.com",
-          "Verizon":"@vtext.com",
-          "T-Mobile": "@tmomail.net",
-          "AT&T": "@txt.att.net"
+          "@messaging.sprintpcs.com": "Sprint",
+          "@vtext.com": "Verizon",
+          "@tmomail.net": "T-Mobile",
+          "@txt.att.net": "AT&T"
         }
       },
       alertEmail: 'Text',

@@ -21,7 +21,10 @@ $(function() {
       'gmailUserName': 'Text',
       'gmailPassword': 'Text',
       'gmailEmailAddress': 'Text',
-      'sendAlertsTo': 'Text'
+      'processRecipeFrequencyInMinutes': 'Number',
+      'harvestHoneyJarsFrequencyInMinutes': 'Number',
+      'tellCouchDbAboutDrivesInMinutes': 'Number',
+
     }    
 
   })

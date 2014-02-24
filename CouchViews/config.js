@@ -38,6 +38,14 @@ ddoc.views = {
       }
     }
   },
+  
+  Recipes: {
+    map: function(doc) {
+      if (doc.kind == 'Recipe') {
+        emit(doc._id, true)
+      }
+    }
+  },
 
   Sensors: {
     map: function(doc) {

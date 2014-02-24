@@ -2,7 +2,7 @@ var Settings = require('../Settings')
 var log = require('../util/log.js')
 var express = require('express')
 var tellCouchDbAboutDrives = require('./lib/TellCouchDbAboutDrives.js')
-//var evaluateTriggers = require('./lib/ProcessRecipes.js')
+var processRecipes = require('./lib/ProcessRecipes.js')
 var harvestHoneyJars = require('./lib/HarvestHoneyJars.js')
 
 
@@ -49,7 +49,7 @@ setTimeout(function() {
 }, 1000*60*1)
 
 
-/*
+
 setTimeout(function() {
    processRecipes(function() { 
     console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
@@ -60,4 +60,4 @@ setTimeout(function() {
     }, 60*60*1000)
   })
 }, 1000*60*1)
-*/
+
