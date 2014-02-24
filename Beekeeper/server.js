@@ -19,7 +19,7 @@ log('Beekeeper', 'UI listening on port 8800')
 
 
 /*
- * Set up some processes
+ * Set up some processes, staggered
  */
 
 setTimeout(function() {
@@ -31,9 +31,20 @@ setTimeout(function() {
       tellCouchDbAboutDrives(function(err, message) {
         log("TellCouchDbAboutDrives", message)
       })
-    }, 1000*60*60)
+    }, Settings.tellCouchDbAboutDrivesFrequencyInMinutes*60*1000)
   })
 }, 1000*60*1)
+
+setTimeout(function() {
+   processRecipes(function() { 
+    console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
+    setInterval(function() {
+      processRecipes(function() { 
+        console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
+      })
+    }, Settings.processRecipesFrequencyInMinutes*60*1000)
+  })
+}, 1000*60*2)
 
 setTimeout(function() {
   log("HarvestHoneyJars", "starting")
@@ -44,20 +55,7 @@ setTimeout(function() {
       harvestHoneyJars(function(err, message) {
         log("HarvestHoneyJars", message)
       })
-    }, 1000*60*60)
+    }, Settings.harvestHoneyJarsFrequencyInMinutes*60*1000)
   })
-}, 1000*60*1)
-
-
-
-setTimeout(function() {
-   processRecipes(function() { 
-    console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
-    setInterval(function() {
-      processRecipes(function() { 
-        console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
-      })
-    }, 60*60*1000)
-  })
-}, 1000*60*1)
+}, 1000*60*3)
 

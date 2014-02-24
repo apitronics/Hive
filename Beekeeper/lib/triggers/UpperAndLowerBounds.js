@@ -6,7 +6,7 @@ module.exports = function(recipe, callback) {
 
   var ev = new Backbone.Model()
 	
-  var anHourAgo = ((new Date().getTime())/1000) - (60*60)
+  var timeAgo = ((new Date().getTime())/1000) - Settings.processRecipesFrequencyInMinutes*60
   var now = (new Date().getTime())/1000
   var data = []
   var lowerBound = null
@@ -14,7 +14,7 @@ module.exports = function(recipe, callback) {
 
   // Get data
   ev.on('0', function() {
-    nano.use('sensor_' + recipe.sensor).list({startkey: anHourAgo.toString(), endkey: now.toString(), include_docs:true}, function(err, body) {
+    nano.use('sensor_' + recipe.sensor).list({startkey: timeAgo.toString(), endkey: now.toString(), include_docs:true}, function(err, body) {
       if(body.hasOwnProperty('rows')) {
         body.rows.forEach(function(row) {
           data.push(row.doc.d)

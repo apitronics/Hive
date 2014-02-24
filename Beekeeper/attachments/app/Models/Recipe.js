@@ -43,8 +43,7 @@ $(function() {
           "@tmomail.net": "T-Mobile",
           "@txt.att.net": "AT&T"
         }
-      },
-      alertEmail: 'Text',
+      }
     }
 
   }) 
