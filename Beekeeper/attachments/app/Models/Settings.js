@@ -21,11 +21,7 @@ $(function() {
     schema: {
       'gmailUserName': 'Text',
       'gmailPassword': 'Text',
-      'gmailEmailAddress': 'Text',
-      'processRecipeFrequencyInMinutes': 'Number',
-      'harvestHoneyJarsFrequencyInMinutes': 'Number',
-      'tellCouchDbAboutDrivesInMinutes': 'Number',
-
+      'gmailEmailAddress': 'Text'
     }    
 
   })

@@ -12,7 +12,7 @@ module.exports = {
   CouchDB: {
     URL: "http://admin:password@127.0.0.1:5984",
   },
-  'processRecipesFrequencyInMinutes': '5',
-  'harvestHoneyJarsFrequencyInMinutes': '5',
-  'tellCouchDbAboutDrivesInMinutes': '5',
+  'processRecipesFrequencyInMinutes': 5,
+  'harvestHoneyJarsFrequencyInMinutes': 5,
+  'tellCouchDbAboutDrivesFrequencyInMinutes': 5
 }

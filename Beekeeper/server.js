@@ -36,7 +36,8 @@ setTimeout(function() {
 }, 1000*60*1)
 
 setTimeout(function() {
-   processRecipes(function() { 
+  log("ProcessRecipes", "starting")
+  processRecipes(function() { 
     console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
     setInterval(function() {
       processRecipes(function() { 
