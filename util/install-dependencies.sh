@@ -17,6 +17,11 @@ ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 rm /var/spool/cron/root 
 ln ./var/spool/cron/root /var/spool/cron/root
 
+echo "setting up SD card"
+cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
+systemctl daemon-reload
+systemctl start sdcard.service
+
 echo "enabling avahi and couchdb"
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
@@ -29,12 +34,14 @@ echo "creating hive services"
 cp ./systemd/hive-beekeeper.service /etc/systemd/system/multi-user.target.wants/
 cp ./systemd/hive-queen.service /etc/systemd/system/multi-user.target.wants/
 cp ./systemd/hive-honeycomb.service /etc/systemd/system/multi-user.target.wants/
-cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
+systemctl daemon-reload
+systemctl start hive-beekeeper.service
+systemctl start hive-queen.service
+systemctl start hive-honeycomb.service
 
-echo "restarting couchdb"
-couchdb -d;
-couchdb -b;
+#echo "restarting couchdb"
+#couchdb -d;
+#couchdb -b;
 
 cp Settings.default.js ../Settings.js
-
 echo "Script has finished. Edit ../Settings.js and then run ./install-hive.js"
