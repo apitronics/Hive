@@ -20,6 +20,10 @@ $(function() {
     },
 
     delete: function() {
+      var form = this
+      this.model.on('destroy', function() {
+        form.trigger('done')
+      })
       this.model.destroy()
     },
 
