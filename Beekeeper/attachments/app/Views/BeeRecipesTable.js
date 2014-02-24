@@ -8,7 +8,7 @@ $(function() {
 
     template: $('#template-BeeRecipesTable').html(),
 
-    itemView: 'RecipeRow'
+    itemView: 'RecipeRow',
 
     initialize: function(){
     },
@@ -24,7 +24,7 @@ $(function() {
     },
 
     render: function() {
-      var vars = {beeId: this.collection.beeId}
+      var vars = {beeId: this.collection.params.beeId}
       this.$el.append(_.template(this.template, vars))
       this.addAll()
     }

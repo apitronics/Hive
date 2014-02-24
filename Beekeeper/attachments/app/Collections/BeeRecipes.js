@@ -11,7 +11,7 @@ $(function() {
     model: App.Models.Recipe,
 
     url: function() {
-      return '/config/_design/api/_view/TriggersByRecipeId?include_docs=true&key="' + this.params.beeId + '"'
+      return '/config/_design/api/_view/RecipesByBeeId?include_docs=true&key="' + this.params.beeId + '"'
     },
 
     parse: function(response) {

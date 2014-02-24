@@ -29,6 +29,42 @@ $(function() {
       if (name) return name.toLowerCase()
     },
 
+    loadSensorDefinitions: function() {
+      var collection = this
+      var i = 0
+      function loadSensorDefinition() {
+        collection.models[i].on('loadSensorDefinition:done', function () {
+          i++
+          if (i == collection.models.length-1) {
+            collection.trigger('loadSensorDefinitions:done')
+          }
+          else {
+            loadSensorDefinition()
+          }
+        })
+        collection.models[i].loadSensorDefinition() 
+      }
+      loadSensorDefinition()
+    },
+
+    loadLastSensorReadings: function() {
+      var collection = this
+      var i = 0
+      function loadLastSensorReading() {
+        collection.models[i].on('loadLastSensorReading:done', function () {
+          i++
+          if (i == collection.models.length-1) {
+            collection.trigger('loadLastSensorReadings:done')
+          }
+          else {
+            loadLastSensorReading()
+          }
+        })
+        collection.models[i].loadLastSensorReading() 
+      }
+      loadLastSensorReading()
+    } 
+
 
   })
 

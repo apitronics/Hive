@@ -4,6 +4,11 @@ $(function() {
 
     idAttribute: '_id',
 
+    initialize: function() {
+      this.sensorDefinition = new App.Models.SensorDefinition()
+      this.lastSensorReading = new App.Models.Reading()
+    },
+
     url: function() {
       var url
       if (_.has(this, 'id') && _.has(this, '_rev')) {
@@ -18,17 +23,29 @@ $(function() {
       return url
     },
 
-    loadDefinition: function() {
+    loadSensorDefinition: function() {
+      var sensor = this
       var sensorDefinitions = new App.Collections.SensorDefinitionsByFirmwareUUID()
-      console.log(this.toJSON())
       sensorDefinitions.params.sensorDefinitionFirmwareUUID =  this.get('sensorDefinitionFirmwareUUID')
-      var that = this
       sensorDefinitions.on('sync', function() {
-        console.log('loaded!')
-        that.set('name', sensorDefinitions.models[0].get('name'))
-        that.trigger('loadDefinition:done')
+        sensor.sensorDefinition = sensorDefinitions.models[0]
+        sensor.trigger('loadSensorDefinition:done')
       })
       sensorDefinitions.fetch()
+    },
+
+    loadLastSensorReading: function() {
+      var sensor = this
+      var sensorReadings = new App.Collections.SensorReadings()
+      sensorReadings.params.limit = 1
+      sensorReadings.params.sensorId = this.id
+      sensorReadings.on('sync', function() {
+        if (sensorReadings.models.length > 0) {
+          sensor.lastSensorReading = sensorReadings.models[0]
+        }
+        sensor.trigger('loadLastSensorReading:done')
+      })
+      sensorReadings.fetch()
     }
 
   }) 

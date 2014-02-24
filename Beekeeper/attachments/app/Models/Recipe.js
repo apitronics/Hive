@@ -18,15 +18,13 @@ $(function() {
       return url
     },
     
-    //url: "config",
-
     defaults: {
-      kind: 'recipe'
+      kind: 'Recipe'
     },
 
     schema: {
       label: 'Text',
-      bee: 'Text',
+      beeId: 'Text',
       sensor: { 
         type: 'Select', 
         options: [] 
