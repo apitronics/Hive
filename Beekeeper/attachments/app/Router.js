@@ -8,8 +8,8 @@ $(function() {
       'bee/edit/:beeId' : 'BeeForm',
       'sensor/:sensorId/:starteDate/:endDate' : 'BeeSensor',
       'sensor/:sensorId' : 'Sensor',
-      'trigger/add/:beeId' : 'TriggerAdd',
-      'trigger/:triggerId' : 'Trigger',
+      'recipe/add/:beeId' : 'RecipeAdd',
+      'recipe/:triggerId' : 'Recipe',
       'settings' : 'Settings'
     },
 
@@ -106,17 +106,17 @@ $(function() {
       
       var bee = new App.Models.Bee({"_id": beeId})
       var beeSensors = new App.Collections.BeeSensors()
-      var beeTriggers = new App.Collections.BeeTriggers()
+      var beeRecipes = new App.Collections.BeeRecipes()
       
       var beeSensorsTable = new App.Views.BeeSensorsTable()
-      var beeTriggersTable = new App.Views.BeeTriggersTable()
+      var beeRecipesTable = new App.Views.BeeRecipesTable()
       
       App.clear()
       App.append(beeSensorsTable.el)
-      App.append(beeTriggersTable.el)
+      App.append(beeRecipesTable.el)
       
       //
-      // Thread AX
+      // Thread AX - Sensors
       //
       
       // Fetch the beeSensors
@@ -126,30 +126,47 @@ $(function() {
           ev.trigger('A1')
         }})
       })
+
+      ev.once('A1', function() {
+        beeSensors.once('loadSensorDefinitions:done', function() {
+          ev.trigger('A2') 
+        })
+        beeSensors.loadSensorDefinitions()
+      })
+
+      ev.once('A2', function() {
+        beeSensors.once('loadLastSensorReadings:done', function() {
+          ev.trigger('A3')
+        })
+        beeSensors.loadLastSensorReadings()
+      })
       
       // Render the beeSensorsTable
-      ev.once('A1', function() { 
+      ev.once('A3', function() { 
         beeSensorsTable.collection = beeSensors 
         beeSensorsTable.render()
       })
       
       //
-      // Thread BX
+      // Thread BX - Recipes
       //
 
-      // Fetch the beeTriggers
+      // Fetch the beeRecipes
       ev.once('B0', function() {   
-        beeTriggers.params.beeId = beeId
-        beeTriggers.fetch({success: function(collection, response, options){
+        beeRecipes.params.beeId = beeId
+        beeRecipes.fetch({success: function(collection, response, options){
           ev.trigger('B1')
         }})
       })
       
       // Render the beeSensorsTable
       ev.once('B1', function() { 
-        beeTriggersTable.collection = beeTriggers 
-        beeTriggersTable.render()
+        beeRecipesTable.collection = beeRecipes 
+        beeRecipesTable.render()
       })
+
+      //
+      // Thread CX - The Bee
       
       ev.once('C0', function() {
         bee.fetch({complete:function(){ ev.trigger('C1')}})
@@ -158,8 +175,9 @@ $(function() {
       ev.once('C1', function() {
         App.setTitle(bee.get('name'))
       })
+
       //
-      // Trigger threads
+      // threads
       // 
       
       ev.trigger('A0')
@@ -250,10 +268,13 @@ $(function() {
       
       // Assign the sensor to its graph and prepare with spinner
       ev.once('1', function() {
-        sensor.once('loadDefinition:done', function() {
-          App.setTitle(sensor.get('name'))
+        sensor.once('loadSensorDefinition:done', function() {
+          if(sensor.get('name'))
+            App.setTitle(sensor.get('name'))
+          else
+            App.setTitle(sensor.sensorDefinition.get('name'))
         })
-        sensor.loadDefinition()
+        sensor.loadSensorDefinition()
         App.sensorReadingsGraph.sensor = sensor
         App.sensorReadingsGraph.prepare()
         ev.trigger('2')
@@ -277,53 +298,106 @@ $(function() {
       
     },
 
-    TriggerAdd: function(beeId) {
+    RecipeAdd: function(beeId) {
         
-      App.setTitle('')
+
+      var ev = new Backbone.Model()
       
-      var trigger = new App.Models.Trigger()
-      trigger.once('sync', function() {
+      var recipe = new App.Models.Recipe()
+      var recipeForm = new App.Views.RecipeForm({model: recipe})
+      var beeSensors = new App.Collections.BeeSensors()
+
+      beeSensors.params.beeId = beeId
+      recipe.set('beeId', beeId)
+
+      App.setTitle('')
+      App.clear()
+      App.append(recipeForm.el)
+
+      recipeForm.once('done', function() {
         Backbone.history.navigate('bee/' + beeId, {trigger: true})
       })
-      trigger.set('bee', beeId)
-      var beeSensors = new App.Collections.BeeSensors()
-      beeSensors.beeId = beeId
-      beeSensors.fetch()
-      beeSensors.on('sync', function() {
-        trigger.schema.sensor.options = _.map(beeSensors.models, function(model) {
-          return {val: model.id, label: model.get('name') }
+
+      ev.once('0', function() {
+        beeSensors.on('sync', function() {
+          ev.trigger('1')
         })
-        var triggerForm = new App.Views.TriggerForm({model: trigger})
-        triggerForm.render()
-        App.$el.children('.body').html(triggerForm.el)
+        beeSensors.fetch()
       })
+
+      ev.once('1', function() {
+        beeSensors.on('loadSensorDefinitions:done', function() {
+          ev.trigger('2')
+        })
+        beeSensors.loadSensorDefinitions()
+      })
+
+      ev.once('2', function() {
+        recipe.schema.sensor.options = _.map(beeSensors.models, function(model) {
+          if(model.get('name'))
+            return {val: model.id, label: model.get('name') }
+          else
+            return {val: model.id, label: model.sensorDefinition.get('name') }
+        })
+        recipeForm.render()
+      })
+
+      ev.trigger('0')
     },
 
-    Trigger: function(triggerId) {
-        
-      App.setTitle('')
+    Recipe: function(recipeId) {
+
+      var ev = new Backbone.Model()
       
-      var trigger = new App.Models.Trigger()
-      trigger.id = triggerId
-      // When the trigger loads, proceed loading the form
-      trigger.once('sync', function() {
-        // The next time the trigger is saved will be from the form so forward the user
-        trigger.once('sync', function() {
-          Backbone.history.navigate('bee/' + trigger.get('bee'), {trigger: true})
-        })
-        var beeSensors = new App.Collections.BeeSensors()
-        beeSensors.beeId = trigger.get('bee')
-        beeSensors.fetch()
-        beeSensors.on('sync', function() {
-          trigger.schema.sensor.options = _.map(beeSensors.models, function(model) {
-            return {val: model.id, label: model.get('name') }
-          })
-          var triggerForm = new App.Views.TriggerForm({model: trigger})
-          triggerForm.render()
-          App.$el.children('.body').html(triggerForm.el)
-        })
+      var recipe = new App.Models.Recipe()
+      var beeSensors = new App.Collections.BeeSensors()
+      var recipeForm = new App.Views.RecipeForm({model: recipe})
+
+      recipe.id = recipeId
+
+      App.setTitle('')
+      App.clear()
+      App.append(recipeForm.el)
+
+
+      recipeForm.once('done', function() {
+        Backbone.history.navigate('bee/' + recipe.get('beeId'), {trigger: true})
       })
-      trigger.fetch()
+
+      ev.once('0', function() {
+        recipe.once('sync', function() {
+          ev.trigger('1')
+        })
+        recipe.fetch()
+      })
+
+      ev.once('1', function() {
+        beeSensors.params.beeId = recipe.get('beeId')
+        beeSensors.on('sync', function() {
+          ev.trigger('2')
+        })
+        beeSensors.fetch()
+      })
+
+      ev.once('2', function() {
+        beeSensors.on('loadSensorDefinitions:done', function() {
+          ev.trigger('3')
+        })
+        beeSensors.loadSensorDefinitions()
+      })
+
+      ev.once('3', function() {
+        recipe.schema.sensor.options = _.map(beeSensors.models, function(model) {
+          if(model.get('name'))
+            return {val: model.id, label: model.get('name') }
+          else
+            return {val: model.id, label: model.sensorDefinition.get('name') }
+        })
+        recipeForm.render()
+      })
+
+      ev.trigger('0')
+
     }
 
   }))

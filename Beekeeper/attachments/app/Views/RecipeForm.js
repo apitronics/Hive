@@ -1,6 +1,6 @@
 $(function() {
 
-  App.Views.TriggerForm = Backbone.View.extend({
+  App.Views.RecipeForm = Backbone.View.extend({
     
     className: "form",
 
@@ -20,6 +20,10 @@ $(function() {
     },
 
     delete: function() {
+      var form = this
+      this.model.on('destroy', function() {
+        form.trigger('done')
+      })
       this.model.destroy()
     },
 
@@ -32,6 +36,10 @@ $(function() {
       // Put the form's input into the model in memory
       this.form.commit()
       // Send the updated model to the server
+      var form = this
+      this.model.on('sync', function() {
+        form.trigger('done')
+      })
       this.model.save()
     },
 

@@ -7,7 +7,7 @@
   <script type='text/javascript'>
     if(window.location.host == 'hive.local') {
       // Forward to the node.js http-proxy mounted Beekeeper app
-      window.location = "http://hive.local:8000/beekeeper/index.html"
+      window.location = 'http://' + window.location.host + ":8000/beekeeper/index.html"
     }
     else {
       // Forward to the CouchApp

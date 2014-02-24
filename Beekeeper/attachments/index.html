@@ -48,13 +48,13 @@
   <script src="app/Models/HourlyReading.js"></script>
   <script src="app/Models/Sensor.js"></script>
   <script src="app/Models/SensorDefinition.js"></script>
-  <script src="app/Models/Trigger.js"></script>
+  <script src="app/Models/Recipe.js"></script>
   <script src="app/Models/Settings.js"></script>
   <script src="app/Models/Drive.js"></script>
 
   <script src="app/Collections/Bees.js"></script>
   <script src="app/Collections/BeeSensors.js"></script>
-  <script src="app/Collections/BeeTriggers.js"></script>
+  <script src="app/Collections/BeeRecipes.js"></script>
   <script src="app/Collections/SensorReadings.js"></script>
   <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
   <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
@@ -65,13 +65,13 @@
   <script src="app/Views/BeeForm.js"></script>
   <script src="app/Views/BeesTable.js"></script>
   <script src="app/Views/BeeSensorsTable.js"></script>
-  <script src="app/Views/BeeTriggersTable.js"></script>
+  <script src="app/Views/BeeRecipesTable.js"></script>
   <script src="app/Views/SensorRow.js"></script>
-  <script src="app/Views/TriggerRow.js"></script>
+  <script src="app/Views/RecipeRow.js"></script>
   <script src="app/Views/SensorReadingsGraph.js"></script>
   <link  href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
   <script src="app/Views/SensorJarHourlyAverageReadingsGraph.js"></script>
-  <script src="app/Views/TriggerForm.js"></script>
+  <script src="app/Views/RecipeForm.js"></script>
   <script src="app/Views/DrivesTable.js"></script>
   <script src="app/Views/DriveRow.js"></script>
 
@@ -151,13 +151,13 @@
     <th> <h1>Sensors</h1> </th>
   </script>
 
-  <script type="text/template" id="template-BeeTriggersTable">
+  <script type="text/template" id="template-BeeRecipesTable">
     <th> 
       <h1 style='float:left;'>
-        Triggers
+        Recipes
       </h1>
-      <a style='float: left; margin: 16px;' class='btn' href='#trigger/add/<%= beeId %>'> 
-        <i class='icon-plus-sign'></i> Create a new Trigger
+      <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'> 
+        <i class='icon-plus-sign'></i> Create a new Recipe
       </a>
     </th>
   </script>
@@ -171,9 +171,9 @@
     </td>
   </script>
 
-  <script type="text/template" id="template-TriggerRow">
+  <script type="text/template" id="template-RecipeRow">
     <td>
-      <a href="#trigger/<%= _id %>"><%= label %></a> 
+      <a href="#recipe/<%= _id %>"><%= label %></a> 
     </td>
   </script>
 

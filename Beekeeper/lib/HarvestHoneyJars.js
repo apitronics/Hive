@@ -7,7 +7,7 @@ var nano = require('nano')(Settings.CouchDB.URL)
 var configDb = nano.use('config')
 var SensorJarsProcessor = require('./SensorJarsProcessor')
 
-module.exports = function() {
+module.exports = function(callback) {
   var sensors = new HiveBackbone.Collections.Sensors()
   var ev = new Backbone.Model() 
   var honeyJarSettings
@@ -68,7 +68,7 @@ module.exports = function() {
     honeyJarSettings.lastHarvest = honeyJarSettings.newHarvestTime
     delete honeyJarSettings.newHarvestTime
     configDb.insert(honeyJarSettings, 'HoneyJarsSettings', function(err, body) {
-      return 
+      callback(null, 'success')
     })
   })
 
