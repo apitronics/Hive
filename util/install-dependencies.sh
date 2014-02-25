@@ -19,9 +19,6 @@ ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 rm /var/spool/cron/root 
 ln ./var/spool/cron/root /var/spool/cron/root
 
-echo "setting up SD card"
-
-
 echo "enabling avahi and couchdb"
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
