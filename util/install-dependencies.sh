@@ -5,7 +5,9 @@ pacman -S erlang-nox couchdb avahi nss-mdns python2;
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/hive
-/bin/mount /dev/mmcblk0 /var/lib/hive
+cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
+systemctl daemon-reload
+systemctl start sdcard.service
 
 echo "setting preferences"
 rm /etc/couchdb/local.ini
@@ -18,9 +20,7 @@ rm /var/spool/cron/root
 ln ./var/spool/cron/root /var/spool/cron/root
 
 echo "setting up SD card"
-cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
-systemctl daemon-reload
-systemctl start sdcard.service
+
 
 echo "enabling avahi and couchdb"
 systemctl enable avahi-daemon.service
