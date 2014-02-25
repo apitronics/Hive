@@ -39,6 +39,8 @@ systemctl start hive-beekeeper.service
 systemctl start hive-queen.service
 systemctl start hive-honeycomb.service
 
+# "npm install" all over (even / and even /utils)
+
 #echo "restarting couchdb"
 #couchdb -d;
 #couchdb -b;
