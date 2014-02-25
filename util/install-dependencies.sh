@@ -5,7 +5,7 @@ pacman -S erlang-nox couchdb avahi nss-mdns python2;
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/hive
-/bin/mount /dev/mmcblk0 /var/lib/hive
+/bin/mount /dev/mmcblk0p1 /var/lib/hive
 
 echo "setting preferences"
 rm /etc/couchdb/local.ini
