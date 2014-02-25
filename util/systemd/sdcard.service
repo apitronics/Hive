@@ -4,6 +4,6 @@ Description=Mount SD Card
 
 [Service]
 Type=oneshot
-ExecStart=/bin/mount /dev/mmcblk0p1 /var/lib/hive
+ExecStart=/bin/mount /dev/mmcblk0p1 /var/lib/couchdb
 [Install]
 WantedBy=multi-user.target
