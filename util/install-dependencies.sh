@@ -4,7 +4,7 @@ echo "installing packages via pacman"
 pacman -S erlang-nox couchdb avahi nss-mdns python2;
 
 echo "creating a place for hive data on the sd card"
-mkdir /var/lib/hive
+mkdir /var/lib/couchdb
 cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start sdcard.service
