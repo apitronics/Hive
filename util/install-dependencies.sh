@@ -19,9 +19,6 @@ ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 rm /var/spool/cron/root 
 ln ./var/spool/cron/root /var/spool/cron/root
 
-echo "setting up SD card"
-
-
 echo "enabling avahi and couchdb"
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
@@ -38,6 +35,8 @@ systemctl daemon-reload
 systemctl start hive-beekeeper.service
 systemctl start hive-queen.service
 systemctl start hive-honeycomb.service
+
+# "npm install" all over (even / and even /utils)
 
 #echo "restarting couchdb"
 #couchdb -d;
