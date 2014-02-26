@@ -28,13 +28,14 @@ echo "installing couchapp for node"
 npm install -q -g couchapp > /dev/null
 
 echo "creating hive services"
-cp ./systemd/hive-beekeeper.service /etc/systemd/system/multi-user.target.wants/
-cp ./systemd/hive-queen.service /etc/systemd/system/multi-user.target.wants/
-cp ./systemd/hive-honeycomb.service /etc/systemd/system/multi-user.target.wants/
+
+cp ./systemd/* /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start hive-beekeeper.service
 systemctl start hive-queen.service
 systemctl start hive-honeycomb.service
+systemctl start hive-router.service
+systemctl start hive-redirect.servce
 
 # "npm install" all over (even / and even /utils)
 
