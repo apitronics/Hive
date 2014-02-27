@@ -1,0 +1,15 @@
+[Unit]
+Description=Beekeeper Launcher
+After=couchdb.service openntpd.service systemd-remount-fs.service
+Requires=couchdb.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=15s
+ExecStart=/bin/node /root/GroundHive/redirect_port_80_to_beekeeper.js
+
+[Install]
+WantedBy=multi-user.target
+
+
