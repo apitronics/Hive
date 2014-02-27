@@ -34,11 +34,11 @@ $(function() {
       var i = 0
       function loadSensorDefinition() {
         collection.models[i].on('loadSensorDefinition:done', function () {
-          i++
           if (i == collection.models.length-1) {
             collection.trigger('loadSensorDefinitions:done')
           }
           else {
+            i++
             loadSensorDefinition()
           }
         })
@@ -52,11 +52,11 @@ $(function() {
       var i = 0
       function loadLastSensorReading() {
         collection.models[i].on('loadLastSensorReading:done', function () {
-          i++
           if (i == collection.models.length-1) {
             collection.trigger('loadLastSensorReadings:done')
           }
           else {
+            i++
             loadLastSensorReading()
           }
         })

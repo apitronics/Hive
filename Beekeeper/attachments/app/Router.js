@@ -145,6 +145,7 @@ $(function() {
       ev.once('A3', function() { 
         beeSensorsTable.collection = beeSensors 
         beeSensorsTable.render()
+        ev.trigger('B0')
       })
       
       //
@@ -181,7 +182,7 @@ $(function() {
       // 
       
       ev.trigger('A0')
-      ev.trigger('B0')
+      // ev.trigger('B0') // Starts at end of AX
       ev.trigger('C0')
 
     },
