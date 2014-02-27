@@ -25,38 +25,44 @@ log('Beekeeper', 'UI listening on port 8800')
 setTimeout(function() {
   log("TellCouchDbAboutDrives", "starting")
   tellCouchDbAboutDrives(function(err, message) {
-    log("TellCouchDbAboutDrives", message)
+    if (err) log("TellCouchDbAboutDrives", err)
+    if (message) log("TellCouchDbAboutDrives", message)
     setInterval(function() {
       log("TellCouchDbAboutDrives", "starting")
       tellCouchDbAboutDrives(function(err, message) {
-        log("TellCouchDbAboutDrives", message)
+        if (err) log("TellCouchDbAboutDrives", err)
+        if (message) log("TellCouchDbAboutDrives", message)
       })
     }, Settings.tellCouchDbAboutDrivesFrequencyInMinutes*60*1000)
   })
-}, 1000*60*1)
+}, 1000*5*1)
 
 setTimeout(function() {
   log("ProcessRecipes", "starting")
-  processRecipes(function() { 
-    console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
+  processRecipes(function(err, message) { 
+    if (err) log('ProcessRecipes', err)
+    if (message) log('ProcessRecipes', message)
     setInterval(function() {
-      processRecipes(function() { 
-        console.log(moment().format('YYYY-MM-DD HH:MM:SS') + " ProcessRecipes success")
+      processRecipes(function(err, message) { 
+        if(err) log('ProcessRecipes', err)
+        if(message) log('ProcessRecipes', message)
       })
     }, Settings.processRecipesFrequencyInMinutes*60*1000)
   })
-}, 1000*60*2)
+}, 1000*10*2)
 
 setTimeout(function() {
   log("HarvestHoneyJars", "starting")
   harvestHoneyJars(function(err, message) {
-    log("HarvestHoneyJars", message)
+    if (message) log("HarvestHoneyJars", message)
+    if (err) log("HarvestHoneyJars", err)
     setInterval(function() {
       log("HarvestHoneyJars", "starting")
       harvestHoneyJars(function(err, message) {
-        log("HarvestHoneyJars", message)
+        if (message) log("HarvestHoneyJars", message)
+        if (err) log("HarvestHoneyJars", err)
       })
     }, Settings.harvestHoneyJarsFrequencyInMinutes*60*1000)
   })
-}, 1000*60*3)
+}, 1000*20*3)
 

@@ -14,6 +14,8 @@ module.exports = function(callback) {
   // Get Recipe docs
   ev.on('0', function() {
     configDb.view('api', 'Recipes', {include_docs:true}, function(err, res) {
+      if(err) return callback(err)
+      if(res.length == 0) return callback(null, 'No recipes to process')
       res.rows.forEach(function(row) {
         recipes.push(row.doc)
       })
@@ -38,7 +40,7 @@ module.exports = function(callback) {
   })
 
   ev.on('2', function() {
-    callback()
+    callback(null, 'success')
   })
 
   ev.trigger('0')
