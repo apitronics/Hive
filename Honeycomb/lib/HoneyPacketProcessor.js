@@ -26,7 +26,7 @@ module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
     var dataLength = sensorDefinition.get('dataLength')
     var scalar = sensorDefinition.get('scalar')
     var shift = sensorDefinition.get('shift')
-    var timestamp = moment(dateTime, "HH:mm:ss, DD/MM/YY").unix()
+    var timestamp = moment(dateTime.concat(' +0000'), "HH:mm:ss, DD/MM/YY ZZ").unix()
 
     // Data length is in Bytes, convert to the length of characters in a string
 
