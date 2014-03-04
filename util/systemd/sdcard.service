@@ -1,6 +1,6 @@
 [Unit]
 Description=Mount SD Card
-#Before = couchdb.service
+Before=couchdb.service
 
 [Service]
 Type=oneshot
