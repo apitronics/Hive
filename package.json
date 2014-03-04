@@ -18,7 +18,7 @@
     "request-json": "0.4.6",
     "nodemailer": "0.6.0",
     "request": "2.27.0",
-    "commander": "2.1.0",
+    "commander": "2.1.0"
   },
   "devDependencies": {},
   "scripts": {
