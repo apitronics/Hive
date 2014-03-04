@@ -9,5 +9,5 @@ PortJack.get(/^(.+)$/, function(req, res) {
   res.sendfile(Settings.path + '/redirect_port_80_to_beekeeper.html')
 })
 PortJack.listen(80)
-log('Redirect', 'Redirect listening on port 8801')
+log('Redirect', 'Redirect listening on port 80')
 
