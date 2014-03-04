@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "installing packages via pacman"
-pacman -S erlang-nox couchdb avahi nss-mdns python2;
+pacman -S erlang-nox couchdb avahi nss-mdns python2 wget;
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
