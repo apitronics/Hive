@@ -28,6 +28,7 @@ echo "AVAHI SETTINGS NEED TO BE FIXED"
 #"disallow-other-stacks=yes"
 
 echo "enabling avahi and couchdb"
+#give /var/lib/couchdb to couchdb user
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
 systemctl start couchdb.service
