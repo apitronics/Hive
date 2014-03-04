@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Hive</title>
+  <script type='text/javascript'>
+    if(window.location.host == 'hive.local') {
+      // Forward to the node.js http-proxy mounted Beekeeper app
+      window.location = 'http://' + window.location.host + ":8000/beekeeper/index.html"
+    }
+    else {
+      // Forward to the CouchApp
+      window.location = "http://" + window.location.host + ":5984/apps/_design/beekeeper/index.html"
+    }
+  </script>
+</head>
+<body>
+Loading Hive...
+</body>
+</html>
+ 
