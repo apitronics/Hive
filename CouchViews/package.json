@@ -1,9 +1,0 @@
-{
-  "name": "Beekeeper",
-  "description": "",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "couchapp": "0.10.0"
-  }
-}
