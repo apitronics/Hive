@@ -75,7 +75,7 @@
   <script src="app/Views/DrivesTable.js"></script>
   <script src="app/Views/DriveRow.js"></script>
 
-  
+
 </head>
 
 <body>
@@ -84,8 +84,8 @@
 </body>
 
 
-  <!-- 
-    Templates 
+  <!--
+    Templates
   -->
 
 
@@ -115,7 +115,7 @@
     <div class="container body">
       <!-- Content -->
     </div>
-     
+
     <!-- Modal -->
     <div class="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
@@ -147,17 +147,17 @@
    <td> <a href="#bee/<%= _id %>"><%= name %></a> </td>
    <td> <a href="#bee/edit/<%= _id %>">edit</a> </td>
   </script>
- 
+
   <script type="text/template" id="template-BeeSensorsTable">
     <th> <h1>Sensors</h1> </th>
   </script>
 
   <script type="text/template" id="template-BeeRecipesTable">
-    <th> 
+    <th>
       <h1 style='float:left;'>
         Recipes
       </h1>
-      <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'> 
+      <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'>
         <i class='icon-plus-sign'></i> Create a new Recipe
       </a>
     </th>
@@ -165,16 +165,16 @@
 
   <script type="text/template" id="template-SensorRow">
     <td>
-      <a href="#sensor/<%= _id %>"><%= name %></a> 
+      <a href="#sensor/<%= _id %>"><%= name %></a>
     </td>
     <td>
-      <%= reading %> <span class='timestamp'>at <%= timestamp %></span>
+      <%= reading %> <span class='timestamp'><%= timestamp %></span>
     </td>
   </script>
 
   <script type="text/template" id="template-RecipeRow">
     <td>
-      <a href="#recipe/<%= _id %>"><%= label %></a> 
+      <a href="#recipe/<%= _id %>"><%= label %></a>
     </td>
   </script>
 
@@ -188,9 +188,9 @@
       <input type="text" class="datetimepicker start-date" value="<%= startDate %>" /> <-> <input type="text" class="datetimepicker end-date" value="<%= endDate %>" /> <div class="btn generate" style="width:445px; float:left; clear:both; margin:5px auto">generate</div>
     </form>
   </script>
- 
 
-  <!-- 
+
+  <!--
     START THE APP
   -->
 

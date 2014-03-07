@@ -7,15 +7,21 @@ $(function() {
     template : _.template($("#template-SensorRow").html()),
 
     render: function () {
-      var vars = this.model.toJSON()
-      if (this.model.lastSensorReading.get('value')) {
-        vars.reading = this.model.lastSensorReading.get('value')
-        vars.timestamp = moment.unix(this.model.lastSensorReading.get('timestamp')).format('h:mm:ss a')
+      var vars = this.model.toJSON(),
+          reading = this.model.lastSensorReading.get('value'),
+          timestamp = this.model.lastSensorReading.get('timestamp')
+
+      if (reading) {
+        vars.reading = reading
+        timestamp = moment.unix(timestamp)
       }
       else {
-        vars.reading = "..."
-        vars.timestamp = moment().format('h:mm:ss a')
+        vars.reading = '...'
+        timestamp = moment()
       }
+
+      vars.timestamp = timestamp.calendar()
+
       if (!this.model.get('name')) {
         vars.name = this.model.sensorDefinition.get('name')
       }
