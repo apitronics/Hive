@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo forever stopall
+forever stopall
