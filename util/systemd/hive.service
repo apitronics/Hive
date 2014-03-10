@@ -1,0 +1,13 @@
+[Unit]
+Description=Hive Services
+After=couchdb.service openntpd.service systemd-remount-fs.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=15s
+ExecStart=/bin/bash /root/GroundHive/start.sh
+ExecStop=/bin/bash /root/GroundHive/stop.sh
+
+[Install]
+WantedBy=multi-user.target
