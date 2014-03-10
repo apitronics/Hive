@@ -18,14 +18,9 @@ rm /etc/dhcpcd.conf
 ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 rm /var/spool/cron/root 
 ln ./var/spool/cron/root /var/spool/cron/root
-
-echo "AVAHI SETTINGS NEED TO BE FIXED"
-#FIX AVAHI SETTINGS
-#Go edit /etc/avahi/avahi-daemon.conf
-#Find the line:
-#"#disallow-other-stacks=no"
-#and change to
-#"disallow-other-stacks=yes"
+#this might be temporary but avahi currently has problems
+rm /etc/avahi/avahi-daemon.conf
+ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
 
 echo "enabling avahi and couchdb"
 #give file ownnership to couchdb and give it the permission it likes
