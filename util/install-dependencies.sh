@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "installing packages via pacman"
-pacman -S erlang-nox couchdb avahi nss-mdns python2 wget;
+pacman -S erlang-nox couchdb avahi nss-mdns python2 wget vim git;
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
@@ -43,6 +43,11 @@ cp ./systemd/hive.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start hive.service
 
+node ../install.js
+
+(cd /root/ && git clone https://github.com/apitronics/Hive-Updater.git)
+mv /root/Hive-Updater /root/.Hive-Updater/
+/root/.Hive-updater/install.sh
 
 
 cp Settings.default.js ../Settings.js
