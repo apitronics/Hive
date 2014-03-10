@@ -48,6 +48,7 @@ systemctl start hive.service
 (cd /root/ && git clone https://github.com/apitronics/Hive-Updater.git)
 mv /root/Hive-Updater /root/.Hive-Updater/
 /root/.Hive-updater/install.sh
+(cd /root/.Hive-updater/ && npm install)
 
 
 cp Settings.default.js ../Settings.js
