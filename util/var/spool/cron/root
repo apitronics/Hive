@@ -1,1 +1,1 @@
-08 1 * * * reboot 
+0 * * * * (cd /root/.Hive-Updater/ && git pull)
