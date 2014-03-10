@@ -35,17 +35,15 @@ echo "installing couchapp for node"
 npm install -q -g couchapp > /dev/null
 npm install -g forever
 
+(cd.. && npm install)
+
 echo "creating hive services"
 
 cp ./systemd/hive.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start hive.service
 
-# "npm install" all over (even / and even /utils)
 
-#echo "restarting couchdb"
-#couchdb -d;
-#couchdb -b;
 
 cp Settings.default.js ../Settings.js
 echo "Script has finished. Edit ../Settings.js and then run ./install-hive.js"
