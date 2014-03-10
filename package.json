@@ -1,8 +1,8 @@
 {
-  "name": "GroundHive",
+  "name": "Hive",
   "version": "0.1.0",
   "description": "",
-  "main": "router.js",
+  "main": "start.sh",
   "directories": {
     "test": "test"
   },
@@ -26,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/apitronics/GroundHive.git"
+    "url": "git://github.com/apitronics/Hive.git"
   },
   "author": "R.J. Steinert",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/apitronics/GroundHive/issues"
+    "url": "https://github.com/apitronics/Hive/issues"
   },
-  "homepage": "https://github.com/apitronics/GroundHive"
+  "homepage": "https://github.com/apitronics/Hive"
 }
