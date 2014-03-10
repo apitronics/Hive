@@ -44,7 +44,7 @@ systemctl daemon-reload
 systemctl start hive.service
 
 
-
+echo "installing updater"
 (cd /root/ && git clone https://github.com/apitronics/Hive-Updater.git)
 mv /root/Hive-Updater /root/.Hive-Updater/
 /root/.Hive-updater/install.sh
