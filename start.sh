@@ -2,7 +2,6 @@
 
 cd /root/Hive/
 
-
 forever -l router.log -p /var/log/hive/ start Router/server.js  &
 forever -l redirect_port_80_to_beekeeper.log -p /var/log/hive/ start Router/redirect_port_80_to_beekeeper.js &
 forever -l beekeeper.log -p /var/log/hive/ start Beekeeper/server.js &
