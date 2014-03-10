@@ -15,6 +15,7 @@ cmd += 'curl -XPUT ' + server + '/apps; \n'
 cmd += 'couchapp push ./CouchViews/config.js ' + server + '/config; \n'
 cmd += 'couchapp push ./CouchViews/incubator.js ' + server + '/incubator; \n'
 cmd += 'couchapp push ./Beekeeper/couchapp.js ' + server + '/apps; \n'
+cmd += 'npm install forever -g; \n'
 
 sensorDefinitions.rows.forEach(function(sensorDefinition) {
   var sensorDef = sensorDefinition.doc
