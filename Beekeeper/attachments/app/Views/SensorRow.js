@@ -10,7 +10,9 @@ $(function() {
       var vars = this.model.toJSON(),
           reading = this.model.lastSensorReading.get('value'),
           timestamp = this.model.lastSensorReading.get('timestamp')
-
+      
+      vars.units = this.model.sensorDefinition.get('units')
+      
       if (reading) {
         vars.reading = reading
         timestamp = moment.unix(timestamp)
