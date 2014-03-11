@@ -40,10 +40,11 @@ npm install -g forever
 (cd.. && npm install)
 
 echo "creating hive services"
+mkdir /var/log/hive
 node ../install.js
 cp ./systemd/hive.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
-systemctl start hive.service
+systemctl start hive
 
 
 echo "installing updater"
