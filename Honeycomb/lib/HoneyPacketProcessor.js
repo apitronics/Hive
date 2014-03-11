@@ -4,8 +4,6 @@ var Backbone = require('backbone')
 var HiveBackbone = require('../../HiveBackbone/HiveBackbone')
 
 module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
-  console.log("::HONEY PACKET PARSING::")
-  console.log(packet)
   // Track the position in the packet we are reading
   var i = 0
   var models = []

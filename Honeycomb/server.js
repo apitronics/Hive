@@ -35,7 +35,6 @@ server.post('/*', function(req, res){
 
   // Look up the Sensor Docs whose bee property is bee.id
   ev.on('go:1', function() {
-    console.log('go:1')
     sensors.params.beeId = bee.id 
     sensors.on('sync', function() {
       ev.trigger('go:2')

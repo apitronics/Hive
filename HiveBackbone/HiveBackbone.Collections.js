@@ -104,11 +104,11 @@ module.exports = {
         case 'read':
           //console.log(this.params)
           db.view('api', 'UnhatchedEggsByBeeAddress',{"keys":[this.params.beeAddress], include_docs:true}, function(err, body) {
-            //console.log(err)
-            //console.log(body)
-            body.rows.forEach(function(row) {
-              collection.add(row.doc)
-            })
+            if(body.hasOwnProperty('rows')) {
+              body.rows.forEach(function(row) {
+                collection.add(row.doc)
+              })
+            }
             collection.trigger('sync')
           })
           break;
@@ -125,11 +125,11 @@ module.exports = {
         case 'read':
           //console.log(this.params)
           db.view('api', 'SwarmByBeeAddress',{"keys":[this.params.beeAddress], include_docs:true}, function(err, body) {
-            console.log(err)
-            console.log(body)
-            body.rows.forEach(function(row) {
-              collection.add(row.doc)
-            })
+            if(body.hasOwnProperty('rows')) {
+              body.rows.forEach(function(row) {
+                collection.add(row.doc)
+              })
+            }
             collection.trigger('sync')
           })
           break;
@@ -166,11 +166,11 @@ module.exports = {
       var db = nano.use('config')
       switch (method) {
         case 'read':
-          console.log('this.params.beeId:')
-          console.log(this.params.beeId)
+          //console.log('this.params.beeId:')
+          //console.log(this.params.beeId)
           db.view('api', 'SensorsByBeeId',{"include_docs": true, "keys":[this.params.beeId]}, function(err, body) {
-            console.log('body:')
-            console.log(body)
+            //console.log('body:')
+            //console.log(body)
             collection.models = []
             _.each(body.rows, function(row) {
               collection.add(row.doc)
