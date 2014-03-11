@@ -67,6 +67,7 @@
   <script src="app/Views/BeeSensorsTable.js"></script>
   <script src="app/Views/BeeRecipesTable.js"></script>
   <script src="app/Views/SensorRow.js"></script>
+  <script src="app/Views/SensorForm.js"></script>
   <script src="app/Views/RecipeRow.js"></script>
   <script src="app/Views/SensorReadingsGraph.js"></script>
   <link  href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
@@ -166,6 +167,7 @@
   <script type="text/template" id="template-SensorRow">
     <td>
       <a href="#sensor/<%= _id %>"><%= name %></a>
+      <a href="#sensor/edit/<%= beeId %>/<%= _id %>">[edit]</a>
     </td>
     <td>
       <%= reading %> <%= units %> <span class='timestamp'><%= timestamp %></span>

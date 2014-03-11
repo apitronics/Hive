@@ -6,8 +6,8 @@ $(function() {
       'bees' : 'Bees',
       'bee/:beeId' : 'Bee',
       'bee/edit/:beeId' : 'BeeForm',
-      'sensor/:sensorId/:starteDate/:endDate' : 'BeeSensor',
       'sensor/:sensorId' : 'Sensor',
+      'sensor/edit/:beeId/:sensorId' : 'SensorForm',
       'recipe/add/:beeId' : 'RecipeAdd',
       'recipe/:triggerId' : 'Recipe',
       'settings' : 'Settings'
@@ -208,6 +208,36 @@ $(function() {
         form.render()
       }
     },
+
+
+    SensorForm: function(beeId, sensorId) {
+        
+      App.setTitle('')
+      
+      var modelId = sensorId
+      var modelClass = 'Sensor'
+      var formClass = 'SensorForm'
+      redirect = 'bee/' + beeId
+      
+      // Boiler Backbone.js helper code for a Form Route to do CRUD operations on a Model.
+      // https://gist.github.com/rjsteinert/9494916
+      var model = new App.Models[modelClass]()
+      var form = new App.Views[formClass]({model: model})
+      App.$el.children('.body').html(form.el)
+      form.once('Form:done', function() {
+        Backbone.history.navigate(redirect, {trigger: true})
+      })
+      if (modelId) {
+        model.id = modelId
+        model.fetch({success: function() {
+          form.render()  
+        }})
+      }
+      else {
+        form.render()
+      }
+    },
+
 
     Sensor: function(sensorId, startDate, endDate) {
         

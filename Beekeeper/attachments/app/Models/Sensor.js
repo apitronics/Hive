@@ -3,6 +3,10 @@ $(function() {
   App.Models.Sensor = Backbone.Model.extend({
 
     idAttribute: '_id',
+    
+    schema: {
+      'name': 'Text'
+    },
 
     initialize: function() {
       this.sensorDefinition = new App.Models.SensorDefinition()
