@@ -6,8 +6,8 @@ After=couchdb.service openntpd.service systemd-remount-fs.service
 Type=forking
 Restart=always
 RestartSec=15s
-ExecStart=/bin/bash /root/GroundHive/start.sh
-ExecStop=/bin/bash /root/GroundHive/stop.sh
+ExecStart=/bin/bash /root/Hive/start.sh
+ExecStop=/bin/bash /root/Hive/stop.sh
 
 [Install]
 WantedBy=multi-user.target
