@@ -81,7 +81,7 @@ $(function() {
           element: 'graph',
           hoverCallback: function(index, options, content) {
             var point = sensorReadingsGraph.data[index]
-            var $content = point['value'] + '</br>'
+            var $content = point['value'] + ' ' + sensorReadingsGraph.sensor.sensorDefinition.get('units') + '</br>'
             $content += ' at '  + '</br>'
             $content += moment((point['date']/1000).toString(),'X').format('hh:mm:ss')  + '</br>'
             $content += ' on '  + '</br>'
