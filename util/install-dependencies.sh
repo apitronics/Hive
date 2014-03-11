@@ -1,5 +1,6 @@
 #!/bin/bash
 cp /root/Hive/.bash_profile /root/
+cp /root/Hive/.vimrc /root/
 
 echo "installing packages via pacman"
 pacman -S erlang-nox couchdb avahi nss-mdns python2 wget vim git;
