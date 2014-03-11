@@ -1,1 +1,2 @@
 0 * * * * (cd /root/.Hive-Updater/ && git pull)
+5 * * * * python2 /root/Hive/util/compaction.py
