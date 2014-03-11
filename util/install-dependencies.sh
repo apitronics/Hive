@@ -1,5 +1,6 @@
 #!/bin/bash
 cp /root/Hive/.bash_profile /root/
+cp /root/Hive/.vimrc /root/
 
 echo "installing packages via pacman"
 pacman -S erlang-nox couchdb avahi nss-mdns python2 wget vim git;
@@ -40,17 +41,18 @@ npm install -g forever
 (cd.. && npm install)
 
 echo "creating hive services"
-node ../install.js
+mkdir /var/log/hive
+node /root/Hive/install.js
 cp ./systemd/hive.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
-systemctl start hive.service
+systemctl start hive
 
 
 echo "installing updater"
 (cd /root/ && git clone https://github.com/apitronics/Hive-Updater.git)
 mv /root/Hive-Updater /root/.Hive-Updater/
-/root/.Hive-updater/install.sh
-(cd /root/.Hive-updater/ && npm install)
+/root/.Hive-Updater/util/install.sh
+(cd /root/.Hive-Updater/ && npm install)
 
 
 cp Settings.default.js ../Settings.js
