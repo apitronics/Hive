@@ -1,10 +1,14 @@
 #!/bin/bash
+cp /root/Hive/.bash_profile /root/
 
 echo "installing packages via pacman"
 pacman -S erlang-nox couchdb avahi nss-mdns python2 wget vim git;
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
+chown couchdb /var/lib/couchdb/
+chmod 755 /var/lib/couchdb
+
 cp ./systemd/sdcard.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start sdcard.service
@@ -23,9 +27,7 @@ rm /etc/avahi/avahi-daemon.conf
 ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
 
 echo "enabling avahi and couchdb"
-#give file ownnership to couchdb and give it the permission it likes
-chown couchdb /var/lib/couchdb/
-chmod 755 /var/lib/couchdb
+
 
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
@@ -47,7 +49,6 @@ systemctl start hive.service
 echo "installing updater"
 (cd /root/ && git clone https://github.com/apitronics/Hive-Updater.git)
 mv /root/Hive-Updater /root/.Hive-Updater/
-cp /root/.Hive-Updater/util/Settings.default.js /root/.Hive-Updater/Settings.js
 /root/.Hive-updater/install.sh
 (cd /root/.Hive-updater/ && npm install)
 
