@@ -228,13 +228,9 @@ module.exports = {
       }
       switch (method) {
         case 'create':
-          db.insert({d: model.get('d')}, model.get('timestamp'), function(err, body) {
-            body.timestamp = body.id
-            delete body.id
-            body._rev = body.rev
-            delete body.rev
-            body.sensorId = model.get('sensorId')
-            model.set(body)
+          db.insert({_id: (model.get('timestamp')).toString(), d: model.get('d')}, function(err, body) {
+            if(err) return console.log(err)
+            model.set('_rev', body.rev)
             model.trigger('sync')
           })
           break;
