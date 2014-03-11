@@ -41,7 +41,7 @@ npm install -g forever
 
 echo "creating hive services"
 mkdir /var/log/hive
-node ../install.js
+node /root/Hive/install.js
 cp ./systemd/hive.service /etc/systemd/system/multi-user.target.wants/
 systemctl daemon-reload
 systemctl start hive
