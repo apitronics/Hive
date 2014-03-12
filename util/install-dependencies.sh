@@ -27,6 +27,9 @@ ln ./var/spool/cron/root /var/spool/cron/root
 rm /etc/avahi/avahi-daemon.conf
 ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
 
+systemctl enable cronie
+systemctl start cronie
+
 echo "enabling avahi and couchdb"
 
 
