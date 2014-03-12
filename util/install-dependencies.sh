@@ -21,14 +21,15 @@ rm /etc/hostname
 ln ./etc/hostname /etc/hostname
 rm /etc/dhcpcd.conf 
 ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
-rm /var/spool/cron/root 
-ln ./var/spool/cron/root /var/spool/cron/root
+
 #this might be temporary but avahi currently has problems
 rm /etc/avahi/avahi-daemon.conf
 ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
 
 systemctl enable cronie
 systemctl start cronie
+rm /var/spool/cron/root 
+crontab ./var/spool/cron/root #cron doesn't like links
 
 echo "enabling avahi and couchdb"
 
