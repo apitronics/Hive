@@ -1,205 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <title>Hive</title>
-  <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" />
-  <link href="vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen" />
-  <link href="vendor/backbone-forms-bootstrap.css" rel="stylesheet" media="screen" />
-  <link href="vendor/morris.css" rel="stylesheet" media="screen" />
-  <link href="vendor/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.css" rel="stylesheet" media="screen" />
-  <link href="app/app.css" rel="stylesheet" />
+  <head>
+    <meta charset="utf-8">
+    <title>Hive</title>
 
-  <!--
-    DEPENDENCIES
-  -->
+    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen" />
+    <link href="vendor/backbone-forms-bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="vendor/morris.css" rel="stylesheet" media="screen" />
+    <link href="vendor/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.css" rel="stylesheet" media="screen" />
+    <link href="app/app.css" rel="stylesheet" />
+    <link href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
 
-  <script src="vendor/jquery-1.7.2.js"></script>
-  <script src="vendor/underscore-1.4.4.js"></script>
-  <script src="vendor/backbone-1.0.0.js"></script>
-  <script src="vendor/backbone-forms.js"></script>
-  <!--script src="vendor/backbone-forms-bootstrap.js"></script-->
-  <script src="vendor/list.js"></script>
-  <script src="vendor/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
-  <script src="vendor/sha1.js"></script>
-  <script src="vendor/jquery.couch.js"></script>
-  <script src="vendor/backbone.couchdb.js"></script>
-  <script src="vendor/html-encode.js"></script>
-  <script src="vendor/jquery.url.js"></script>
-  <script src="vendor/moment.min.js"></script>
-  <script src="vendor/moment-timezone.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.js"></script>
-  <script src="vendor/raphael-min.js"></script>
-  <script src="vendor/morris.js"></script>
-  <script src="vendor/spin.min.js"></script>
-  <script src="vendor/jquery.spin.js"></script>
-  <script src="vendor/jquery-ui-timepicker-addon.js"></script>
+  </head>
 
-  <!--
-    App
-  -->
+  <body>
 
-  <script src="app/App.js"></script>
-  <script src="app/Router.js"></script>
+    <!--
+      DEPENDENCIES
+    -->
 
-  <script src="app/Models/Bee.js"></script>
-  <script src="app/Models/Reading.js"></script>
-  <script src="app/Models/HourlyReading.js"></script>
-  <script src="app/Models/Sensor.js"></script>
-  <script src="app/Models/SensorDefinition.js"></script>
-  <script src="app/Models/Recipe.js"></script>
-  <script src="app/Models/Settings.js"></script>
-  <script src="app/Models/Drive.js"></script>
+    <script src="vendor/jquery-1.7.2.js"></script>
+    <script src="vendor/underscore-1.4.4.js"></script>
+    <script src="vendor/backbone-1.0.0.js"></script>
+    <script src="vendor/backbone-forms.js"></script>
+    <script src="vendor/list.js"></script>
+    <script src="vendor/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+    <script src="vendor/sha1.js"></script>
+    <script src="vendor/jquery.couch.js"></script>
+    <script src="vendor/backbone.couchdb.js"></script>
+    <script src="vendor/html-encode.js"></script>
+    <script src="vendor/jquery.url.js"></script>
+    <script src="vendor/moment.min.js"></script>
+    <script src="vendor/moment-timezone.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="vendor/raphael-min.js"></script>
+    <script src="vendor/morris.js"></script>
+    <script src="vendor/spin.min.js"></script>
+    <script src="vendor/jquery.spin.js"></script>
+    <script src="vendor/jquery-ui-timepicker-addon.js"></script>
 
-  <script src="app/Collections/Bees.js"></script>
-  <script src="app/Collections/BeeSensors.js"></script>
-  <script src="app/Collections/BeeRecipes.js"></script>
-  <script src="app/Collections/SensorReadings.js"></script>
-  <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
-  <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
-  <script src="app/Collections/Drives.js"></script>
+    <!--
+      App
+    -->
 
-  <script src="app/Views/SettingsForm.js"></script>
-  <script src="app/Views/BeeRow.js"></script>
-  <script src="app/Views/BeeForm.js"></script>
-  <script src="app/Views/BeesTable.js"></script>
-  <script src="app/Views/BeeSensorsTable.js"></script>
-  <script src="app/Views/BeeRecipesTable.js"></script>
-  <script src="app/Views/SensorRow.js"></script>
-  <script src="app/Views/SensorForm.js"></script>
-  <script src="app/Views/RecipeRow.js"></script>
-  <script src="app/Views/SensorReadingsGraph.js"></script>
-  <link  href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
-  <script src="app/Views/SensorJarHourlyAverageReadingsGraph.js"></script>
-  <script src="app/Views/RecipeForm.js"></script>
-  <script src="app/Views/DrivesTable.js"></script>
-  <script src="app/Views/DriveRow.js"></script>
+    <script src="app/App.js"></script>
+    <script src="app/Router.js"></script>
 
+    <script src="app/Models/Bee.js"></script>
+    <script src="app/Models/Drive.js"></script>
+    <script src="app/Models/HourlyReading.js"></script>
+    <script src="app/Models/Reading.js"></script>
+    <script src="app/Models/Recipe.js"></script>
+    <script src="app/Models/Sensor.js"></script>
+    <script src="app/Models/SensorDefinition.js"></script>
+    <script src="app/Models/Settings.js"></script>
 
-</head>
+    <script src="app/Collections/BeeRecipes.js"></script>
+    <script src="app/Collections/BeeSensors.js"></script>
+    <script src="app/Collections/Bees.js"></script>
+    <script src="app/Collections/Drives.js"></script>
+    <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
+    <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
+    <script src="app/Collections/SensorReadings.js"></script>
 
-<body>
+    <script src="app/Views/BeeBreadcrumb.js"></script>
+    <script src="app/Views/BeeForm.js"></script>
+    <script src="app/Views/BeeRecipesTable.js"></script>
+    <script src="app/Views/BeeRow.js"></script>
+    <script src="app/Views/BeeSensorsTable.js"></script>
+    <script src="app/Views/BeesBreadcrumb.js"></script>
+    <script src="app/Views/BeesTable.js"></script>
+    <script src="app/Views/DriveRow.js"></script>
+    <script src="app/Views/DrivesTable.js"></script>
+    <script src="app/Views/RecipeBreadcrumb.js"></script>
+    <script src="app/Views/RecipeForm.js"></script>
+    <script src="app/Views/RecipeRow.js"></script>
+    <script src="app/Views/SensorBreadcrumb.js"></script>
+    <script src="app/Views/SensorForm.js"></script>
+    <script src="app/Views/SensorJarHourlyAverageReadingsGraph.js"></script>
+    <script src="app/Views/SensorReadingsGraph.js"></script>
+    <script src="app/Views/SensorRow.js"></script>
+    <script src="app/Views/SettingsBreadcrumb.js"></script>
+    <script src="app/Views/SettingsForm.js"></script>
 
+    <!--
+      Templates
+    -->
 
-</body>
+    <script type="text/template" id="template-app">
 
-
-  <!--
-    Templates
-  -->
-
-
-  <script type="text/template" id="template-app">
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Your Hive</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="#">Bees</a></li>
-              <li><a href="#settings">Settings</a></li>
-              <li><a href="http://hive.local:124">Update Hive</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">Your Hive</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li><a href="#">Bees</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="http://hive.local:124">Update Hive</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Body -->
-    <div class="container body">
-      <!-- Content -->
-    </div>
+      <div class='container breadcrumb-wrapper'/>
 
-    <!-- Modal -->
-    <div class="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" aria-hidden="true">×</button>
-      </div>
-      <div class='content'>
+      <!-- Body -->
+      <div class="container body">
         <!-- Content -->
       </div>
-    </div>
-  </script>
 
-  <script type="text/template" id="template-DrivesTable">
-    <th> <h2>Drives</h2> </th>
+      <!-- Modal -->
+      <div class="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" aria-hidden="true">×</button>
+        </div>
+        <div class='content'>
+          <!-- Content -->
+        </div>
+      </div>
+    </script>
 
-  </script>
+    <script type="text/template" id="template-DrivesTable">
+      <th> <h2>Drives</h2> </th>
 
-  <script type="text/template" id="template-DriveRow">
-   <td> <%= name %> </td>
-   <td>used: <%= used %> </td>
-   <td>available: <%= available %> </td>
-  </script>
+    </script>
 
-  <script type="text/template" id="template-BeesTable">
-    <th> <h1>Bees</h1> </th>
+    <script type="text/template" id="template-DriveRow">
+     <td> <%= name %> </td>
+     <td>used: <%= used %> </td>
+     <td>available: <%= available %> </td>
+    </script>
 
-  </script>
+    <script type="text/template" id="template-BeesTable">
+      <th> <h1>Bees</h1> </th>
 
-  <script type="text/template" id="template-BeeRow">
-   <td> <a href="#bee/<%= _id %>"><%= name %></a> </td>
-   <td> <a href="#bee/edit/<%= _id %>">edit</a> </td>
-  </script>
+    </script>
 
-  <script type="text/template" id="template-BeeSensorsTable">
-    <th> <h1>Sensors</h1> </th>
-  </script>
+    <script type="text/template" id="template-BeeRow">
+     <td> <a href="#bee/<%= _id %>"><%= name %></a> </td>
+     <td> <a href="#bee/edit/<%= _id %>">edit</a> </td>
+    </script>
 
-  <script type="text/template" id="template-BeeRecipesTable">
-    <th>
-      <h1 style='float:left;'>
-        Recipes
-      </h1>
-      <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'>
-        <i class='icon-plus-sign'></i> Create a new Recipe
-      </a>
-    </th>
-  </script>
+    <script type="text/template" id="template-BeeSensorsTable">
+      <th> <h1>Sensors</h1> </th>
+    </script>
 
-  <script type="text/template" id="template-SensorRow">
-    <td>
-      <a href="#sensor/<%= _id %>"><%= name %></a>
-      <a href="#sensor/edit/<%= beeId %>/<%= _id %>">[edit]</a>
-    </td>
-    <td>
-      <%= reading %> <%= units %> <span class='timestamp'><%= timestamp %></span>
-    </td>
-  </script>
+    <script type="text/template" id="template-BeeRecipesTable">
+      <th>
+        <h1 style='float:left;'>
+          Recipes
+        </h1>
+        <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'>
+          <i class='icon-plus-sign'></i> Create a new Recipe
+        </a>
+      </th>
+    </script>
 
-  <script type="text/template" id="template-RecipeRow">
-    <td>
-      <a href="#recipe/<%= _id %>"><%= label %></a>
-    </td>
-  </script>
+    <script type="text/template" id="template-SensorRow">
+      <td>
+        <a href="#sensor/<%= _id %>"><%= name %></a>
+        <a href="#sensor/edit/<%= beeId %>/<%= _id %>">[edit]</a>
+      </td>
+      <td>
+        <%= reading %> <%= units %> <span class='timestamp'><%= timestamp %></span>
+      </td>
+    </script>
 
-  <script type="text/template" id="template-SensorReadingsGraph">
-    <h1><%= name %></h1>
-    <div class="graph-container">
-      <div class="graph-loading"> </div>
-      <div id="graph"></div>
-    </div>
-    <form class="form-controls" style="width:475px; margin: auto">
-      <input type="text" class="datetimepicker start-date" value="<%= startDate %>" /> <-> <input type="text" class="datetimepicker end-date" value="<%= endDate %>" /> <div class="btn generate" style="width:445px; float:left; clear:both; margin:5px auto">generate</div>
-    </form>
-  </script>
+    <script type="text/template" id="template-RecipeRow">
+      <td>
+        <a href="#recipe/<%= _id %>"><%= label %></a>
+      </td>
+    </script>
+
+    <script type="text/template" id="template-SensorReadingsGraph">
+      <h1><%= name %></h1>
+      <div class="graph-container">
+        <div class="graph-loading"> </div>
+        <div id="graph"></div>
+      </div>
+      <form class="form-controls" style="width:475px; margin: auto">
+        <input type="text" class="datetimepicker start-date" value="<%= startDate %>" /> <-> <input type="text" class="datetimepicker end-date" value="<%= endDate %>" /> <div class="btn generate" style="width:445px; float:left; clear:both; margin:5px auto">generate</div>
+      </form>
+    </script>
 
 
-  <!--
-    START THE APP
-  -->
+    <!--
+      START THE APP
+    -->
 
-  <script>
-    $(document).ready(function() {
-      App.start()
-    })
-  </script>
+    <script>
+      $(document).ready(function() {
+        App.start()
+      })
+    </script>
 
+  </body>
 </html>

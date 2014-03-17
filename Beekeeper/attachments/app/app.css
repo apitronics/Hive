@@ -1,5 +1,5 @@
-.body {
-  margin-top: 40px;
+.breadcrumb-wrapper {
+  margin-top: 60px;
 }
 
 .modal {
@@ -11,13 +11,13 @@
 }
 
 .form {
-  
+
 }
 
 .form ul {
   list-style-type: none;
 }
-  
+
 .form .btn {
   margin: 5px 0px 20px 20px;
 }
@@ -33,7 +33,7 @@
   display: none;
 }
 
-.settings { 
+.settings {
   float: left;
   width: 20%;
 }
@@ -44,7 +44,7 @@ table.drives {
 }
 
 @media (max-width: 979px) {
-    
+
   .navbar-fixed-top {
     margin-bottom: 0px !important;
   }
@@ -52,7 +52,7 @@ table.drives {
   table.drives {
     width: 100%;
   }
-  
+
   .body {
     margin-top: 0px;
   }
