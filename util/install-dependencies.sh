@@ -3,7 +3,7 @@ cp /root/Hive/.bash_profile /root/
 cp /root/Hive/.vimrc /root/
 
 echo "installing packages via pacman"
-apt-get install erlang-nox couchdb avahi nss-mdns python-requests python-serial vim git;
+pacman -S erlang-nox couchdb avahi nss-mdns python2 python-requests python-serial vim git
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
