@@ -115,12 +115,12 @@ module.exports =  Backbone.Model.extend({
   // Reduce this.points given the jar
   processJar: function() {
     var jar = this.jars[this._jarsIndex]
-    // todo - right now our reduce is just one kind. We'll want other kinds of reduce in the future,
+    // @todo - right now our reduce is just one kind. We'll want other kinds of reduce in the future,
     // particularly for sensors that have different kind of data than just temperature.
     //var Reduce = require('./reduce_modules/' +  jar.get('type'))
     var Reduce = require('./HourlyAverageReduce')
     var jarReduce = new Reduce
-    this._jarContents = jarReduce.process(this._points, jar.blockSize)
+    this._jarContents = jarReduce(this._points)
     this.trigger('processJar:done')
   },
 
