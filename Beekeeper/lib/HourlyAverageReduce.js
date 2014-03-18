@@ -28,7 +28,7 @@ module.exports = Backbone.Model.extend({
       blocks[key].forEach(function(value) {
         sum += value
       })
-      blocks[key] = parseInt(sum/blocks[key].length)
+      blocks[key] = (sum/blocks[key].length).toFixed(2)
     })
 
     // Transform into something CouchDB can handle
