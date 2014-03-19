@@ -2,7 +2,17 @@ var _ = require('underscore')
 var Backbone = require('backbone')
 var Settings = require('../Settings')
 var nano = require('nano')(Settings.CouchDB.URL)
+var moment = require('moment')
+
 module.exports = {
+
+  Recipe: Backbone.Model.extend({
+    idAttribute: "_id",
+    setState: function(state) {
+      this.set('state', [moment().utc().unix(), state])
+    },
+    sync: require('./lib/ConfigDbSyncAdapter.js')
+  }),
 
   Swarm: Backbone.Model.extend({
     idAttribute: "_id",
