@@ -1,6 +1,6 @@
 $(function() {
 
-  // To save on memory, don't give this View a collection, it will expect to find 
+  // To save on memory, don't give this View a collection, it will expect to find
   // a collection at App.sensorReadings.
   App.Views.SensorReadingsGraph = Backbone.View.extend({
 
@@ -10,37 +10,48 @@ $(function() {
 
     template: _.template($("#template-SensorReadingsGraph").html()),
 
+    templateHover: _.template($("#template-SensorReadingsGraphHover").html()),
+
     events : {
       'click .generate' : 'newDateTimeSpan'
     },
 
     initialize: function(){
-      
+
     },
 
     prepare: function() {
       // Render the template before preparing the data because that prep may take some time
       var vars = {
-        startDate: moment.unix(this.collection.params.startDate).format('M/D/YYYY HH:mm'),
-        endDate: moment.unix(this.collection.params.endDate).format('M/D/YYYY HH:mm'),
-        name: '' //@todo this.sensor.get('name') 
-      }
-      this.$el.html(this.template(vars))
+            startDate: moment.unix(this.collection.params.startDate).format('M/D/YYYY HH:mm'),
+            endDate: moment.unix(this.collection.params.endDate).format('M/D/YYYY HH:mm'),
+            name: '' //@todo this.sensor.get('name')
+          },
+          $el = this.$el,
+          $graphContainer = $el.children('.graph-container'),
+          $graphLoading = $graphContainer.children('.graph-loading');
 
-      this.$el.children('.form-controls').children('input').datetimepicker()
+      $el.html(this.template(vars));
+
+      $el.find('.form-controls input').datetimepicker();
 
       // Show a spinner until the graph is rendered
-      this.$el.children('.graph-container').children('.graph-loading').hide()
-      this.$el.children('.graph-container').hide()
-      this.$el.children('.graph-container').css('height', '400px')
-      this.$el.children('.graph-container').css('width', '100%')
-      this.$el.children('.graph-container').css('position', 'relative')
-      this.$el.children('.graph-container').slideDown()
-      this.$el.children('.graph-container').children('.graph-loading').hide()
-      this.$el.children('.graph-container').children('.graph-loading').css('position', 'absolute')
-      this.$el.children('.graph-container').children('.graph-loading').css('top', '175px')
-      this.$el.children('.graph-container').children('.graph-loading').css('left', (window.innerWidth/2)-20)
-      this.$el.children('.graph-container').children('.graph-loading').spin({
+      $graphContainer.hide();
+      $graphContainer.css({
+        height: 400,
+        position: 'relative',
+        width: '100%'
+      });
+      $graphContainer.slideDown();
+
+      $graphLoading.hide();
+      $graphLoading.css({
+        left: ((window.innerWidth/2)-20),
+        position: 'absolute',
+        top: 175
+      });
+
+      $graphLoading.spin({
         lines: 12, // The number of lines to draw
         length: 7, // The length of each line
         width: 4, // The line thickness
@@ -49,8 +60,8 @@ $(function() {
         speed: 1, // Rounds per second
         trail: 100, // Afterglow percentage
         shadow: true // Whether to render a shadow
-      })
-      this.$el.children('.graph-container').children('.graph-loading').fadeIn()
+      });
+      $graphLoading.fadeIn();
     },
 
     render: function() {
@@ -67,7 +78,7 @@ $(function() {
         var ts = Math.round((new Date()).getTime() / 1000)
         _.each(sensorReadingsGraph.collection.models, function(reading, i, list) {
           var dataPoint = {
-            date: reading.id*1000, 
+            date: reading.id*1000,
             value: reading.get('d')
           }
           sensorReadingsGraph.data.push(dataPoint)
@@ -80,13 +91,17 @@ $(function() {
         Morris.Line({
           element: 'graph',
           hoverCallback: function(index, options, content) {
-            var point = sensorReadingsGraph.data[index]
-            var $content = point['value'] + ' ' + sensorReadingsGraph.sensor.sensorDefinition.get('units') + '</br>'
-            $content += ' at '  + '</br>'
-            $content += moment((point['date']/1000).toString(),'X').format('hh:mm:ss')  + '</br>'
-            $content += ' on '  + '</br>'
-            $content += moment((point['date']/1000).toString(),'X').format('YYYY-MM-DD')  + '</br>'
-            return $content
+            var point = sensorReadingsGraph.data[index],
+                datetime = moment(point['date']),
+                dataPoint = {
+                  datetime: datetime.format(),
+                  datetimeVal: datetime.format('LLLL'),
+                  unit: sensorReadingsGraph.sensor.sensorDefinition.get('units'),
+                  value: point['value']
+                },
+                $content = sensorReadingsGraph.templateHover(dataPoint);
+
+            return $content;
           },
           data: this.data,
           lineWidth: 0,
