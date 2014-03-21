@@ -3,7 +3,7 @@ cp /root/Hive/.bash_profile /root/
 cp /root/Hive/.vimrc /root/
 
 echo "installing packages via pacman"
-apt-get install couchdb python-requests python-serial vim git
+pacman -S install couchdb python2 python2-requests python2-serial vim git
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
