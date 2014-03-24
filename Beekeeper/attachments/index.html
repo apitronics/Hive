@@ -12,6 +12,7 @@
     <link href="vendor/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.css" rel="stylesheet" media="screen" />
     <link href="app/app.css" rel="stylesheet" />
     <link href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
+    <link href="app/Views/HiveUpdates.css" rel="stylesheet"/>
 
   </head>
 
@@ -106,7 +107,7 @@
               <ul class="nav">
                 <li><a href="#">Bees</a></li>
                 <li><a href="#settings">Settings</a></li>
-                <li><a class='hive-updates' href="http://hive.local:124"></a></li>
+                <li class='hive-updates'></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>
@@ -132,7 +133,7 @@
     </script>
 
     <script type="text/template" id="template-HiveUpdates">
-      <%= info %>
+      <a class='hive-updates-available' href="http://hive.local:124"><%= info %></a>
     </script>
 
     <script type="text/template" id="template-DrivesTable">

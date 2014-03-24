@@ -14,8 +14,11 @@ $(function() {
       var updates = this.model.get('updates')
       if (updates.length > 0) {
         vars.info = 'Update Hive (' + updates.length + ')'
+        this.$el.html(this.template(vars))
       }
-      this.$el.html(this.template(vars))
+      else {
+        this.$el.html()
+      }
     },
 
   })
