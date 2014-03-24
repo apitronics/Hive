@@ -46,7 +46,7 @@ module.exports = function(recipe, callback) {
 
   // Execute if needed
   ev.on('2', function() {
-	  if(lowerBound < recipe.lowerLimit || upperBound > recipe.upperLimit) {
+	  if(lowerBound < parseFloat(recipe.lowerLimit) || upperBound > parseFloat(recipe.upperLimit)) {
 	  	return callback({
 	  		status: "triggered",
 	  		message: 'Your recipe has been triggered. The detected upper bound is ' + upperBound + ' and the lower bound is ' + lowerBound + '.'

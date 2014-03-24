@@ -36,8 +36,8 @@ $(function() {
         options: [] 
       },
       kind: 'Hidden',
-      upperLimit: 'Number',
-      lowerLimit: 'Number',
+      upperLimit: 'Text',
+      lowerLimit: 'Text',
       alertPhoneNumber: 'Text',
       alertPhoneNumberCarrier: {
         type: "Select",
