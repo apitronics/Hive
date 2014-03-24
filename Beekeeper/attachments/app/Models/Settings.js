@@ -20,7 +20,7 @@ $(function() {
 
     schema: {
       'gmailUserName': 'Text',
-      'gmailPassword': 'Text',
+      'gmailPassword': 'Password',
       'gmailEmailAddress': 'Text'
     }    
 
