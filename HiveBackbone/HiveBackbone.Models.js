@@ -11,6 +11,11 @@ module.exports = {
     setState: function(state) {
       this.set('state', [moment().utc().unix(), state])
     },
+    defaults: {
+      kind: "Recipe",
+      state: "on", 
+      lastTriggered: null 
+    },
     sync: require('./lib/ConfigDbSyncAdapter.js')
   }),
 

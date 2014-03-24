@@ -8,6 +8,7 @@ var configDb = nano.use('config')
 module.exports = function(recipe, info, callback) {
 
   configDb.get('Settings', function(err, body) {
+    if (err) return callback(err)
 
     var smtpTransport = nodemailer.createTransport("SMTP",{
       service: "Gmail",
@@ -25,7 +26,7 @@ module.exports = function(recipe, info, callback) {
         text: info.message,
       }, 
       function(err, res) { 
-        callback()
+        return callback(err, res)
       }
     )
 

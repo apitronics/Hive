@@ -26,6 +26,10 @@ $(function() {
 
     schema: {
       label: 'Text',
+      state: {
+        type: 'Select',
+        options: ['on', 'off']
+      },
       beeId: 'Text',
       sensor: { 
         type: 'Select', 

@@ -1,3 +1,13 @@
+/*
+ * Process Recipes.js
+ *
+ * Sequntially runs ProcessRecipe for all Recipes in database where state == 'on'. Right 
+ * now triggers determine what data to process. ie. The UpperAndLowerBounds.js trigger looks
+ * at Settings.processRecipesFrequencyInMinutes and processes all data from now until 
+ * Settings.processRecipesFrequencyInMinutes time ago.
+ *
+ */
+
 var Backbone = require('backbone')
 var _ = require('underscore')
 var Settings = require('../../Settings')
@@ -15,10 +25,10 @@ module.exports = function(callback) {
   ev.on('0', function() {
     configDb.view('api', 'Recipes', {include_docs:true}, function(err, res) {
       if(err) return callback(err)
-      if(res.length == 0) return callback(null, 'No recipes to process')
       res.rows.forEach(function(row) {
-        recipes.push(row.doc)
+        if (row.doc.state == 'on') recipes.push(row.doc)
       })
+      if (recipes.length == 0) return callback(null, 'no recipes to evaluate')
       ev.trigger('1')
     })
   })
@@ -29,7 +39,7 @@ module.exports = function(callback) {
     // Count the recipes as they are done
     var onRecipeDone = function() {
       done++
-      if(done == recipes.length-1) {
+      if(done == recipes.length) {
         // All triggers have been evaluated
         ev.trigger('2')
       }
@@ -40,7 +50,7 @@ module.exports = function(callback) {
   })
 
   ev.on('2', function() {
-    callback(null, 'success')
+    return callback(null, 'success')
   })
 
   ev.trigger('0')

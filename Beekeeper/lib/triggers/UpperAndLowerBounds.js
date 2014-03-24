@@ -6,6 +6,7 @@ module.exports = function(recipe, callback) {
 
   var ev = new Backbone.Model()
 	
+  // @todo Waterline is determined by our guess of when this was last run. This might not be ideal.
   var timeAgo = ((new Date().getTime())/1000) - Settings.processRecipesFrequencyInMinutes*60
   var now = (new Date().getTime())/1000
   var data = []
@@ -46,13 +47,13 @@ module.exports = function(recipe, callback) {
   // Execute if needed
   ev.on('2', function() {
 	  if(lowerBound < recipe.lowerLimit || upperBound > recipe.upperLimit) {
-	  	callback({
+	  	return callback({
 	  		status: "triggered",
 	  		message: 'Your recipe has been triggered. The detected upper bound is ' + upperBound + ' and the lower bound is ' + lowerBound + '.'
 	  	})
 	  }
 	  else {
-	  	callback({"status" : "ok"})
+	  	return callback({"status" : "ok"})
 	  }
 	})
 
