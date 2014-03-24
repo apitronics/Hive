@@ -6,7 +6,6 @@ $(function() {
 
     events: {
       "click #save": "setForm",
-      //"click #delete": "delete",
       "submit form" : "setFormFromEnterKey"
     },
 
@@ -14,8 +13,8 @@ $(function() {
       // create the form
       this.form = new Backbone.Form({ model: this.model })
       this.$el.append(this.form.render().el)
-      // give the form a submit button
-      //var $button = $('<a class="btn" id="save">save</a><a class="btn" id="delete">delete</a>')
+      // disable the Address field, just for show
+      this.$el.find('input[name="address"').prop('disabled', true)
       var $button = $('<a class="btn" id="save">save</a>')
       this.$el.append($button)
     },
@@ -31,9 +30,7 @@ $(function() {
 
     setForm: function() {
       var form = this
-      // Put the form's input into the model in memory
       form.form.commit()
-      // Send the updated model to the server
       form.model.once('sync', function() {
         form.trigger('Form:done')
       })

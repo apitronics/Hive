@@ -25,7 +25,7 @@ $(function() {
 
     schema: {
       'name': 'Text',
-      'address': 'Hidden'
+      'address': 'Text'
     }    
 
   })
