@@ -8,6 +8,8 @@ $(function() {
 
     template: $('#template-BeeSensorsTable').html(),
 
+    templateHeader: $('#template-BeeSensorsTableHeader').html(),
+
     initialize: function(){
     },
 
@@ -22,6 +24,7 @@ $(function() {
     },
 
     render: function() {
+      this.$el.before(_.template(this.templateHeader))
       this.$el.append(_.template(this.template))
       this.addAll()
     }

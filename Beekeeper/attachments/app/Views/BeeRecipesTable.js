@@ -6,6 +6,8 @@ $(function() {
 
     className: "table table-striped",
 
+    templateHeader: $('#template-BeeRecipesTableHeader').html(),
+
     template: $('#template-BeeRecipesTable').html(),
 
     itemView: 'RecipeRow',
@@ -25,6 +27,7 @@ $(function() {
 
     render: function() {
       var vars = {beeId: this.collection.params.beeId}
+      this.$el.before(_.template(this.templateHeader, vars))
       this.$el.append(_.template(this.template, vars))
       this.addAll()
     }

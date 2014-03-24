@@ -140,8 +140,11 @@
      <td>available: <%= available %> </td>
     </script>
 
+    <script type="text/template" id="template-BeesTableHeader">
+      <h1>Bees</h1>
+    </script>
+
     <script type="text/template" id="template-BeesTable">
-      <th> <h1>Bees</h1> </th>
 
     </script>
 
@@ -150,19 +153,38 @@
      <td> <a href="#bee/edit/<%= _id %>">edit</a> </td>
     </script>
 
+    <script type="text/template" id="template-BeeSensorsTableHeader">
+      <h1>
+        Sensors
+      </h1>
+    </script>
+
     <script type="text/template" id="template-BeeSensorsTable">
-      <th> <h1>Sensors</h1> </th>
+      <thead>
+        <tr>
+          <th> label </th>
+          <th> recent reading </th>
+        </tr>
+      </thead>
+    </script>
+
+    <script type="text/template" id="template-BeeRecipesTableHeader">
+      <h1 style='float:left;'>
+        Recipes
+      </h1>
+      <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'>
+        <i class='icon-plus-sign'></i> Create a new Recipe
+      </a>
     </script>
 
     <script type="text/template" id="template-BeeRecipesTable">
-      <th>
-        <h1 style='float:left;'>
-          Recipes
-        </h1>
-        <a style='float: left; margin: 16px;' class='btn' href='#recipe/add/<%= beeId %>'>
-          <i class='icon-plus-sign'></i> Create a new Recipe
-        </a>
-      </th>
+      <thead>
+        <tr>
+          <th> label </th>
+          <th> state </th>
+          <th> last triggered </th>
+        </tr
+      </thead>
     </script>
 
     <script type="text/template" id="template-SensorRow">
@@ -178,6 +200,12 @@
     <script type="text/template" id="template-RecipeRow">
       <td>
         <a href="#recipe/<%= _id %>"><%= label %></a>
+      </td>
+      <td>
+        <%= state %>
+      </td>
+      <td>
+        <%= lastTriggered %>
       </td>
     </script>
 
