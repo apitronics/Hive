@@ -56,6 +56,7 @@
     <script src="app/Models/Sensor.js"></script>
     <script src="app/Models/SensorDefinition.js"></script>
     <script src="app/Models/Settings.js"></script>
+    <script src="app/Models/HiveUpdates.js"></script>
 
     <script src="app/Collections/BeeRecipes.js"></script>
     <script src="app/Collections/BeeSensors.js"></script>
@@ -84,6 +85,7 @@
     <script src="app/Views/SensorRow.js"></script>
     <script src="app/Views/SettingsBreadcrumb.js"></script>
     <script src="app/Views/SettingsForm.js"></script>
+    <script src="app/Views/HiveUpdates.js"></script>
 
     <!--
       Templates
@@ -104,7 +106,7 @@
               <ul class="nav">
                 <li><a href="#">Bees</a></li>
                 <li><a href="#settings">Settings</a></li>
-                <li><a href="http://hive.local:124">Update Hive</a></li>
+                <li><a class='hive-updates' href="http://hive.local:124"></a></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>
@@ -127,6 +129,10 @@
           <!-- Content -->
         </div>
       </div>
+    </script>
+
+    <script type="text/template" id="template-HiveUpdates">
+      <%= info %>
     </script>
 
     <script type="text/template" id="template-DrivesTable">

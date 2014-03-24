@@ -17,6 +17,7 @@ $(function() {
       App.sensorReadingsGraph.collection = new App.Collections.SensorReadings()
       // start the app
       this.$el.html(_.template(this.template))
+      this.monitorUpdates()
       Backbone.history.start({pushState: false})
     },
 
@@ -50,6 +51,16 @@ $(function() {
         $ul.append(lastLi);
         $('.breadcrumb-wrapper').html($ul);
       }
+    },
+
+    monitorUpdates: function() {
+      var hiveUpdatesModel = new App.Models.HiveUpdates()
+      var hiveUpdatesView = new App.Views.HiveUpdates({model: hiveUpdatesModel})
+      App.$el.find('.hive-updates').html(hiveUpdatesView.el)
+      hiveUpdatesModel.fetch()
+      setTimeout(function() {
+        hiveUpdatesModel.fetch()
+      }, 60*1000)
     },
 
     sampleInterval: 5*60,
