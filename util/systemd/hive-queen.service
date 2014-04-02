@@ -1,0 +1,13 @@
+[Unit]
+Description=Beekeeper Launcher
+After=couchdb.service openntpd.service systemd-remount-fs.service
+Requires=couchdb.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10s
+ExecStart=/usr/bin/node /root/Hive/Queen/server.js
+
+[Install]
+WantedBy=multi-user.target

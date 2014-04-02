@@ -1,3 +1,6 @@
 #!/bin/sh
-
-forever stopall
+systemctl stop hive-router.service
+systemctl stop hive-redirect.service
+systemctl stop hive-beekeeper.service
+systemctl stop hive-honeycomb.service
+systemctl stop hive-queen.service

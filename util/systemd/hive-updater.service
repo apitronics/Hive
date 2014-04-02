@@ -1,0 +1,15 @@
+[Unit]
+Description=Hive Updater Launcher
+After=couchdb.service openntpd.service systemd-remount-fs.service
+
+[Service]
+Type=forking
+Restart=always
+RestartSec=15s
+ExecStart=/bin/forever -a -l updater.log -p /var/log/hive/ start /root/.Hive-Updater/server.js
+ExecStop=/bin/forever stop /root/.Hive-Updater/server.js
+
+[Install]
+WantedBy=multi-user.target
+
+
