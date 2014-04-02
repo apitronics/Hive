@@ -1,9 +1,9 @@
 #!/bin/bash
-cp /root/Hive/.bash_profile /root/
-cp /root/Hive/.vimrc /root/
+cp /root/Hive/util/.bash_profile /root/
+cp /root/Hive/util/.vimrc /root/
 
-echo "installing packages via pacman"
-pacman -S erlang-nox couchdb avahi nss-mdns python2 python2-requests python2-serial vim git
+echo "installing packages via apt-get"
+apt-get install couchdb python-requests python-serial vim git
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
@@ -23,8 +23,8 @@ rm /etc/dhcpcd.conf
 ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 
 #this might be temporary but avahi currently has problems
-rm /etc/avahi/avahi-daemon.conf
-ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
+#rm /etc/avahi/avahi-daemon.conf
+#ln ./etc/avahi/avahi-daemon.conf /etc/avahi/
 
 systemctl enable cronie
 systemctl start cronie
@@ -32,8 +32,6 @@ rm /var/spool/cron/root
 crontab ./var/spool/cron/root #cron doesn't like links
 
 echo "enabling avahi and couchdb"
-
-
 systemctl enable avahi-daemon.service
 systemctl enable couchdb.service
 systemctl start couchdb.service
