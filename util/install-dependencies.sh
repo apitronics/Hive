@@ -40,7 +40,7 @@ echo "installing couchapp for node"
 npm install -q -g couchapp > /dev/null
 npm install -g forever
 
-(cd.. && npm install)
+(cd /root/Hive && npm install)
 
 echo "creating hive services"
 mkdir /var/log/hive
