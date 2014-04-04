@@ -2,16 +2,16 @@ var moment = require('moment')
 var _ = require('underscore')
 
 module.exports = function(points) {
- 
-  //  
+
+  //
   // Break up points into blocks
-  // 
+  //
 
   var blocks = {}
   var map = []
 
   // Collect block entries where the key is the hour and the value is an array of integers
-  points.forEach(function(point) {
+  _.each(points, function(point) {
     var hourBlock = moment(point[0], 'X').utc().format('YYYY-MM-DD HH')
     if(!_.has(blocks, hourBlock)) {
       blocks[hourBlock] = []

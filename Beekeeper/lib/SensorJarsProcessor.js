@@ -29,12 +29,12 @@ module.exports =  Backbone.Model.extend({
   //
 
   go: function() {
-    
+
     this._readings = new HiveBackbone.Collections.Readings()
     this._points = []
     this._jarsIndex = 0
     this._jarContents = []
-    
+
     this.on('run:done', function() {
       this.trigger('done')
     }, this)
@@ -47,7 +47,7 @@ module.exports =  Backbone.Model.extend({
 
   // This Collection is what we'll use to get the range of data for sensor defined in public vars
   _readings: new HiveBackbone.Collections.Readings(),
-  // The stripped down set of data from this._readings as [[x, y], ...] 
+  // The stripped down set of data from this._readings as [[x, y], ...]
   _points: [],
   // The index in this.jars of the current Jar being processed
   _jarsIndex: 0,
@@ -66,7 +66,7 @@ module.exports =  Backbone.Model.extend({
     // and on and on...
 
     var processor = this
-    
+
     processor.on('saveJar:done', function() {
       processor._jarsIndex++
       if (processor.jarsIndex < processor.jars.length) {
@@ -90,17 +90,17 @@ module.exports =  Backbone.Model.extend({
 
   },
 
-  // Fetches Reading models into this._readings according to params set 
-  // (startkey, endkey, sensor) and then compiles those Reading models 
+  // Fetches Reading models into this._readings according to params set
+  // (startkey, endkey, sensor) and then compiles those Reading models
   // into this._points to make them easier to do calculations on.
   prepare: function() {
     var processor = this
     // get all data for this sensor from the last time we harvested
     processor._readings.params.startkey = processor.startkey
-    processor._readings.params.endkey = processor.endkey 
+    processor._readings.params.endkey = processor.endkey
     processor._readings.params.sensor = processor.sensor
     processor._readings.on('sync', function() {
-      // transform into [[x, y], ...] 
+      // transform into [[x, y], ...]
       processor._points = []
       processor._readings.each(function(reading) {
         processor._points.push([parseInt(reading.get('_id')), reading.get('d') ])
@@ -119,15 +119,14 @@ module.exports =  Backbone.Model.extend({
     // particularly for sensors that have different kind of data than just temperature.
     //var Reduce = require('./reduce_modules/' +  jar.get('type'))
     var Reduce = require('./HourlyAverageReduce')
-    var jarReduce = new Reduce
-    this._jarContents = jarReduce(this._points)
+    this._jarContents = new Reduce(this._points)
     this.trigger('processJar:done')
   },
 
   saveJar: function() {
     var processor = this
     var jar = this.jars[this._jarsIndex]
-    var dbName = processor.sensor.dbName() + '__reduced__' + jar.get('type') 
+    var dbName = processor.sensor.dbName() + '__reduced__' + jar.get('type')
     // Guarantee the database exists by trying to create it everytime, no one worries if it fails
     nano.db.create(dbName, function(err, body) {
       var db = nano.db.use(dbName)
