@@ -5,10 +5,10 @@ var nano = require('nano')(Settings.CouchDB.URL)
 module.exports = function(recipe, callback) {
 
   var ev = new Backbone.Model()
-	
+
+  var now = parseInt((new Date().getTime())/1000)
   // @todo Waterline is determined by our guess of when this was last run. This might not be ideal.
-  var timeAgo = ((new Date().getTime())/1000) - Settings.processRecipesFrequencyInMinutes*60
-  var now = (new Date().getTime())/1000
+  var timeAgo = now - 10*60
   var data = []
   var lowerBound = null
   var upperBound = null
@@ -26,7 +26,7 @@ module.exports = function(recipe, callback) {
   })
 
   // Find the upper and lower points
-  ev.on('1', function(){  
+  ev.on('1', function(){
     if(data.length > 0) {
       data.forEach(function(point) {
         if(lowerBound == null && upperBound == null) {

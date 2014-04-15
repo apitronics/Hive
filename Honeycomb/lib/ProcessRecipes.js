@@ -1,10 +1,7 @@
 /*
  * Process Recipes.js
  *
- * Sequntially runs ProcessRecipe for all Recipes in database where state == 'on'. Right 
- * now triggers determine what data to process. ie. The UpperAndLowerBounds.js trigger looks
- * at Settings.processRecipesFrequencyInMinutes and processes all data from now until 
- * Settings.processRecipesFrequencyInMinutes time ago.
+ * Sequntially runs ProcessRecipe for all Recipes in database where state == 'on'.
  *
  */
 
@@ -16,8 +13,8 @@ var configDb = nano.use('config')
 var processRecipe = require('./ProcessRecipe.js')
 
 
-module.exports = function(callback) {  
-  
+module.exports = function(callback) {
+
   var ev = new Backbone.Model()
   var recipes = []
 

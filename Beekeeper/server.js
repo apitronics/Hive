@@ -2,7 +2,6 @@ var Settings = require('../Settings')
 var log = require('../util/log.js')
 var express = require('express')
 var tellCouchDbAboutDrives = require('./lib/TellCouchDbAboutDrives.js')
-var processRecipes = require('./lib/ProcessRecipes.js')
 var harvestHoneyJars = require('./lib/HarvestHoneyJars.js')
 
 
@@ -11,8 +10,8 @@ var harvestHoneyJars = require('./lib/HarvestHoneyJars.js')
  */
 
 var ui = express()
-ui.get(/^(.+)$/, function(req, res) { 
-  res.sendfile(Settings.Beekeeper.path + '/attachments/' + req.params[0]) 
+ui.get(/^(.+)$/, function(req, res) {
+  res.sendfile(Settings.Beekeeper.path + '/attachments/' + req.params[0])
 })
 ui.listen(8800)
 log('Beekeeper', 'UI listening on port 8800')
@@ -36,20 +35,6 @@ setTimeout(function() {
     }, Settings.tellCouchDbAboutDrivesFrequencyInMinutes*60*1000)
   })
 }, 1000*5*1)
-
-setTimeout(function() {
-  log("ProcessRecipes", "starting")
-  processRecipes(function(err, message) { 
-    if (err) log('ProcessRecipes', err)
-    if (message) log('ProcessRecipes', message)
-    setInterval(function() {
-      processRecipes(function(err, message) { 
-        if(err) log('ProcessRecipes', err)
-        if(message) log('ProcessRecipes', message)
-      })
-    }, Settings.processRecipesFrequencyInMinutes*60*1000)
-  })
-}, 1000*10*2)
 
 setTimeout(function() {
   log("HarvestHoneyJars", "starting")

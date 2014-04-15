@@ -8,7 +8,7 @@ module.exports = function(recipe, callback) {
 
   // Run the trigger
 	trigger(recipe, function(results) {
-    // See if our trigger got triggered 
+    // See if our trigger got triggered
     if (results.status == "triggered") {
       // @todo recipe should have used Backbone Model class to begin with
       var recipeModel = new HiveBackbone.Models.Recipe(recipe)
