@@ -1,7 +1,7 @@
 $(function() {
 
   App.Views.RecipeForm = Backbone.View.extend({
-    
+
     className: "form",
 
     events: {
@@ -14,6 +14,7 @@ $(function() {
       // create the form
       this.form = new Backbone.Form({ model: this.model })
       this.$el.append(this.form.render().el)
+      $('input[name="beeId"]').attr('disabled', 'disabled')
       // give the form a submit button
       var $button = $('<a class="btn" id="save">save</a><a class="btn" id="delete">delete</a>')
       this.$el.append($button)

@@ -28,8 +28,12 @@ server.post('/*', function(req, res){
   ev.on('go:0', function() {
     bees.params.beeAddress = data.address
     bees.on('sync', function() {
-      bee = bees.models[0]
-      ev.trigger('go:1')
+      bee = bees.models[0];
+      if(!!bee) {
+        ev.trigger('go:1');
+      } else {
+        log('Bee not found for address', data.address);
+      }
     })
     bees.fetch()
   })
@@ -77,7 +81,7 @@ server.post('/*', function(req, res){
 
   // Save readings
   ev.on('go:4', function() {
-    readings.on('sync', function() {
+    readings.once('sync', function() {
       ev.trigger('go:5');
     });
     readings.save();
