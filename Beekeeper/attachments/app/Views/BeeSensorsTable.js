@@ -15,7 +15,7 @@ $(function() {
 
     addOne: function(model){
       var sensorRowView = new App.Views.SensorRow({model: model})
-      sensorRowView.render()  
+      sensorRowView.render()
       this.$el.append(sensorRowView.el)
     },
 

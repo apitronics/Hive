@@ -97,7 +97,7 @@ $(function() {
                   datetime: datetime.format(),
                   datetimeVal: datetime.format('LLLL'),
                   unit: sensorReadingsGraph.sensor.sensorDefinition.get('units'),
-                  value: point['value']
+                  value: +point['value'].toFixed(2)
                 },
                 $content = sensorReadingsGraph.templateHover(dataPoint);
 

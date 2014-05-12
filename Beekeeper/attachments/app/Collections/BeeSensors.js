@@ -1,7 +1,7 @@
 $(function() {
 
   App.Collections.BeeSensors = Backbone.Collection.extend({
-    
+
     initialize: function() {
       this.params = {
         beeId: null
@@ -20,7 +20,7 @@ $(function() {
       return docs
     },
 
-    beeId: null, 
+    beeId: null,
 
     model: App.Models.Sensor,
 
@@ -42,7 +42,7 @@ $(function() {
             loadSensorDefinition()
           }
         })
-        collection.models[i].loadSensorDefinition() 
+        collection.models[i].loadSensorDefinition()
       }
       loadSensorDefinition()
     },
@@ -60,10 +60,10 @@ $(function() {
             loadLastSensorReading()
           }
         })
-        collection.models[i].loadLastSensorReading() 
+        collection.models[i].loadLastSensorReading()
       }
       loadLastSensorReading()
-    } 
+    }
 
 
   })
