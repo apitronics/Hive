@@ -1,6 +1,12 @@
-a.hive-updates-available {
-    color: black;
-    background: yellow;
+.hive-updates-available {
+    background: #DABF10;
+    color: #FFF;
     display: block;
     padding: 10px;
+}
+
+.hive-updates-available:hover {
+    background: #EED216;
+    color: #FFF;
+    text-decoration: none;
 }
