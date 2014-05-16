@@ -9,20 +9,19 @@ $(function() {
     render: function () {
       var vars = this.model.toJSON(),
           reading = this.model.lastSensorReading.get('value'),
-          timestamp = this.model.lastSensorReading.get('timestamp')
+          timestamp = this.model.lastSensorReading.get('timestamp');
 
-      vars.units = this.model.sensorDefinition.get('units')
+      vars.units = this.model.sensorDefinition.get('units');
 
-      if (reading) {
-        vars.reading = +reading.toFixed(2)
-        timestamp = moment.unix(timestamp)
+      if (reading !== null) {
+        vars.reading = +reading.toFixed(2);
+        vars.timestamp = moment.unix(timestamp).calendar();
       }
       else {
-        vars.reading = '...'
-        timestamp = moment()
+        vars.reading = '';
+        vars.timestamp = '';
+        vars.units = '';
       }
-
-      vars.timestamp = timestamp.calendar()
 
       if (!this.model.get('name')) {
         vars.name = this.model.sensorDefinition.get('name')
