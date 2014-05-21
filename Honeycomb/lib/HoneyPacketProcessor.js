@@ -29,7 +29,7 @@ module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
     // Data length is in Bytes, convert to the length of characters in a string
 
     // Parse out our sensor's data string
-    var hex = packet.substr(i, dataLength)
+    var hex = packet.substr(i, dataLength*2)
 
     // The sensor data string is in Hex, convert to a Float
     var data = parseInt(hex, 16) / scalar - shift
