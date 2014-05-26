@@ -7,28 +7,28 @@ $(function() {
     template : _.template($("#template-SensorRow").html()),
 
     render: function () {
-      var vars = this.model.toJSON(),
-          reading = this.model.lastSensorReading.get('value'),
-          timestamp = this.model.lastSensorReading.get('timestamp');
+      var model = this.model,
+          vars = model.toJSON(),
+          lastSensorReading = model.lastSensorReading,
+          reading = lastSensorReading.get('value'),
+          timestamp = lastSensorReading.get('timestamp'),
+          hasSensorDefinition = !!model.sensorDefinition;
 
-      vars.units = this.model.sensorDefinition.get('units');
+      vars.units = hasSensorDefinition ? model.sensorDefinition.get('units') : '';
+      vars.name = hasSensorDefinition ? model.sensorDefinition.get('name') : 'unknown sensor';
 
-      if (reading !== null) {
+      if ((typeof(reading) !== 'undefined') && (reading !== null)) {
         vars.reading = +reading.toFixed(2);
         vars.timestamp = moment.unix(timestamp).calendar();
-      }
-      else {
+      } else {
         vars.reading = '';
         vars.timestamp = '';
         vars.units = '';
       }
 
-      if (!this.model.get('name')) {
-        vars.name = this.model.sensorDefinition.get('name')
-      }
-      this.$el.append(this.template(vars))
+      this.$el.append(this.template(vars));
     }
 
-  })
+  });
 
-})
+});

@@ -62,7 +62,7 @@ module.exports = {
       switch (method) {
         case 'read':
           db.list({"startkey": collection.params.startkey, "endkey": collection.params.endkey, include_docs:true}, function(err, body) {
-            if(body.hasOwnProperty('rows') && body.rows.length > 0) {
+            if(body && body.hasOwnProperty('rows') && body.rows.length > 0) {
               body.rows.forEach(function(row) {
                 collection.add(row.doc)
               })
@@ -104,9 +104,11 @@ module.exports = {
         case 'read':
           //console.log(this.params)
           db.view('api', 'UnhatchedEggsByBeeAddress',{"keys":[this.params.beeAddress], include_docs:true}, function(err, body) {
-            if(body.hasOwnProperty('rows')) {
+            if(body && body.hasOwnProperty('rows')) {
               body.rows.forEach(function(row) {
-                collection.add(row.doc)
+                if(row.doc.hatched === false) {
+                  collection.add(row.doc);
+                }
               })
             }
             collection.trigger('sync')
