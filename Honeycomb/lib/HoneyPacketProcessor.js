@@ -8,7 +8,7 @@ module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
   var i = 0
   var models = []
   // Iterate over the sensors, they are ordered by their `order` property
-  sensors.models.forEach(function(sensor) { 
+  sensors.models.forEach(function(sensor) {
     // Find the related SensorDefinition for this Sensor
     var sensorDefinition = _.find(sensorDefinitions.models, function(sensorDefinition) {
       var sensorDefinitionsVersion = sensorDefinition.get('firmwareUUID')
@@ -21,7 +21,7 @@ module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
       }
     })
 
-    var dataLength = sensorDefinition.get('dataLength')
+    var dataLength = sensorDefinition.get('dataLength') * 2
     var scalar = sensorDefinition.get('scalar')
     var shift = sensorDefinition.get('shift')
     var timestamp = moment(dateTime.concat(' +0000'), "HH:mm:ss, DD/MM/YY ZZ").unix()
@@ -29,7 +29,7 @@ module.exports = function(dateTime, packet, sensors, sensorDefinitions) {
     // Data length is in Bytes, convert to the length of characters in a string
 
     // Parse out our sensor's data string
-    var hex = packet.substr(i, dataLength*2)
+    var hex = packet.substr(i, dataLength)
 
     // The sensor data string is in Hex, convert to a Float
     var data = parseInt(hex, 16) / scalar - shift
