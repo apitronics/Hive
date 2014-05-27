@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>Hive</title>
   <script type='text/javascript'>
-    if(window.location.host == 'hive.local') {
+    if(window.location.host == 'hive.local' || window.location.host == 'dev.apitronics.com') {
       // Forward to the node.js http-proxy mounted Beekeeper app
       window.location = 'http://' + window.location.host + ":8000/beekeeper/index.html"
     }
@@ -19,4 +19,4 @@
 Loading Hive...
 </body>
 </html>
- 
+

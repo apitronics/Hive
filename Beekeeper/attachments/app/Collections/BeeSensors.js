@@ -2,6 +2,8 @@ $(function() {
 
   App.Collections.BeeSensors = Backbone.Collection.extend({
 
+    comparator: 'order',
+
     initialize: function() {
       this.params = {
         beeId: null
@@ -23,11 +25,6 @@ $(function() {
     beeId: null,
 
     model: App.Models.Sensor,
-
-    comparator: function(model) {
-      var name = model.get('name')
-      if (name) return name.toLowerCase()
-    },
 
     loadSensorDefinitions: function() {
       var collection = this

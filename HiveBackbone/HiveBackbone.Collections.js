@@ -161,6 +161,7 @@ module.exports = {
 
   SensorsByBeeId: Backbone.Collection.extend({
     model: HiveBackbone.Models.Sensor,
+    comparator: 'order',
     params: {
       beeId: null
     },
