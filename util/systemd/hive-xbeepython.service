@@ -1,0 +1,13 @@
+[Unit]
+Description=XbeePython Launcher
+After=couchdb.service openntpd.service systemd-remount-fs.service
+Requires=hive-honeycomb.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10s
+ExecStart=/usr/bin/python /root/Hive/XbeePython/worker.py
+
+[Install]
+WantedBy=multi-user.target

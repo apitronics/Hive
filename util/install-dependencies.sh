@@ -3,7 +3,8 @@ cp /root/Hive/util/.bash_profile /root/
 cp /root/Hive/util/.vimrc /root/
 
 echo "installing packages via apt-get"
-apt-get install couchdb python-requests python-serial vim git
+apt-get install couchdb python-requests vim git
+echo "needs to manually install python-serial"
 
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
