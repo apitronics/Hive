@@ -139,6 +139,23 @@ module.exports = {
     }
   }),
 
+  Bees: Backbone.Collection.extend({
+    model: HiveBackbone.Models.Bee,
+    sync: function (method, collection, options) {
+      var db = nano.use('config');
+      switch (method) {
+        case 'read':
+          db.view('api', 'Bees',{"include_docs": true}, function(err, body) {
+            body.rows.forEach(function(row) {
+              collection.add(row.doc);
+            });
+            collection.trigger('sync');
+          });
+          break;
+      }
+    }
+  }),
+
   BeesByAddress: Backbone.Collection.extend({
     model: HiveBackbone.Models.Bee,
     params: {

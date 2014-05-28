@@ -40,32 +40,44 @@ server.post('/egg/hatch', function(req, res){
       beeAddress = req.body.beeAddress,
       bee = new HiveBackbone.Models.Bee(),
       bees = new HiveBackbone.Collections.BeesByAddress(),
+      allBees = new HiveBackbone.Collections.Bees(),
       egg = new HiveBackbone.Models.Egg(),
       sensors = new HiveBackbone.Collections.Sensors(),
-      unhatchedEggsByBeeAddress = new HiveBackbone.Collections.UnhatchedEggsByBeeAddress();
+      unhatchedEggsByBeeAddress = new HiveBackbone.Collections.UnhatchedEggsByBeeAddress(),
+      beeCount = 1;
 
   // Find the unhatched Egg by beeAddress
   ev.on('0', function() {
     unhatchedEggsByBeeAddress.params.beeAddress = beeAddress;
     unhatchedEggsByBeeAddress.once('sync', function() {
       egg = unhatchedEggsByBeeAddress.models[0];
-      if(!!egg) ev.trigger('1');
+      if(!!egg) ev.trigger('1a');
     });
     unhatchedEggsByBeeAddress.fetch();
   });
 
+  // Get total bees
+  ev.on('1a', function() {
+    allBees.once('sync', function() {
+      beeCount = allBees.length + 1;
+      ev.trigger('1b');
+    });
+
+    allBees.fetch();
+  });
+
   // Create the Bee in the config database
-  ev.on('1', function() {
+  ev.on('1b', function() {
     bees.params.beeAddress = beeAddress;
 
-    bees.on('sync', function() {
+    bees.once('sync', function() {
       bee = bees.models[0];
       if(!!bee) {
         ev.trigger('2');
       } else {
         bee = new HiveBackbone.Models.Bee({
           address: beeAddress,
-          name: "New Bee #" + (new Date()).getTime()
+          name: "New Bee #" + beeCount
         });
         bee.on('sync', function() {
           ev.trigger('2');
