@@ -12,10 +12,12 @@ $(function() {
           lastSensorReading = model.lastSensorReading,
           reading = lastSensorReading.get('value'),
           timestamp = lastSensorReading.get('timestamp'),
-          hasSensorDefinition = !!model.sensorDefinition;
+          hasSensorDefinition = !!model.sensorDefinition,
+          name = model.get('name'),
+          sensorDefName = (hasSensorDefinition ? model.sensorDefinition.get('name') : 'unknown sensor');
 
       vars.units = hasSensorDefinition ? model.sensorDefinition.get('units') : '';
-      vars.name = hasSensorDefinition ? model.sensorDefinition.get('name') : 'unknown sensor';
+      vars.name = name || sensorDefName;
 
       if ((typeof(reading) !== 'undefined') && (reading !== null)) {
         vars.reading = +reading.toFixed(2);

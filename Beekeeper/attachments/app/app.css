@@ -43,6 +43,14 @@ table.drives {
   width: 70%;
 }
 
+.bee-sensors {
+  table-layout: fixed;
+}
+
+.bee-sensors td:last-child {
+  text-align: center;
+}
+
 @media (max-width: 979px) {
 
   .navbar-fixed-top {

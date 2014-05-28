@@ -121,13 +121,15 @@ $(function() {
       ev.once('A0', function() {
         beeSensors.params.beeId = beeId
         beeSensors.fetch({success: function(collection, response, options){
+          ev.trigger('A3')
           ev.trigger('A1')
+          ev.trigger('A2')
         }})
       })
 
       ev.once('A1', function() {
         beeSensors.once('loadSensorDefinitions:done', function() {
-          ev.trigger('A2')
+          ev.trigger('A3')
         })
         beeSensors.loadSensorDefinitions()
       })
@@ -140,10 +142,9 @@ $(function() {
       })
 
       // Render the beeSensorsTable
-      ev.once('A3', function() {
+      ev.on('A3', function() {
         beeSensorsTable.collection = beeSensors
         beeSensorsTable.render()
-        ev.trigger('B0')
       })
 
       //
@@ -180,7 +181,7 @@ $(function() {
       //
 
       ev.trigger('A0')
-      // ev.trigger('B0') // Starts at end of AX
+      ev.trigger('B0')
       ev.trigger('C0')
 
     },

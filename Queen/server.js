@@ -43,6 +43,7 @@ server.post('/egg/hatch', function(req, res){
       allBees = new HiveBackbone.Collections.Bees(),
       egg = new HiveBackbone.Models.Egg(),
       sensors = new HiveBackbone.Collections.Sensors(),
+      sensorDefinitions = new HiveBackbone.Collections.SensorDefinitions(),
       unhatchedEggsByBeeAddress = new HiveBackbone.Collections.UnhatchedEggsByBeeAddress(),
       beeCount = 1;
 
@@ -89,19 +90,40 @@ server.post('/egg/hatch', function(req, res){
     bees.fetch();
   });
 
-  // Produce Sensor docs from Egg
+  // Get Sensor Definitions
   ev.on('2', function() {
-    var existingSensors = new HiveBackbone.Collections.SensorsByBeeId();
+    sensorDefinitions.on('sync', function(){
+      sensorDefinitions = _.object(_.map(sensorDefinitions.models, function(sensorDefinition){
+          var sensorDefinitionVersion = sensorDefinition.get('firmwareUUID'),
+              sensorName = sensorDefinition.get('name');
+          sensorDefinitionVersion = parseInt(sensorDefinitionVersion, 16);
+          return [sensorDefinitionVersion, sensorName];
+        }
+      ));
+      ev.trigger('2b');
+    });
+
+    sensorDefinitions.fetch();
+  });
+
+  // Produce Sensor docs from Egg
+  ev.on('2b', function() {
+    var existingSensors = new HiveBackbone.Collections.SensorsByBeeId(),
+      eggSensorUUIDs = egg.get('sensors');
+
     existingSensors.params.beeId = bee.id;
+
     existingSensors.on('sync', function(){
-      egg.attributes.sensors.forEach(function(sensorUUID, i) {
-        var sensor = new HiveBackbone.Models.Sensor({
+      eggSensorUUIDs.forEach(function(sensorUUID, i) {
+        var sensorVersion = parseInt(sensorUUID, 16),
+            sensor = new HiveBackbone.Models.Sensor({
               "order": i,
               "beeId": bee.id,
+              "name": sensorDefinitions[sensorVersion],
               "sensorDefinitionFirmwareUUID": sensorUUID
             }),
             existingSensor = _.filter(existingSensors.models, function(sensor){
-                return sensor.attributes.sensorDefinitionFirmwareUUID == sensorUUID && sensor.attributes.order == i;
+                return sensor.get('sensorDefinitionFirmwareUUID') == sensorUUID && sensor.get('order') == i;
               }
             ),
             shouldAddSensor = !existingSensor.length;
