@@ -4,7 +4,7 @@ import json
 from Xbee import *
 
 # manually input address to make testing faster
-Coordinator = Xbee('/dev/ttyO3')
+Coordinator = Xbee('/dev/ttyO4')
 
 import time
 import datetime
