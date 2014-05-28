@@ -1,7 +1,7 @@
 $(function() {
 
   App.Views.BeeForm = Backbone.View.extend({
-    
+
     className: "form",
 
     events: {
@@ -13,8 +13,6 @@ $(function() {
       // create the form
       this.form = new Backbone.Form({ model: this.model })
       this.$el.append(this.form.render().el)
-      // disable the Address field, just for show
-      this.$el.find('input[name="address"').prop('disabled', true)
       var $button = $('<a class="btn" id="save">save</a>')
       this.$el.append($button)
     },

@@ -15,7 +15,7 @@ $(function() {
         url = '/config/' + this.id + "?rev=" + this.get('_rev')
       }
       else if (_.has(this, 'id') ) {
-        url = '/config/' + this.id 
+        url = '/config/' + this.id
       }
       else {
         url = '/config'
@@ -24,9 +24,9 @@ $(function() {
     },
 
     schema: {
-      'name': 'Text',
-      'address': 'Text'
-    }    
+      name: 'Text',
+      address: { type: 'Text', editorAttrs: { disabled: true } }
+    }
 
   })
 
