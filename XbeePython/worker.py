@@ -16,7 +16,17 @@ headers= {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 while True:
 	if len(Coordinator.ids)>0:
-		tmp = Coordinator.ids.pop(0)	
+		tmp = Coordinator.ids.pop(0)
+		
+		#turn the address from hex string to array of bytes
+		address = tmp['origin']
+		addressBytes = []
+		for i in range(0,len(address)/2):
+			addressBytes+=[ int(address[i*2:i*2+2],16) ]
+		#teach end device who we coordinator is
+		Coordinator.sendData(addressBytes,[0],0)
+
+		
 		data=[]
 		for index in range(0,len(tmp['data'])/2):
 			#cur="\""
