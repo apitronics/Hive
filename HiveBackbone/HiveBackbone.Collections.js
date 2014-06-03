@@ -202,16 +202,16 @@ module.exports = {
     }
   }),
 
-  SensorDefinitionsByFirmwareUUID: Backbone.Collection.extend({
+  SensorDefinitionsByFirmwareUUIDInteger: Backbone.Collection.extend({
     model: HiveBackbone.Models.Sensor,
     params: {
-      sensorDefinitionFirmwareUUIDs: []
+      sensorDefinitionFirmwareUUIDIntegers: []
     },
     sync: function (method, collection, options) {
       var db = nano.use('config')
       switch (method) {
         case 'read':
-          db.view('api', 'SensorDefinitionsByFirmwareUUIDs',{"include_docs": true, "keys":this.params.sensorDefinitionFirmwareUUIDs}, function(err, body) {
+          db.view('api', 'SensorDefinitionsByFirmwareUUIDInteger',{"include_docs": true, "keys":this.params.sensorDefinitionFirmwareUUIDIntegers}, function(err, body) {
             collection.models = []
             _.each(body.rows, function(row) {
               collection.add(row.doc)

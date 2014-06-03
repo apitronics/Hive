@@ -25,7 +25,9 @@ $(function() {
 
     schema: {
       name: 'Text',
-      address: { type: 'Text', editorAttrs: { disabled: true } }
+      address: { type: 'Text', editorAttrs: { disabled: true } },
+      wundergroundId: 'Text',
+      wundergroundPassword: 'Password'
     }
 
   })

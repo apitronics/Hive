@@ -13,8 +13,8 @@ module.exports = {
     },
     defaults: {
       kind: "Recipe",
-      state: "on", 
-      lastTriggered: null 
+      state: "on",
+      lastTriggered: null
     },
     sync: require('./lib/ConfigDbSyncAdapter.js')
   }),
@@ -61,7 +61,7 @@ module.exports = {
             model.set(body)
             model.trigger('sync')
           })
-          break; 
+          break;
         case 'delete':
           db.destroy(model.id, model.get('_rev'), function(err, body) {
             model.trigger('sync')
@@ -105,7 +105,7 @@ module.exports = {
             model.set(body)
             model.trigger('sync')
           })
-          break; 
+          break;
         case 'delete':
           db.destroy(model.id, model.get('_rev'), function(err, body) {
             model.trigger('sync')
@@ -156,7 +156,7 @@ module.exports = {
             model.set(body)
             model.trigger('sync')
           })
-          break; 
+          break;
         case 'delete':
           db.destroy(model.id, model.get('_rev'), function(err, body) {
             model.trigger('sync')
@@ -210,7 +210,7 @@ module.exports = {
             model.set(body)
             model.trigger('sync')
           })
-          break; 
+          break;
         case 'delete':
           db.destroy(model.id, model.get('_rev'), function(err, body) {
             model.trigger('sync')
