@@ -27,4 +27,11 @@ The `./status.sh` command will show you all the processes running. Then install 
 - Honeycomb (port 126) : Where Bees send Honey packets for parsing and storing.
 - Beekeeper (port 8800, 80, and 8000) : The Web UI for human users where they can view and manipulate the the GroundHive. Port 80 forwards to 8000 where 8800 (Beekeeper's Web UI) and 5984 (CouchDB) are routed together so that browsers can access them all without running into the Cross Origin Request limitation in Web Browsers. If the client device does not have mDNS support, port 80 forwards the client to the `:5984/apps/_design/beekeeper/index.html`, the CouchApp version of the Beekeeper app.
 
+# Resetting a Hive to Ground 0
+```
+systemctl stop couchdb.service
+rm /var/lib/couchdb/*
+systemctl start couchdb.service
+/root/Hive/install.js
+```
 
