@@ -30,7 +30,7 @@ The `./status.sh` command will show you all the processes running. Then install 
 # Clearing out user data from Hive
 ```
 systemctl stop couchdb.service
-rm /var/lib/couchdb/*
+rm -rf /var/lib/couchdb/
 systemctl start couchdb.service
 /root/Hive/install.js
 ```
