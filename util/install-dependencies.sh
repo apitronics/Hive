@@ -6,6 +6,11 @@ echo "installing packages via apt-get"
 apt-get install couchdb python-requests vim git
 echo "needs to manually install python-serial"
 
+echo "installing packages via setuptools"
+wget https://bootstrap.pypa.io/ez_setup.py -O - | python
+easy_install --upgrade pytz
+easy_install --upgrade six
+
 echo "creating a place for hive data on the sd card"
 mkdir /var/lib/couchdb
 chown couchdb /var/lib/couchdb/
@@ -20,7 +25,7 @@ rm /etc/couchdb/local.ini
 cp ./etc/couchdb/local.ini /etc/couchdb/
 rm /etc/hostname
 ln ./etc/hostname /etc/hostname
-rm /etc/dhcpcd.conf 
+rm /etc/dhcpcd.conf
 ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 
 #this might be temporary but avahi currently has problems
@@ -29,7 +34,7 @@ ln ./etc/dhcpcd.conf /etc/dhcpcd.conf
 
 systemctl enable cronie
 systemctl start cronie
-rm /var/spool/cron/root 
+rm /var/spool/cron/root
 crontab ./var/spool/cron/root #cron doesn't like links
 
 echo "enabling avahi and couchdb"

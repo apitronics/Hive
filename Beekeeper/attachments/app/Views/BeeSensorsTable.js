@@ -22,6 +22,8 @@ $(function() {
     render: function() {
       this.$el.html(_.template(this.template));
       this.addAll();
+      $('.edit-bee').attr('href', '#bee/edit/' + this.beeId);
+      $('.download-csv').attr('href', 'http://' + location.hostname + ':8800/download?beeId=' + this.beeId);
     }
 
   });

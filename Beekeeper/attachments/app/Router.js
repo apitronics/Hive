@@ -143,6 +143,7 @@ $(function() {
 
       // Render the beeSensorsTable
       ev.on('A3', function() {
+        beeSensorsTable.beeId = beeId
         beeSensorsTable.collection = beeSensors
         beeSensorsTable.render()
       })
