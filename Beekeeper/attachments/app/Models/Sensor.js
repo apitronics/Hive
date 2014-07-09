@@ -3,9 +3,19 @@ $(function() {
   App.Models.Sensor = Backbone.Model.extend({
 
     idAttribute: '_id',
-    
+
     schema: {
       'name': 'Text'
+    },
+
+    save: function (key, val, options) {
+     this.beforeSave(key, val, options);
+     return Backbone.Model.prototype.save.call(this, key, val, options);
+    },
+
+    beforeSave: function (key, val, options) {
+      var timestamp = Math.round(new Date().getTime() / 1000);
+      this.set({updatedAt: timestamp});
     },
 
     initialize: function() {
@@ -19,7 +29,7 @@ $(function() {
         url = '/config/' + this.id + "?rev=" + this.get('_rev')
       }
       else if (_.has(this, 'id') ) {
-        url = '/config/' + this.id 
+        url = '/config/' + this.id
       }
       else {
         url = '/config'
@@ -52,6 +62,6 @@ $(function() {
       sensorReadings.fetch()
     }
 
-  }) 
+  })
 
 })

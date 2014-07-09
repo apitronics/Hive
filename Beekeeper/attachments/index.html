@@ -13,6 +13,7 @@
     <link href="app/app.css" rel="stylesheet" />
     <link href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
     <link href="app/Views/HiveUpdates.css" rel="stylesheet"/>
+    <link href="app/Views/Settings.css" rel="stylesheet" />
     <link href="images/favicon.png" rel="icon" type="image/png" />
 
   </head>
@@ -27,6 +28,7 @@
     <script src="vendor/underscore-1.4.4.js"></script>
     <script src="vendor/backbone-1.0.0.js"></script>
     <script src="vendor/backbone-forms.js"></script>
+    <script src="vendor/backbone-forms-bootstrap.js"></script>
     <script src="vendor/list.js"></script>
     <script src="vendor/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
     <script src="vendor/sha1.js"></script>
@@ -51,6 +53,7 @@
     <script src="app/Router.js"></script>
 
     <script src="app/Models/Bee.js"></script>
+    <script src="app/Models/CloudRow.js"></script>
     <script src="app/Models/Drive.js"></script>
     <script src="app/Models/HourlyReading.js"></script>
     <script src="app/Models/Reading.js"></script>
@@ -63,6 +66,7 @@
     <script src="app/Collections/BeeRecipes.js"></script>
     <script src="app/Collections/BeeSensors.js"></script>
     <script src="app/Collections/Bees.js"></script>
+    <script src="app/Collections/CloudRows.js"></script>
     <script src="app/Collections/Drives.js"></script>
     <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
     <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
@@ -75,6 +79,8 @@
     <script src="app/Views/BeeSensorsTable.js"></script>
     <script src="app/Views/BeesBreadcrumb.js"></script>
     <script src="app/Views/BeesTable.js"></script>
+    <script src="app/Views/CloudRow.js"></script>
+    <script src="app/Views/CloudTable.js"></script>
     <script src="app/Views/DriveRow.js"></script>
     <script src="app/Views/DrivesTable.js"></script>
     <script src="app/Views/RecipeBreadcrumb.js"></script>
@@ -137,9 +143,21 @@
       <a class='hive-updates-available' href="http://hive.local:124"><%= info %></a>
     </script>
 
-    <script type="text/template" id="template-DrivesTable">
-      <th> <h2>Drives</h2> </th>
+    <script type="text/template" id="template-CloudTable">
+      <th>
+        <h2>Cloud</h2>
+      </th>
+    </script>
 
+    <script type="text/template" id="template-CloudRow">
+     <td><%= key %></td>
+     <td><%= value %> </td>
+    </script>
+
+    <script type="text/template" id="template-DrivesTable">
+      <th>
+        <h2>Drives</h2>
+      </th>
     </script>
 
     <script type="text/template" id="template-DriveRow">

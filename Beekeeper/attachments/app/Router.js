@@ -16,47 +16,53 @@ $(function() {
 
     Settings: function() {
 
-      var ev = new Backbone.Model()
-
-      var settings = new App.Models.Settings()
-      var settingsForm = new App.Views.SettingsForm()
-      var settingsBreadcrumb = new App.Views.SettingsBreadcrumb()
-
-      var drives = new App.Collections.Drives()
-      var drivesTable = new App.Views.DrivesTable()
+      var ev = new Backbone.Model(),
+          settings = new App.Models.Settings(),
+          settingsForm = new App.Views.SettingsForm(),
+          settingsBreadcrumb = new App.Views.SettingsBreadcrumb();
+          drives = new App.Collections.Drives(),
+          drivesTable = new App.Views.DrivesTable(),
+          cloudRows = new App.Collections.CloudRows(),
+          cloudTable = new App.Views.CloudTable();
 
       settingsForm.once('done', function() {
-        Backbone.history.navigate('', {trigger: true})
-      })
+        Backbone.history.navigate('', {trigger: true});
+      });
 
-      App.clear()
-      App.append(settingsForm.el)
-      App.append(drivesTable.el)
+      App.clear();
+
+      App.append(settingsForm.el);
+      App.append(drivesTable.el);
+      App.append(cloudTable.el);
 
       ev.once('A0', function() {
         settings.fetch({success: function() {
-          ev.trigger('A1')
-        }})
-      })
+          ev.trigger('A1');
+        }});
+      });
 
       ev.once('A1', function() {
-        settingsForm.model = settings
-        settingsForm.render()
-      })
+        settingsForm.model = settings;
+        settingsForm.render();
+
+        if(settings.toJSON().saveToCloud){
+          cloudRows.fetch({success: function(){
+            cloudTable.collection = cloudRows;
+            cloudTable.render();
+          }});
+        }
+      });
 
       ev.once('B0', function() {
-        drives.on('sync', function() {
-            ev.trigger('B1')
-        })
         drives.fetch({success: function() {
-          ev.trigger('B1')
-        }})
-      })
+          ev.trigger('B1');
+        }});
+      });
 
       ev.once('B1', function () {
-        drivesTable.collection = drives
-        drivesTable.render()
-      })
+        drivesTable.collection = drives;
+        drivesTable.render();
+      });
 
       ev.trigger('A0')
       ev.trigger('B0')

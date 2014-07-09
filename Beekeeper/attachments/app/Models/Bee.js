@@ -8,6 +8,16 @@ $(function() {
     // couch database to use in url generating
     db: 'config',
 
+    save: function (key, val, options) {
+     this.beforeSave(key, val, options);
+     return Backbone.Model.prototype.save.call(this, key, val, options);
+    },
+
+    beforeSave: function (key, val, options) {
+      var timestamp = Math.round(new Date().getTime() / 1000);
+      this.set({updatedAt: timestamp});
+    },
+
     // An override for compatibility with CouchDB
     url: function() {
       var url

@@ -1,3 +1,4 @@
 0 * * * * (cd /root/.Hive-Updater/ && git pull)
 5 * * * * python2 /root/Hive/util/compaction.py
 */10 * * * * node /root/Hive/Wunderground/sync.js
+*/10 * * * * node /root/Hive/CloudSync/sync.js

@@ -141,12 +141,14 @@ module.exports = {
 
   Bees: Backbone.Collection.extend({
     model: HiveBackbone.Models.Bee,
+    params: {},
     sync: function (method, collection, options) {
       var db = nano.use('config');
       switch (method) {
         case 'read':
           db.view('api', 'Bees',{"include_docs": true}, function(err, body) {
-            body.rows.forEach(function(row) {
+            collection.models = [];
+            _.each(body.rows, function(row) {
               collection.add(row.doc);
             });
             collection.trigger('sync');
@@ -203,6 +205,7 @@ module.exports = {
   }),
 
   SensorDefinitionsByFirmwareUUIDInteger: Backbone.Collection.extend({
+    // FIXME
     model: HiveBackbone.Models.Sensor,
     params: {
       sensorDefinitionFirmwareUUIDIntegers: []
@@ -224,6 +227,7 @@ module.exports = {
   }),
 
   SensorDefinitions: Backbone.Collection.extend({
+    // FIXME
     model: HiveBackbone.Models.Sensor,
     params: {
     },
@@ -238,6 +242,25 @@ module.exports = {
             })
             collection.trigger('sync')
           })
+          break;
+      }
+    }
+  }),
+
+  Recipes: Backbone.Collection.extend({
+    model: HiveBackbone.Models.Recipe,
+    params: {},
+    sync: function (method, collection, options) {
+      var db = nano.use('config');
+      switch (method) {
+        case 'read':
+          db.view('api', 'Recipes', {"include_docs": true}, function(err, body) {
+            collection.models = [];
+            _.each(body.rows, function(row) {
+              collection.add(row.doc);
+            });
+            collection.trigger('sync');
+          });
           break;
       }
     }

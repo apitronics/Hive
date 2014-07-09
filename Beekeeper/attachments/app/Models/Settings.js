@@ -21,8 +21,11 @@ $(function() {
     schema: {
       'gmailUserName': 'Text',
       'gmailPassword': 'Password',
-      'gmailEmailAddress': 'Text'
-    }    
+      'gmailEmailAddress': 'Text',
+      'cloudUserName': 'Text',
+      'cloudPassword': 'Password',
+      'saveToCloud': 'Checkbox'
+    }
 
   })
 

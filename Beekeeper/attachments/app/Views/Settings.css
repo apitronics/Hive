@@ -1,0 +1,28 @@
+.settings {
+  float: left;
+  width: 20%;
+}
+.drives, .cloud {
+  float: right;
+  width: 70%;
+}
+.settings .help-inline {
+  display: none;
+}
+.field-saveToCloud label, .field-saveToCloud .controls {
+  float: right;
+  margin: 0 5px;
+}
+.field-saveToCloud .controls {
+  position: relative;
+  top: -3px;
+}
+.settings form {
+  margin: 0;
+}
+.settings .btn-save {
+  margin-top: 20px;
+}
+.settings .register {
+  float: right;
+}

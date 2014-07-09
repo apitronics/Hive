@@ -13,6 +13,9 @@ module.exports = {
   CouchDB: {
     URL: "http://127.0.0.1:5984"
   },
+  API: {
+    URL: "https://api.apitronics.com/v1/"
+  },
   'harvestHoneyJarsFrequencyInMinutes': 5,
   'tellCouchDbAboutDrivesFrequencyInMinutes': 5
 };

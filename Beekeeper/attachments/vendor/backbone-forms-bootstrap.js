@@ -1,16 +1,16 @@
-/** 
+/**
  * Include this template file after backbone-forms.amd.js to override the default templates
- * 
+ *
  * 'data-*' attributes control where elements are placed
  */
 ;(function(Form) {
 
-  
+
   /**
    * Bootstrap templates for Backbone Forms
    */
   Form.template = _.template('\
-    <form class="form-horizontal" data-fieldsets></form>\
+    <form data-fieldsets></form>\
   ');
 
 
@@ -62,7 +62,7 @@
         <button type="button" class="btn bbf-del" data-action="remove">&times;</button>\
       </li>\
     ');
-    
+
 
     Form.editors.List.Object.template = Form.editors.List.NestedModel.template = _.template('\
       <div class="bbf-list-modal"><%= summary %></div>\
