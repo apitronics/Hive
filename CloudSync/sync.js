@@ -340,7 +340,7 @@ ev.on('sync_sensor_data', function() {
       };
 
       readings.on('sync', function(){
-        var readingsData = _.filter(readings.models, function(reading){ return !!reading.get('d'); });
+        var readingsData = _.filter(readings.models, function(reading){ return reading.get('d') !== null; });
 
         sensorData = _.map(readingsData, function(reading){
           var r = {};
