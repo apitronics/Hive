@@ -293,25 +293,9 @@ class Xbee:
 	def process(self,received):
 		try:
 			dec = []
-			cur = []
 			for i in received:
-				if i!=['']:
-					cur += [binascii.b2a_qp(i,False,False,False)]
-			
-			for i in cur:
-				if cmp(i[0],'='):
-					dec+=[ord(i)]
-				else:
-					convert = 0
-					for j in range(1,3):			
-						if (ord(i[j])>64):
-							convert += (ord(i[j])-55)
-						else:
-							convert += (ord(i[j])-48)
-						if j==1:
-							convert=convert*16
-							
-					dec+=[convert]
+				if i!=['']: 
+					dec += [int(binascii.b2a_hex(i),16)]
 
 			if self.escape:
 				decNoEscape = []
@@ -350,6 +334,7 @@ class Xbee:
 		except:
 			import traceback
 			print traceback.format_exc()
+		thread.exit()
 	
 				
 	def updateAT(self, newAT):
