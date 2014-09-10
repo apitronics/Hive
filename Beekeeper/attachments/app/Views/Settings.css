@@ -9,6 +9,10 @@
 .settings .help-inline {
   display: none;
 }
+.field-saveToCloud {
+  float: right;
+  width: 100%;
+}
 .field-saveToCloud label, .field-saveToCloud .controls {
   float: right;
   margin: 0 5px;
@@ -21,8 +25,11 @@
   margin: 0;
 }
 .settings .btn-save {
-  margin-top: 20px;
+  margin: 0;
+  text-transform: capitalize;
+  width: 100%;
 }
 .settings .register {
   float: right;
+  margin-bottom: 20px;
 }

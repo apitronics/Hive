@@ -19,12 +19,12 @@ $(function() {
     },
 
     schema: {
-      'gmailUserName': 'Text',
-      'gmailPassword': 'Password',
-      'gmailEmailAddress': 'Text',
       'cloudUserName': 'Text',
       'cloudPassword': 'Password',
-      'saveToCloud': 'Checkbox'
+      'saveToCloud': 'Checkbox',
+      'gmailUserName': 'Text',
+      'gmailPassword': 'Password',
+      'gmailEmailAddress': 'Text'
     }
 
   })

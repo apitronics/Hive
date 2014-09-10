@@ -20,7 +20,7 @@ $(function() {
 
       // add register cloud link
       var $register = $('<a class="register" href="https://cloud.apitronics.com/register" target="_blank">Sign up for cloud account</a>');
-      this.$el.append($register);
+      $(this.$el).find('.field-saveToCloud').append($register);
 
       // give the form a submit button
       var $button = $('<a class="btn btn-save" id="save">save</a>');
