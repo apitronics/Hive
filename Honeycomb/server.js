@@ -22,7 +22,6 @@ server.post('/*', function(req, res){
   var sensors = new HiveBackbone.Collections.SensorsByBeeId()
   //var sensorDefinitions = new HiveBackbone.Collections.SensorDefinitionsByFirmwareUUID()
   var sensorDefinitions = new HiveBackbone.Collections.SensorDefinitions()
-  var readings = new HiveBackbone.Collections.Readings()
 
   // Look up the Bee that has this address
   ev.on('go:0', function() {
@@ -73,26 +72,28 @@ server.post('/*', function(req, res){
 
   // Run each Honey Packet in data through the honeyPacketProcessor
   ev.on('go:3', function() {
-    _.each(data.data, function(packet, dateTime, list) {
-      readings.add(honeyPacketProcessor(dateTime, packet, sensors, sensorDefinitions))
-    })
-    ev.trigger('go:4')
-  })
+    var len = _.size(data.data);
 
-  // Save readings
-  ev.on('go:4', function() {
-    readings.once('sync', function() {
-      ev.trigger('go:5');
+    _.each(data.data, function(packet, dateTime, list) {
+      var readings = honeyPacketProcessor(dateTime, packet, sensors, sensorDefinitions);
+
+      // Save readings
+      _.each(readings, function(reading){
+        reading.save();
+      });
+
+      if(--len === 0) ev.trigger('go:5');
     });
-    readings.save();
   });
 
   // Process recipes
   ev.on('go:5', function() {
-    processRecipes(function(err, message) {
-      if (err) log('ProcessRecipes error', err);
-      if (message) log('ProcessRecipes message', message);
-    });
+    setTimeout(function(){
+      processRecipes(function(err, message) {
+        if (err) log('ProcessRecipes error', err);
+        if (message) log('ProcessRecipes message', message);
+      });
+    }, 1000);
   });
 
   ev.trigger('go:0')
