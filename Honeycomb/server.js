@@ -6,6 +6,7 @@ var HiveBackbone = require('../HiveBackbone/HiveBackbone')
 var honeyPacketProcessor = require('./lib/HoneyPacketProcessor')
 var processRecipes = require('./lib/ProcessRecipes.js');
 var server = express();
+var spawn = require('child_process').spawn;
 
 server.use(express.bodyParser())
 
@@ -94,6 +95,12 @@ server.post('/*', function(req, res){
         if (message) log('ProcessRecipes message', message);
       });
     }, 1000);
+
+    var sync = spawn('node', ['/root/Hive/CloudSync/sync.js']);
+
+    sync.on('close', function(code) {
+      log('Cloud sync complete', 'code ' + code);
+    });
   });
 
   ev.trigger('go:0')
