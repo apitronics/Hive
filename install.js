@@ -4,7 +4,7 @@ var sys = require('sys')
 var exec = require('child_process').exec;
 function puts(error, stdout, stderr) { sys.puts(stdout) }
 var cmd = ''
-var Settings = require('./Settings.js')
+var Settings = require('~/Hive/Settings.js')
 var sensorDefinitions = require('./util/SensorDefinitions.json')
 
 var server = Settings.CouchDB.URL
