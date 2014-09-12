@@ -8,7 +8,6 @@ var Backbone = require('backbone'),
     cloudSensors = [],
     localBees = [],
     localSensors = [],
-    phoneCarriers = [],
     cloudAlerts = [];
 
 var ev = new Backbone.Model(),
@@ -372,22 +371,7 @@ ev.on('sync_sensor_data', function() {
     }
   });
 
-  ev.trigger('get_phone_carriers');
-});
-
-// get phone carriers
-ev.on('get_phone_carriers', function(){
-  client.get('phone_carriers', function(err, res, phone_carriers) {
-    if(res.statusCode == 200){
-      phoneCarriers = phone_carriers;
-      var carrierNames = _.map(phoneCarriers, function(carrier){return carrier.name;}).join(', ');
-      log('Got phone carriers', carrierNames);
-
-      ev.trigger('get_cloud_alerts');
-    } else {
-      log('Error getting phone carriers');
-    }
-  });
+  ev.trigger('get_cloud_alerts');
 });
 
 // get alerts
@@ -417,7 +401,6 @@ ev.on('sync_recipes', function() {
           upperLimit = parseFloat(recipe.get('upperLimit')),
           lowerLimit = parseFloat(recipe.get('lowerLimit')),
           phoneNumber = recipe.get('alertPhoneNumber'),
-          phoneCarrierId = getPhoneCarrierId(recipe.get('alertPhoneNumberCarrier'), phoneCarriers),
           localSensor = _.find(localSensors, function(sensor){
             return sensor.get('_id') == sensorId;
           }),
@@ -426,7 +409,6 @@ ev.on('sync_recipes', function() {
           data = {
             lower_limit: lowerLimit,
             name: name,
-            phone_carrier_id: phoneCarrierId,
             phone: phoneNumber,
             sensor_id: (cloudSensor ? cloudSensor.id : -1),
             type: action,
@@ -559,16 +541,6 @@ function getAlertTypeSymbol(value){
     default:
       return null;
   }
-}
-
-function getPhoneCarrierId(domain, phoneCarriers){
-  domain = domain.replace('@', '');
-
-  var phone_carrier = _.find(phoneCarriers, function(carrier){
-    return carrier.email_domain == domain;
-  });
-
-  return phone_carrier.id;
 }
 
 function getCloudSensorDefinitionId(localSensorDefinitionUUID){
