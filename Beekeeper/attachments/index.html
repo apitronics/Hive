@@ -54,6 +54,7 @@
 
     <script src="app/Models/Bee.js"></script>
     <script src="app/Models/CloudRow.js"></script>
+    <script src="app/Models/Csq.js"></script>
     <script src="app/Models/Drive.js"></script>
     <script src="app/Models/HourlyReading.js"></script>
     <script src="app/Models/Reading.js"></script>
@@ -73,6 +74,7 @@
     <script src="app/Collections/SensorReadings.js"></script>
 
     <script src="app/Views/BeeBreadcrumb.js"></script>
+    <script src="app/Views/BeeCsq.js"></script>
     <script src="app/Views/BeeForm.js"></script>
     <script src="app/Views/BeeRecipesTable.js"></script>
     <script src="app/Views/BeeRow.js"></script>
@@ -164,6 +166,10 @@
      <td> <%= name %> </td>
      <td>used: <%= used %> </td>
      <td>available: <%= available %> </td>
+    </script>
+
+    <script type="text/template" id="template-BeeCsq">
+      <p>Last <a href='/_utils/database.html?csq_<%= bee %>'>CSQ</a>: <%= csq %> <span class='timestamp'><%= timestamp %></span></p>
     </script>
 
     <script type="text/template" id="template-BeesTableHeader">

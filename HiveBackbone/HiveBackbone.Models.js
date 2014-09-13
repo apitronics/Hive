@@ -6,6 +6,53 @@ var moment = require('moment')
 
 module.exports = {
 
+  Csq: Backbone.Model.extend({
+    idAttribute: '_id',
+    dbName: function() {
+      return 'csq_' + this.id;
+    },
+    sync: function (method, model, options) {
+      switch (method) {
+        case 'create':
+        case 'update':
+          nano.db.create(this.dbName(), function(err, body) {
+            model.trigger('sync');
+          });
+          break;
+        case 'read':
+          nano.db.get(this.dbName(), null, function(err, body) {
+            model.set(body);
+            model.trigger('sync');
+          });
+          break;
+      }
+    }
+  }),
+
+  CsqReading: Backbone.Model.extend({
+    params: {
+      beeAddress: null
+    },
+    sync: function (method, model, options) {
+      var db;
+      if (!!model.get('beeAddress')) {
+        db = nano.use('csq_' + model.get('beeAddress'));
+      }
+      else {
+        console.log("error: could not determine CsqReading's database during sync operation.");
+      }
+      switch (method) {
+        case 'create':
+          db.insert({_id: (model.get('timestamp')).toString(), d: model.get('d')}, function(err, body) {
+            if(err) return console.log(err);
+            model.set('_rev', body.rev);
+            model.trigger('sync');
+          });
+          break;
+      }
+    }
+  }),
+
   Recipe: Backbone.Model.extend({
     idAttribute: "_id",
     setState: function(state) {

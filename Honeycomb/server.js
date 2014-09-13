@@ -7,6 +7,7 @@ var honeyPacketProcessor = require('./lib/HoneyPacketProcessor')
 var processRecipes = require('./lib/ProcessRecipes.js');
 var server = express();
 var spawn = require('child_process').spawn;
+var moment = require('moment');
 
 server.use(express.bodyParser())
 
@@ -87,8 +88,8 @@ server.post('/*', function(req, res){
     });
   });
 
-  // Process recipes
   ev.on('go:5', function() {
+    // Process recipes
     setTimeout(function(){
       processRecipes(function(err, message) {
         if (err) log('ProcessRecipes error', err);
@@ -96,6 +97,32 @@ server.post('/*', function(req, res){
       });
     }, 1000);
 
+    // Save CSQ
+    var csq = data.csq,
+        address = data.address;
+
+    if(typeof csq !== 'undefined' && typeof address !== 'undefined') {
+      var modelCsq = new HiveBackbone.Models.Csq({
+        _id: address
+      });
+
+      modelCsq.on('sync', function(){
+        var csqReading = new HiveBackbone.Models.CsqReading({
+            beeAddress: address,
+            d: csq,
+            timestamp: moment().unix()
+        });
+
+        csqReading.save();
+
+        bee.set({csq: true});
+        bee.save();
+      });
+
+      modelCsq.save();
+    }
+
+    // Sync to cloud
     var sync = spawn('node', ['/root/Hive/CloudSync/sync.js']);
 
     sync.on('close', function(code) {

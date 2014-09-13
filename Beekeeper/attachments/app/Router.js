@@ -115,9 +115,13 @@ $(function() {
       var beeSensorsTable = new App.Views.BeeSensorsTable()
       var beeRecipesTable = new App.Views.BeeRecipesTable()
 
+      var beeCsq = new App.Models.Csq();
+      var beeCsqView = new App.Views.BeeCsq({csq: beeCsq});
+
       App.clear()
       App.append(beeSensorsTable.el)
       App.append(beeRecipesTable.el)
+      App.append(beeCsqView.el)
 
       //
       // Thread AX - Sensors
@@ -181,7 +185,17 @@ $(function() {
 
       ev.once('C1', function() {
         beeBreadcrumb.render()
+        ev.trigger('C2');
       })
+
+      ev.once('C2', function() {
+        if(!!bee.get('csq')) {
+          beeCsq.id = bee.get('address');
+          beeCsq.fetch({complete: function(){
+            beeCsqView.render();
+          }});
+        }
+      });
 
       //
       // threads
