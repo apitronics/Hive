@@ -190,7 +190,7 @@ $(function() {
 
       ev.once('C2', function() {
         if(!!bee.get('csq')) {
-          beeCsq.id = bee.get('address');
+          beeCsq.id = bee.get('address').replace(/[^a-z0-9]/gi,'');
           beeCsq.fetch({complete: function(){
             beeCsqView.render();
           }});

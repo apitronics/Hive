@@ -89,17 +89,25 @@ server.post('/*', function(req, res){
   });
 
   ev.on('go:5', function() {
-    // Process recipes
     setTimeout(function(){
-      processRecipes(function(err, message) {
-        if (err) log('ProcessRecipes error', err);
-        if (message) log('ProcessRecipes message', message);
-      });
-    }, 1000);
+      ev.trigger('processRecipes');
+      ev.trigger('saveCsq');
+      ev.trigger('syncCloud');
+    }, 5000);
+  });
 
+  ev.on('processRecipes', function() {
+    // Process recipes
+    processRecipes(function(err, message) {
+      if (err) log('ProcessRecipes error', err);
+      if (message) log('ProcessRecipes message', message);
+    });
+  });
+
+  ev.on('saveCsq', function() {
     // Save CSQ
     var csq = data.csq,
-        address = data.address;
+        address = data.address.replace(/[^a-z0-9]/gi,'');
 
     if(typeof csq !== 'undefined' && typeof address !== 'undefined') {
       var modelCsq = new HiveBackbone.Models.Csq({
@@ -121,7 +129,9 @@ server.post('/*', function(req, res){
 
       modelCsq.save();
     }
+  });
 
+  ev.on('syncCloud', function() {
     // Sync to cloud
     var sync = spawn('node', ['/root/Hive/CloudSync/sync.js']);
 
@@ -130,8 +140,8 @@ server.post('/*', function(req, res){
     });
   });
 
-  ev.trigger('go:0')
-})
+  ev.trigger('go:0');
+});
 
 server.listen(126);
 log('Honeycomb', 'server listening on port 126')
