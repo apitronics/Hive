@@ -114,7 +114,7 @@ server.post('/*', function(req, res){
         _id: address
       });
 
-      modelCsq.on('sync', function(){
+      modelCsq.once('sync', function(){
         var csqReading = new HiveBackbone.Models.CsqReading({
             beeAddress: address,
             d: csq,
@@ -124,7 +124,10 @@ server.post('/*', function(req, res){
         csqReading.save();
 
         bee.set({csq: true});
-        bee.save();
+
+        if(typeof bee.get('error') == 'undefined') {
+          bee.save();
+        }
       });
 
       modelCsq.save();
