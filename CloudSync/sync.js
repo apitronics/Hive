@@ -513,7 +513,7 @@ function getCloudBeeId(localBeeId){
     cloudBee = _.find(cloudBees, function(bee){
       return bee.address == localBeeAddress;
     }),
-    cloudBeeId = cloudBee.id;
+    cloudBeeId = cloudBee ? cloudBee.id : null;
 
     return cloudBeeId;
   } else {
