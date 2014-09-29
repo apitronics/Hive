@@ -43,7 +43,8 @@ $(function() {
             lastLi = '<li class="active">' + lastCrumb[0] + '</li>';
 
         crumbs.forEach(function(crumb){
-          var link = '<a href="' + crumb[1] + '">' + crumb[0] + '</a>',
+          var hasLink = !!crumb[1],
+              link = hasLink ? ('<a href="' + crumb[1] + '">' + crumb[0] + '</a>') : crumb[0],
               li = '<li>' + link + divider + '</li>';
           $ul.append(li);
         });

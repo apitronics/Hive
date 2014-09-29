@@ -1,94 +1,130 @@
-var express = require('express')
-var log = require('../util/log.js')
-var _ = require('underscore')
-var Backbone = require('backbone')
-var HiveBackbone = require('../HiveBackbone/HiveBackbone')
-var honeyPacketProcessor = require('./lib/HoneyPacketProcessor')
-var processRecipes = require('./lib/ProcessRecipes.js');
-var server = express();
-var spawn = require('child_process').spawn;
-var moment = require('moment');
+var express = require('express'),
+    log = require('../util/log.js'),
+    _ = require('underscore'),
+    Backbone = require('backbone'),
+    HiveBackbone = require('../HiveBackbone/HiveBackbone'),
+    honeyPacketProcessor = require('./lib/HoneyPacketProcessor'),
+    moment = require('moment'),
+    processRecipes = require('./lib/ProcessRecipes.js'),
+    server = express(),
+    spawn = require('child_process').spawn,
+    deviceDataProcessor = require('./lib/ProcessDeviceData'),
+    convertByFirmwareUUID = require('../HiveBackbone/lib/convertByFirmwareUUID');
 
-server.use(express.bodyParser())
+server.use(express.bodyParser());
 
 server.post('/*', function(req, res){
-  // Respond
-  res.send('ok')
-  var data = req.body
+  var data = req.body;
   // Event dispatcher for this process
-  var ev = new Backbone.Model
+  var ev = new Backbone.Model(),
 
   // Set up our Collections
-  var bee = new HiveBackbone.Models.Bee()
-	var bees = new HiveBackbone.Collections.BeesByAddress()
-  var sensors = new HiveBackbone.Collections.SensorsByBeeId()
-  //var sensorDefinitions = new HiveBackbone.Collections.SensorDefinitionsByFirmwareUUID()
-  var sensorDefinitions = new HiveBackbone.Collections.SensorDefinitions()
+  bee = new HiveBackbone.Models.Bee(),
+	bees = new HiveBackbone.Collections.BeesByAddress(),
+  sensorDefinitions = new HiveBackbone.Collections.SensorDefinitionsByFirmwareUUIDInteger(),
+  sensors = new HiveBackbone.Collections.SensorsByBeeId(),
+  deviceDefinitions = new HiveBackbone.Collections.DeviceDefinitionsByFirmwareUUIDInteger(),
+  devices = new HiveBackbone.Collections.DevicesByBeeId();
 
   // Look up the Bee that has this address
-  ev.on('go:0', function() {
-    bees.params.beeAddress = data.address
+  ev.on('start', function() {
+    bees.params.beeAddress = data.address;
     bees.on('sync', function() {
       bee = bees.models[0];
       if(!!bee) {
-        ev.trigger('go:1');
+        ev.trigger('getSensors');
+        ev.trigger('getDevices');
       } else {
         log('Bee not found for address', data.address);
       }
-    })
-    bees.fetch()
-  })
+    });
+    bees.fetch();
+  });
 
   // Look up the Sensor Docs whose bee property is bee.id
-  ev.on('go:1', function() {
-    sensors.params.beeId = bee.id
+  ev.on('getSensors', function() {
+    sensors.params.beeId = bee.id;
+
     sensors.on('sync', function() {
-      ev.trigger('go:2')
-    })
-    sensors.fetch()
-  })
+      ev.trigger('loadSensorDefs');
+    });
 
-  // Get all SensorDefinitions
-  ev.on('go:2', function() {
-    // Collect the Firmware UUIDs we need
-    //
-    // @todo Get only relevant SensorDefinitions, SensorDefinition.firmwareUUID and and Sensor.
-    // sensorDefinitionFirmwareUUID aren't going to match up in a Couch View becuase they are different strings.
-    // Instead we'll get ALL SensorDefinitions, do some text tranformations to Integers and match them in code
-    // in the HoneyPacketProcessor.
-    /*
-    _.each(sensors.models, function(sensor) {
-      console.log(sensor)
+    sensors.fetch();
+  });
 
-      if(_.indexOf(sensorDefinitions.params.sensorDefinitionFirmwareUUIDs, sensor.get('sensorDefinitionFirmwareUUID')) == -1) {
-        sensorDefinitions.params.sensorDefinitionFirmwareUUIDs.push(sensor.get('sensorDefinitionFirmwareUUID'))
-      }
-    })
-    */
+  ev.on('getDevices', function() {
+    devices.params.beeId = bee.id;
+
+    devices.on('sync', function() {
+      ev.trigger('loadDeviceDefs');
+    });
+
+    devices.fetch();
+  });
+
+  ev.on('loadSensorDefs', function() {
+    var arrSensorDefinitionFirmwareUUIDInts = _.map(sensors.models, function(sensor){ return parseInt(sensor.get('sensorDefinitionFirmwareUUID'), 16); });
+
+    // console.log('sensorDefinitions', sensorDefinitions.params)
+    sensorDefinitions.params.sensorDefinitionFirmwareUUIDIntegers = arrSensorDefinitionFirmwareUUIDInts;
+
     sensorDefinitions.on('sync', function() {
-      ev.trigger('go:3')
-    })
-    sensorDefinitions.fetch()
-  })
+      sensorDefinitions = convertByFirmwareUUID(sensorDefinitions);
 
+      _.each(sensors.models, function(sensor){
+        var sensorDefinition = sensorDefinitions[parseInt(sensor.get('sensorDefinitionFirmwareUUID'), 16)];
+
+        sensor.sensorDefinition = sensorDefinition;
+      });
+
+      ev.trigger('processSensors');
+    });
+
+    sensorDefinitions.fetch();
+  });
+
+  ev.once('loadDeviceDefs', function() {
+    var arrDeviceDefinitionFirmwareUUIDInts = _.map(devices.models, function(device){ return parseInt(device.get('deviceDefinitionFirmwareUUID'), 16); });
+
+    // console.log('deviceDefinitions', deviceDefinitions.params)
+    deviceDefinitions.params.deviceDefinitionFirmwareUUIDIntegers = arrDeviceDefinitionFirmwareUUIDInts;
+
+    deviceDefinitions.once('sync', function() {
+      deviceDefinitions = convertByFirmwareUUID(deviceDefinitions);
+
+      _.each(devices.models, function(device){
+        var deviceDefinition = deviceDefinitions[parseInt(device.get('deviceDefinitionFirmwareUUID'), 16)];
+
+        device.deviceDefinition = deviceDefinition;
+      });
+
+      ev.trigger('processDevices');
+    });
+
+    deviceDefinitions.fetch();
+  });
+
+  ev.once('processDevices', function(){
+    deviceDataProcessor(devices, res);
+  });
 
   // Run each Honey Packet in data through the honeyPacketProcessor
-  ev.on('go:3', function() {
+  ev.on('processSensors', function() {
     var len = _.size(data.data);
 
     _.each(data.data, function(packet, dateTime, list) {
-      var readings = honeyPacketProcessor(dateTime, packet, sensors, sensorDefinitions);
+      var readings = honeyPacketProcessor(dateTime, packet, sensors);
 
       // Save readings
       _.each(readings, function(reading){
         reading.save();
       });
 
-      if(--len === 0) ev.trigger('go:5');
+      if(--len === 0) ev.trigger('postProcess');
     });
   });
 
-  ev.once('go:5', function() {
+  ev.on('postProcess', function() {
     setTimeout(function(){
       ev.trigger('processRecipes');
       ev.trigger('saveCsq');
@@ -143,8 +179,8 @@ server.post('/*', function(req, res){
     });
   });
 
-  ev.trigger('go:0');
+  ev.trigger('start');
 });
 
 server.listen(126);
-log('Honeycomb', 'server listening on port 126')
+log('Honeycomb', 'server listening on port 126');

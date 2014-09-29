@@ -38,14 +38,17 @@ $(function() {
     },
 
     loadSensorDefinition: function() {
-      var sensor = this
-      var sensorDefinitions = new App.Collections.SensorDefinitionsByFirmwareUUID()
-      sensorDefinitions.params.sensorDefinitionFirmwareUUID =  this.get('sensorDefinitionFirmwareUUID')
+      var sensor = this,
+          sensorDefinitions = new App.Collections.SensorDefinitionsByFirmwareUUID();
+
+      sensorDefinitions.params.sensorDefinitionFirmwareUUID =  this.get('sensorDefinitionFirmwareUUID');
+
       sensorDefinitions.on('sync', function() {
-        sensor.sensorDefinition = sensorDefinitions.models[0]
-        sensor.trigger('loadSensorDefinition:done')
-      })
-      sensorDefinitions.fetch()
+        sensor.sensorDefinition = sensorDefinitions.models[0];
+        sensor.trigger('loadSensorDefinition:done');
+      });
+
+      sensorDefinitions.fetch();
     },
 
     loadLastSensorReading: function() {

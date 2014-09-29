@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
-var sys = require('sys')
-var exec = require('child_process').exec;
-function puts(error, stdout, stderr) { sys.puts(stdout) }
-var cmd = ''
-var Settings = require('/root/Hive/Settings.js')
-var sensorDefinitions = require('/root/Hive/util/SensorDefinitions.json')
+var sys = require('sys'),
+    exec = require('child_process').exec,
+    cmd = '',
+    Settings = require('/root/Hive/Settings.js'),
+    sensorDefinitions = require('/root/Hive/util/SensorDefinitions.json'),
+    deviceDefinitions = require('/root/Hive/util/DeviceDefinitions.json'),
+    server = Settings.CouchDB.URL;
 
-var server = Settings.CouchDB.URL
+function puts(error, stdout, stderr) { sys.puts(stdout); }
 
 // Create databases
 cmd += 'curl -XPUT ' + server + '/config; \n'
@@ -24,6 +25,11 @@ sensorDefinitions.rows.forEach(function(sensorDefinition) {
   var sensorDef = sensorDefinition.doc
   cmd += 'curl -XPUT ' + server + '/config/' + sensorDef._id + ' -d \'' + JSON.stringify(sensorDef) + '\'; \n'
 })
+
+// Push the device definitions into the `config` database
+deviceDefinitions.forEach(function(deviceDefinition) {
+  cmd += 'curl -XPUT ' + server + '/config/' + deviceDefinition._id + ' -d \'' + JSON.stringify(deviceDefinition) + '\'; \n';
+});
 
 // Add some default Settings objects in config
 cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0, "status": "on"}\'; \n'

@@ -5,8 +5,8 @@ $(function() {
       '' : 'Bees',
       'bees' : 'Bees',
       'bee/:beeId' : 'Bee',
-      'bee/csq/:beeId' : 'BeeCsq',
       'bee/edit/:beeId' : 'BeeForm',
+      'device/edit/:beeId/:deviceId' : 'DeviceForm',
       'sensor/:sensorId' : 'Sensor',
       'sensor/edit/:beeId/:sensorId' : 'SensorForm',
       'recipe/add/:beeId' : 'RecipeAdd',
@@ -70,6 +70,52 @@ $(function() {
 
     },
 
+    DeviceForm: function(beeId, deviceId) {
+      var ev = new Backbone.Model(),
+          modelId = deviceId,
+          modelClass = 'Device',
+          formClass = 'DeviceForm',
+          redirect = 'bee/' + beeId;
+          model = new App.Models[modelClass](),
+          form = new App.Views[formClass]({model: model}),
+          bee = new App.Models.Bee({_id: beeId}),
+          deviceLoaded = false,
+          beeLoaded = false;
+
+      App.$el.children('.body').html(form.el);
+
+      form.once('Form:done', function() {
+        Backbone.history.navigate(redirect, {trigger: true});
+      });
+
+      if (modelId) {
+        model.id = modelId;
+        model.fetch({success: function() {
+          model.once('loadDeviceDefinition:done', function(){
+            deviceLoaded = true;
+            ev.trigger('addBreadcrumb');
+          });
+
+          model.loadDeviceDefinition();
+
+          form.render();
+        }});
+      }
+      else {
+        form.render();
+      }
+
+      bee.fetch({complete: function(){
+        beeLoaded = true;
+        ev.trigger('addBreadcrumb');
+      }});
+
+      ev.on('addBreadcrumb', function(){
+        if(beeLoaded && deviceLoaded) {
+          new App.Views.SensorBreadcrumb({device: model, bee: bee});
+        }
+      });
+    },
 
     Bees: function() {
 
@@ -106,19 +152,23 @@ $(function() {
       // setup
       //
 
-      var ev = new Backbone.Model()
+      var ev = new Backbone.Model(),
+          bee = new App.Models.Bee({"_id": beeId}),
+          beeCsq = new App.Models.Csq(),
+          beeCsqView = new App.Views.BeeCsq({csq: beeCsq}),
+          beeDevices = new App.Collections.Devices(),
+          beeDevicesTable = new App.Views.DevicesTable(),
+          beeBreadcrumb = new App.Views.BeeBreadcrumb({bee: bee}),
+          beeRecipes = new App.Collections.BeeRecipes(),
+          beeRecipesTable = new App.Views.BeeRecipesTable(),
+          beeSensors = new App.Collections.BeeSensors(),
+          beeSensorsTable = new App.Views.BeeSensorsTable();
 
-      var bee = new App.Models.Bee({"_id": beeId})
-      var beeSensors = new App.Collections.BeeSensors()
-      var beeRecipes = new App.Collections.BeeRecipes()
-
-      var beeBreadcrumb = new App.Views.BeeBreadcrumb({bee: bee})
-      var beeSensorsTable = new App.Views.BeeSensorsTable()
-      var beeRecipesTable = new App.Views.BeeRecipesTable()
-
-      App.clear()
-      App.append(beeSensorsTable.el)
-      App.append(beeRecipesTable.el)
+      App.clear();
+      App.append(beeSensorsTable.el);
+      App.append(beeDevicesTable.el);
+      App.append(beeRecipesTable.el);
+      App.append(beeCsqView.el);
 
       //
       // Thread AX - Sensors
@@ -133,6 +183,28 @@ $(function() {
           ev.trigger('A2')
         }})
       })
+
+      // Fetch the bee devices
+      ev.once('D0', function() {
+        beeDevices.params.beeId = beeId;
+        beeDevices.fetch({success: function(collection, response, options){
+          ev.trigger('D1');
+        }});
+      });
+
+      ev.once('D1', function() {
+        beeDevices.once('loadDeviceDefinitions:done', function() {
+          ev.trigger('D2');
+        });
+        beeDevices.loadDeviceDefinitions();
+      });
+
+      // Render the bee devices table
+      ev.on('D2', function() {
+        beeDevicesTable.beeId = beeId;
+        beeDevicesTable.collection = beeDevices;
+        beeDevicesTable.render();
+      });
 
       ev.once('A1', function() {
         beeSensors.once('loadSensorDefinitions:done', function() {
@@ -203,9 +275,10 @@ $(function() {
       // threads
       //
 
-      ev.trigger('A0')
-      ev.trigger('B0')
-      ev.trigger('C0')
+      ev.trigger('A0');
+      ev.trigger('B0');
+      ev.trigger('C0');
+      ev.trigger('D0');
 
     },
 

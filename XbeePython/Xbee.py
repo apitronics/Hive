@@ -67,19 +67,16 @@ class DataBucket:
 		if origin not in self.pile:
 			self.pile[origin]={}
 		self.pile[origin][index]=data
-		if frame==ApitronicsFrame['ids']:
-			self.owner.ids+=[{'origin': origin, 'data': data} ]
-			#print "received IDs"
-		elif frame==ApitronicsFrame['data']:
+		
+                if frame==ApitronicsFrame['data']:
 			self.owner.data+=[{'origin': origin, 'data': data} ]
-			#print "received data"
+                elif frame==ApitronicsFrame['deviceList']: 
+			self.owner.deviceList+=[{'origin': origin, 'data': data} ]
 
              #  print str(packet[0:8]) +": "+str(index)
 		if frame>>3==1:
                         print "CTS has been requested"
                         self.owner.sendACK(packet[0:8])
-
-
 	
 		if frame==ApitronicsFrame['end']:
 			parsed = self._parse(origin)
@@ -123,7 +120,7 @@ class Data:
 		numPieces = len(data)/dataPerPacket+1	
 		for i in range(0,numPieces): #break data into packets appropriate for network
 			pieces += [data[i*dataPerPacket:min(len(data),(i+1)*dataPerPacket)]]
-		print "data broken up into " + str(len(pieces)) + " pieces"
+		#print "data broken up into " + str(len(pieces)) + " pieces"
 		return self._packetize(pieces, Xbee.maxStream)
 
 	def _packetize(self, pieces, maxStream):
@@ -140,14 +137,14 @@ class Data:
 		
 		for index,piece in enumerate(pieces):
 			packet = copy.copy(prefix)
-			if index!=len(pieces)-1:
-				frame=self.frame
-				packet+=[frame<<4 | index>>8]		#Apitronics frame (4 bits), upper 4 bits of index
-				if(index+1)%maxStream==0:
-					packet[-1]|=0x80
-			else:
-				packet+=[ApitronicsFrame['end']<<4 | index>>8]	#if its end up transmission, mark it in frame
-			packet+=[0xFF & index]
+			#iif index!=len(pieces)-1:
+			#	frame=self.frame
+			#	packet+=[frame<<4 | index>>8]		#Apitronics frame (4 bits), upper 4 bits of index
+			#	if(index+1)%maxStream==0:
+			#		packet[-1]|=0x80
+			#else:
+			#	packet+=[ApitronicsFrame['end']<<4 | index>>8]	#if its end up transmission, mark it in frame
+			packet+=[self.frame]
 			packet+=piece
 			length = len(packet)-3
 			packet[1]=(length&0xFF00)>>8        
@@ -160,7 +157,7 @@ escapeBytes = [0x7E, 0x7D, 0x11, 0x13]
 
 XbeeFrame = {'AT': 0x88, 'Transmit': 0x90, 'Transmit ACK': 0x8B}
 
-ApitronicsFrame = {'programFlash':0b101, 'settings':0b100, 'dummy':0b110, 'end':0b111, 'CTS':0b100, 'data': 0b10, 'ids':0b1}
+ApitronicsFrame = {'programFlash':0b101, 'settings':0b100, 'dummy':0b110, 'end':0b111, 'CTS':0b100, 'data': 0b10, 'deviceList':0b1, 'writeN':0b1010, 'ACK':0b110}
 
 class Message:
 	def __init__(self, frame, data): 
@@ -246,6 +243,7 @@ class Xbee:
 		self.semaphore = True
 		self.ids = []
 		self.data = []
+                self.deviceList = []
 
 		necessaryAT = ["SH","SL"]
 		self.AT={}

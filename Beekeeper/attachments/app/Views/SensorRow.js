@@ -14,8 +14,9 @@ $(function() {
           timestamp = lastSensorReading.get('timestamp'),
           hasSensorDefinition = !!model.sensorDefinition,
           name = model.get('name'),
-          sensorDefName = (hasSensorDefinition ? model.sensorDefinition.get('name') : 'unknown sensor');
+          sensorDefName = (hasSensorDefinition ? model.sensorDefinition.get('name') : 'Unknown Sensor');
 
+      vars.kind = 'Sensor';
       vars.units = hasSensorDefinition ? model.sensorDefinition.get('units') : '';
       vars.name = name || sensorDefName;
 

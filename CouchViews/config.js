@@ -5,7 +5,7 @@
 ddoc = { _id:'_design/api' }
 
 ddoc.views = {
-  
+
   Bees: {
     map: function(doc) {
       if (doc.kind == 'Bee') {
@@ -22,6 +22,45 @@ ddoc.views = {
     }
   },
 
+  DeviceDefinitions: {
+    map: function(doc) {
+      if (doc.kind == 'DeviceDefinition') {
+        emit(doc._id, true);
+      }
+    }
+  },
+
+  DeviceDefinitionsByFirmwareUUIDs: {
+    map: function(doc) {
+      if (doc.kind == 'DeviceDefinition') {
+        emit(doc.firmwareUUID, true);
+      }
+    }
+  },
+
+  DeviceDefinitionsByFirmwareUUIDInteger: {
+    map: function(doc) {
+      if (doc.kind == 'DeviceDefinition') {
+        emit(eval(doc.firmwareUUID), true);
+      }
+    }
+  },
+
+  Devices: {
+    map: function(doc) {
+      if (doc.kind == 'Device') {
+        emit(doc._id, true);
+      }
+    }
+  },
+
+  DevicesByBeeId: {
+    map: function(doc) {
+      if (doc.kind == 'Device') {
+        emit(doc.beeId, doc._id);
+      }
+    }
+  },
 
   SensorsByBeeId: {
     map: function(doc) {
@@ -38,7 +77,7 @@ ddoc.views = {
       }
     }
   },
-  
+
   Recipes: {
     map: function(doc) {
       if (doc.kind == 'Recipe') {

@@ -14,32 +14,54 @@ idURL="http://hive.local:125/egg/new"
 dataURL="http://hive.local:126"
 headers= {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
-while True:
-	if len(Coordinator.ids)>0:
-		tmp = Coordinator.ids.pop(0)
-		
-		#turn the address from hex string to array of bytes
-		address = tmp['origin']
-		addressBytes = []
-		for i in range(0,len(address)/2):
-			addressBytes+=[ int(address[i*2:i*2+2],16) ]
-		#teach end device who we coordinator is
-		Coordinator.sendData(addressBytes,[0],0)
+#Coordinator.deviceList=[{'origin':"DEADBEEF", 'data':[0x00, 0x01, 0x00, 0x02, 0x80, 0x00]}]
 
+def ack(address, msg=[1]):
+        #turn the address from hex string to array of bytes
+        address = tmp['origin']
+        addressBytes = []
+        for i in range(0,len(address)/2):
+                addressBytes+=[ int(address[i*2:i*2+2],16) ]
+        #teach end device who we coordinator is
+        Coordinator.sendData(addressBytes, msg, ApitronicsFrame['ACK'])
+
+def sendCommand(address, command):
+        addressBytes = []
+        for i in range(0,len(address)/2):
+                addressBytes+=[ int(address[i*2:i*2+2],16) ]
+        commandBytes = []
+        for i in range(0, len(command)/2):
+                #print command[i*2:i*2+2]
+                commandBytes+=[int(command[i*2:i*2+2],16)]
+        Coordinator.sendData(addressBytes,commandBytes,ApitronicsFrame['writeN'])     
+           
+
+
+while True:
+
+        if len(Coordinator.deviceList)>0:
+                tmp = Coordinator.deviceList.pop(0)        
+                
+                ack(tmp['origin'])
 		
-		data=[]
+                devices=[]
+                sensors=[]
 		for index in range(0,len(tmp['data'])/2):
-			#cur="\""
-			cur=hex(tmp['data'][index*2]<<8 | tmp['data'][index*2+1])[-4:]	
-			#cur+="\""
-			data+=[cur]		
+                        cur=tmp['data'][index*2]<<8 | tmp['data'][index*2+1]
+                        if(cur>=0x8000):
+                                devices+=[hex(cur)]
+                        else:
+                                sensors+=[hex(cur)]
 		
-		JSON_STRING= { "address": str(tmp['origin']), "sensors": data }
+		JSON_STRING= { "address": str(tmp['origin']), "devices": devices, "sensors": sensors }
 		print json.dumps(JSON_STRING)	
 		r = requests.post(idURL, data=json.dumps(JSON_STRING), headers=headers)
-		print r.text
-		time.sleep(1)
+                if r.status_code != 200:
+                        print "failed posting device list"
+                else:
+                        print r.text
 	
+        #Coordinator.data=[{'origin':"DEADBEEF", 'data':[75,00,13,00]}]
 	if len(Coordinator.data)>0:
 		tmp = Coordinator.data.pop(0)
 		timestamp=datetime.datetime.utcnow().strftime('%H:%M:%S, %d/%m/%y')
@@ -51,25 +73,16 @@ while True:
 			data+= cur
 		JSON_STRING = {"address": str(tmp['origin']), "data":{ timestamp : data }}
 		print json.dumps(JSON_STRING)
-		print requests.post(dataURL, data=json.dumps(JSON_STRING), headers=headers).text
-	#try:
-	#	tmp = Coordinator.ids.pop(0)
-	#	print "booyah"
-#
-#	except:
-#		pass
-#
-#	
-#	try:
-	#	print Coordinator.data.pop(0)
-	#e#xcept:
-	#	pass
-
-		
-	#Coordinator.sendData(address, program, ApitronicsFrame['programFlash'])
-	#Coordinator.broadcast([2,3,4])
-	#time.sleep(10)
-	#Router.setAT("D0",5)
-	#time.sleep(0.5)
-	#Router.setAT("D0",4)
-	##time.sleep(0.5)
+                r = requests.post(dataURL, data=json.dumps(JSON_STRING), headers=headers)
+                if r.status_code != 200:
+                        print r_status_code
+                        print r.text
+                        print "failed posting data"
+                else:
+                        response = r.json
+                        if u'command' in response:
+                                print "sending command"
+                                sendCommand(tmp['origin'],response[u'command'])                 
+                        elif response[u'status']=='ok':
+                                print "sending ack"
+                                ack(tmp['origin'])

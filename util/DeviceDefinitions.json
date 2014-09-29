@@ -1,0 +1,67 @@
+[
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008000",
+    "firmwareUUID": "0x8000",
+    "kind": "DeviceDefinition",
+    "name": "Bee",
+    "sensors": ["0x1", "0x2"],
+    "parameters": [
+      {
+        "name": "Sample Rate",
+        "type": "Number",
+        "default": 30,
+        "lowerBound": 1,
+        "upperBound": 60,
+        "units": "seconds",
+        "validators": ["required", "number"]
+      },
+      {
+        "name": "Log Rate",
+        "type": "Number",
+        "default": 15,
+        "lowerBound": 1,
+        "upperBound": 60,
+        "units": "minutes",
+        "validators": ["required", "number"]
+      },
+      {
+        "name": "Sleep",
+        "type": "Radio",
+        "default": "true",
+        "options": [
+          true,
+          false
+        ],
+        "validators": ["required"]
+      }
+    ]
+  },
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008001",
+    "firmwareUUID": "0x8001",
+    "kind": "DeviceDefinition",
+    "name": "Motor",
+    "sensors": [],
+    "parameters": [
+      {
+        "name": "Direction",
+        "type": "Radio",
+        "default": "Forward",
+        "options": [
+          "Forward",
+          "Backward"
+        ],
+        "validators": ["required"]
+      },
+      {
+        "name": "Duration",
+        "type": "Number",
+        "default": "15",
+        "lowerBound": 0,
+        "upperBound": 180,
+        "units": "seconds",
+        "validators": ["required", "number"]
+      }
+    ]
+  }
+]

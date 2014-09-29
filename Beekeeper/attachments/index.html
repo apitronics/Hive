@@ -26,6 +26,8 @@
 
     <script src="vendor/jquery-1.7.2.js"></script>
     <script src="vendor/underscore-1.4.4.js"></script>
+    <script src="vendor/underscore.string.min.js"></script>
+    <script src="vendor/underscore.mixins.js"></script>
     <script src="vendor/backbone-1.0.0.js"></script>
     <script src="vendor/backbone-forms.js"></script>
     <script src="vendor/backbone-forms-bootstrap.js"></script>
@@ -55,6 +57,8 @@
     <script src="app/Models/Bee.js"></script>
     <script src="app/Models/CloudRow.js"></script>
     <script src="app/Models/Csq.js"></script>
+    <script src="app/Models/Device.js"></script>
+    <script src="app/Models/DeviceDefinition.js"></script>
     <script src="app/Models/Drive.js"></script>
     <script src="app/Models/HourlyReading.js"></script>
     <script src="app/Models/Reading.js"></script>
@@ -68,6 +72,8 @@
     <script src="app/Collections/BeeSensors.js"></script>
     <script src="app/Collections/Bees.js"></script>
     <script src="app/Collections/CloudRows.js"></script>
+    <script src="app/Collections/DeviceDefinitionsByFirmwareUUID.js"></script>
+    <script src="app/Collections/Devices.js"></script>
     <script src="app/Collections/Drives.js"></script>
     <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
     <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
@@ -84,6 +90,9 @@
     <script src="app/Views/BeesTable.js"></script>
     <script src="app/Views/CloudRow.js"></script>
     <script src="app/Views/CloudTable.js"></script>
+    <script src="app/Views/DeviceForm.js"></script>
+    <script src="app/Views/DeviceRow.js"></script>
+    <script src="app/Views/DevicesTable.js"></script>
     <script src="app/Views/DriveRow.js"></script>
     <script src="app/Views/DrivesTable.js"></script>
     <script src="app/Views/RecipeBreadcrumb.js"></script>
@@ -212,6 +221,11 @@
       <table class='table table-striped bee-sensors'/>
     </script>
 
+    <script type="text/template" id="template-DevicesTable">
+      <h1>Devices</h1>
+      <table class='table table-striped bee-devices'/>
+    </script>
+
     <script type="text/template" id="template-BeeRecipesTableHeader">
       <h1 style='float:left;'>
         Recipes
@@ -240,6 +254,19 @@
       </td>
       <td>
         <a class="muted" href="#sensor/edit/<%= beeId %>/<%= _id %>">edit</a>
+      </td>
+    </script>
+
+
+    <script type="text/template" id="template-DeviceRow">
+      <td>
+        <%= name %>
+      </td>
+      <td>
+        <%= data %><br/><span class='timestamp'><%= automatedAt %></span>
+      </td>
+      <td>
+        <a class="muted" href="#device/edit/<%= beeId %>/<%= _id %>">update</a>
       </td>
     </script>
 
