@@ -5,6 +5,7 @@ $(function() {
       '' : 'Bees',
       'bees' : 'Bees',
       'bee/:beeId' : 'Bee',
+      'bee/csq/:beeId' : 'BeeCsq',
       'bee/edit/:beeId' : 'BeeForm',
       'sensor/:sensorId' : 'Sensor',
       'sensor/edit/:beeId/:sensorId' : 'SensorForm',
@@ -115,13 +116,9 @@ $(function() {
       var beeSensorsTable = new App.Views.BeeSensorsTable()
       var beeRecipesTable = new App.Views.BeeRecipesTable()
 
-      var beeCsq = new App.Models.Csq();
-      var beeCsqView = new App.Views.BeeCsq({csq: beeCsq});
-
       App.clear()
       App.append(beeSensorsTable.el)
       App.append(beeRecipesTable.el)
-      App.append(beeCsqView.el)
 
       //
       // Thread AX - Sensors
@@ -190,9 +187,14 @@ $(function() {
 
       ev.once('C2', function() {
         if(!!bee.get('csq')) {
+          var beeCsq = new App.Models.Csq();
+
           beeCsq.id = bee.get('address').replace(/[^a-z0-9]/gi,'');
+
           beeCsq.fetch({complete: function(){
-            beeCsqView.render();
+            beeCsqTable = new App.Views.BeeCsqTable({bee: bee, csq: beeCsq});
+            beeCsqTable.render();
+            App.append(beeCsqTable.el);
           }});
         }
       });
@@ -207,6 +209,36 @@ $(function() {
 
     },
 
+    BeeCsq: function(beeId) {
+      var ev = new Backbone.Model(),
+          bee = new App.Models.Bee({_id: beeId}),
+          beeBreadcrumb = new App.Views.BeeBreadcrumb({bee: bee, mode: 'csq'}),
+          beeCsq = new App.Models.Csq({noLimit: true});
+
+      App.clear();
+
+      ev.once('start', function() {
+        bee.fetch({complete:function(){ ev.trigger('breadcrumb')}})
+      });
+
+      ev.once('breadcrumb', function() {
+        beeBreadcrumb.render();
+        ev.trigger('csq');
+      })
+
+      ev.once('csq', function() {
+        if(!!bee.get('csq')) {
+          beeCsq.id = bee.get('address').replace(/[^a-z0-9]/gi,'');
+          beeCsq.fetch({complete: function(){
+            beeCsqTable = new App.Views.BeeCsqTable({bee: bee, csq: beeCsq});
+            beeCsqTable.render();
+            App.append(beeCsqTable.el);
+          }});
+        }
+      });
+
+      ev.trigger('start');
+    },
 
     BeeForm: function(beeId) {
 

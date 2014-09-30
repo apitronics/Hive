@@ -2,24 +2,37 @@ $(function() {
 
   App.Views.BeeCsq = Backbone.View.extend({
 
+    tagName: 'tr',
+
     template: $('#template-BeeCsq').html(),
 
     initialize: function (obj) {
       this.csq = obj.csq;
+      this.csqRow = obj.csqRow;
     },
 
     render: function(){
-      var rows = this.csq.get('rows');
+      var doc, vars;
 
-      if(typeof rows === 'undefined') return;
+      if(typeof this.csqRow !== 'undefined') {
+        doc = this.csqRow.doc;
+        vars = {
+          csq: doc.d,
+          timestamp: moment.unix(doc._id).calendar()
+        };
+        this.$el.html(_.template(this.template, vars));
+      } else {
+        var rows = this.csq.get('rows');
 
-      var doc = this.csq.get('rows')[0].doc,
-          vars = {
-            bee: this.csq.id,
-            csq: doc.d,
-            timestamp: moment.unix(doc._id).calendar()
-          };
-      this.$el.html(_.template(this.template, vars));
+        if(typeof rows === 'undefined') return;
+
+        doc = rows[0].doc;
+        vars = {
+          csq: doc.d,
+          timestamp: moment.unix(doc._id).calendar()
+        };
+        this.$el.html(_.template(this.template, vars));
+      }
     }
 
   });

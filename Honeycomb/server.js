@@ -88,7 +88,7 @@ server.post('/*', function(req, res){
     });
   });
 
-  ev.on('go:5', function() {
+  ev.once('go:5', function() {
     setTimeout(function(){
       ev.trigger('processRecipes');
       ev.trigger('saveCsq');
@@ -104,7 +104,7 @@ server.post('/*', function(req, res){
     });
   });
 
-  ev.on('saveCsq', function() {
+  ev.once('saveCsq', function() {
     // Save CSQ
     var csq = data.csq,
         address = data.address.replace(/[^a-z0-9]/gi,'');

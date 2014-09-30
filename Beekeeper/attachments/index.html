@@ -75,6 +75,7 @@
 
     <script src="app/Views/BeeBreadcrumb.js"></script>
     <script src="app/Views/BeeCsq.js"></script>
+    <script src="app/Views/BeeCsqTable.js"></script>
     <script src="app/Views/BeeForm.js"></script>
     <script src="app/Views/BeeRecipesTable.js"></script>
     <script src="app/Views/BeeRow.js"></script>
@@ -169,7 +170,18 @@
     </script>
 
     <script type="text/template" id="template-BeeCsq">
-      <p>Last <a href='/_utils/database.html?csq_<%= bee %>'>CSQ</a>: <%= csq %> <span class='timestamp'><%= timestamp %></span></p>
+      <td><%= csq %></td>
+      <td><span class='timestamp'><%= timestamp %></span></td>
+    </script>
+
+    <script type="text/template" id="template-BeeCsqHeader">
+      <h1 style='float:left'>CSQ</h1>
+      <% if(showMore){ %>
+        <a class='btn' href='#bee/csq/<%= beeId %>' style='float: left; margin: 16px;'>Show all CSQ</a>
+      <% } %>
+    </script>
+
+    <script type="text/template" id="template-BeeCsqTable">
     </script>
 
     <script type="text/template" id="template-BeesTableHeader">
