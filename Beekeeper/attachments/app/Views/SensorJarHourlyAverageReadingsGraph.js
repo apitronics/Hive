@@ -1,6 +1,6 @@
 $(function() {
 
-  // To save on memory, don't give this View a collection, it will expect to find 
+  // To save on memory, don't give this View a collection, it will expect to find
   // a collection at App.sensorReadings.
   App.Views.SensorJarHourlyAverageReadingsGraph = Backbone.View.extend({
 
@@ -13,7 +13,7 @@ $(function() {
     },
 
     initialize: function(){
-      
+
     },
 
     prepare: function() {
@@ -21,7 +21,7 @@ $(function() {
       var vars = {
         startDate: moment.unix(App.sensorReadings.params.startDate).format('M/D/YYYY HH:mm'),
         endDate: moment.unix(App.sensorReadings.params.endDate).format('M/D/YYYY HH:mm'),
-        name: '' //@todo this.sensor.get('name') 
+        name: '' //@todo this.sensor.get('name')
       }
       this.$el.html(this.template(vars))
 
@@ -58,7 +58,7 @@ $(function() {
       var ts = Math.round((new Date()).getTime() / 1000)
       _.each(App.sensorReadings.models, function(reading, i, list) {
         var dataPoint = {
-          date: reading.id*1000, 
+          date: reading.id*1000,
           value: reading.get('d')
         }
         App.sensorReadingsGraph.data.push(dataPoint)
@@ -70,7 +70,8 @@ $(function() {
       Morris.Line({
         element: 'graph',
         data: this.data,
-        lineWidth: 0,
+        lineColors: ['rgb(108,147,107)'],
+        lineWidth: 1,
         pointSize: 2,
         pointFillColors: ['rgb(108,147,107)'],
         pointStrokeColors: '#000000',

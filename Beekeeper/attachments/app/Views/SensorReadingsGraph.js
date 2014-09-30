@@ -104,7 +104,8 @@ $(function() {
             return $content;
           },
           data: this.data,
-          lineWidth: 0,
+          lineColors: ['rgb(108,147,107)'],
+          lineWidth: 1,
           pointSize: 2,
           pointFillColors: ['rgb(108,147,107)'],
           pointStrokeColors: '#000000',
