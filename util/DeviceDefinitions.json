@@ -63,5 +63,37 @@
         "validators": ["required", "number"]
       }
     ]
+  },
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008002",
+    "firmwareUUID": "0x8002",
+    "kind": "DeviceDefinition",
+    "name": "Pressure Bee",
+    "sensors": ["0x19", "0x19", "0x19", "0x20"],
+    "parameters": []
+  },
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008003",
+    "firmwareUUID": "0x8003",
+    "kind": "DeviceDefinition",
+    "name": "Temperature Bee",
+    "sensors": ["0x18", "0x18", "0x3"],
+    "parameters": []
+  },
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008004",
+    "firmwareUUID": "0x8004",
+    "kind": "DeviceDefinition",
+    "name": "Weather Bee",
+    "sensors": ["0x10", "0x11", "0x12", "0x13", "0x14", "0x15", "0x16"],
+    "parameters": []
+  },
+  {
+    "_id": "FFFFFFFFFFFFFFFFFFFFFFFF00008005",
+    "firmwareUUID": "0x8005",
+    "kind": "DeviceDefinition",
+    "name": "Soil Humidity Bee",
+    "sensors": ["0x17", "0x17", "0x17"],
+    "parameters": []
   }
 ]
