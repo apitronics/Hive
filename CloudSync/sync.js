@@ -15,7 +15,7 @@ var ev = new Backbone.Model(),
     sensors = new HiveBackbone.Collections.Sensors(),
     recipes = new HiveBackbone.Collections.Recipes(),
     configDb = nano.use('config'),
-    client = request.newClient(Settings.API.URL),
+    client = request.newClient(Settings.API.URL, {jar: true}),
     cloudSettings = {};
 
 ev.on('get_cloud_settings', function(){
