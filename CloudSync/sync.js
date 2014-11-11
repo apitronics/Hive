@@ -4,14 +4,21 @@ var Backbone = require('backbone'),
     nano = require('nano')(Settings.CouchDB.URL),
     request = require('request-json'),
     _ = require('underscore'),
+    cloudAlerts = [],
     cloudBees = [],
+    cloudDevices = [],
     cloudSensors = [],
     localBees = [],
-    localSensors = [],
-    cloudAlerts = [];
+    localDevices = [],
+    localSensors = [];
+
+_.string = require('underscore.string');
+_.mixin(_.string.exports());
 
 var ev = new Backbone.Model(),
     bees = new HiveBackbone.Collections.Bees(),
+    devices = new HiveBackbone.Collections.Devices(),
+    deviceDefinitions = new HiveBackbone.Collections.DeviceDefinitions(),
     sensors = new HiveBackbone.Collections.Sensors(),
     recipes = new HiveBackbone.Collections.Recipes(),
     configDb = nano.use('config'),
@@ -371,6 +378,180 @@ ev.on('sync_sensor_data', function() {
     }
   });
 
+  ev.trigger('get_cloud_devices');
+});
+
+// get cloud devices
+ev.on('get_cloud_devices', function(){
+  log('****** Syncing devices ******');
+
+  client.get('device_params', function(err, res, device_params) {
+    if(res.statusCode == 200){
+      cloudDevices = device_params;
+      var deviceNames = _.map(cloudDevices, function(device){return device.device_param_type.name;}).join(', ');
+      log('Got devices', deviceNames);
+
+      // console.log(cloudDevices)
+
+      ev.trigger('get_local_devices');
+    } else {
+      log('Error getting device params');
+    }
+  });
+});
+
+// get bee devices
+ev.on('get_local_devices', function(){
+  // Fetch the bee devices
+  devices.once('sync', function() {
+    // console.log("devices", devices.models)
+    ev.trigger('get_device_definitions');
+  });
+
+  devices.fetch();
+});
+
+// get device definitions
+ev.on('get_device_definitions', function(){
+  // Fetch the device definitions
+  deviceDefinitions.once('sync', function() {
+    // console.log("deviceDefinitions", deviceDefinitions.models)
+    ev.trigger('sync_devices');
+  });
+
+  deviceDefinitions.fetch();
+});
+
+// sync devices
+ev.on('sync_devices', function(){
+  _.each(devices.models, function(device){
+    var deviceDefinition = getDeviceDefinition(device.get('deviceDefinitionFirmwareUUID'));
+
+    // console.log("deviceDefinition", deviceDefinition)
+
+    if(typeof deviceDefinition != 'undefined'){
+      var parameters = deviceDefinition.get('parameters'),
+          keys = _.each(parameters, function(input){
+            var beeId = getCloudBeeId(device.get('beeId')),
+                name = input.name,
+                slug = _(_(name).slugify()).camelize(),
+                updatedAt = device.get('updatedAt'),
+                value = device.get(slug).toString();
+
+            localDevices.push({
+              _id: device.id,
+              beeId: beeId,
+              name: name,
+              slug: slug,
+              updatedAt: updatedAt,
+              value: value
+            });
+          });
+    }
+  });
+
+  // console.log('localDevices', localDevices)
+
+  ev.trigger('sync_device_params');
+});
+
+// sync device params
+ev.on('sync_device_params', function(){
+  // console.log('cloudDevices', cloudDevices)
+
+  _.each(localDevices, function(localDevice){
+    var cloudDevice = _.find(cloudDevices, function(device){
+        return device.bee_id == localDevice.beeId && device.device_param_type.slug == localDevice.slug;
+        }),
+        localUpdatedAt = localDevice.updatedAt,
+        cloudUpdatedAt = !!cloudDevice ? cloudDevice.updated_at : 0,
+        shouldSyncToCloud = localUpdatedAt > cloudUpdatedAt,
+        cloudBee = _.find(cloudBees, function(bee){
+          return bee.id == localDevice.beeId;
+        }),
+        beeName = !!cloudBee ? cloudBee.name : 'unknown bee';
+
+    // console.log('cloudDevice', cloudDevice, 'localUpdatedAt', localUpdatedAt, 'cloudUpdatedAt', cloudUpdatedAt, 'shouldSyncToCloud', shouldSyncToCloud)
+
+    if(shouldSyncToCloud) {
+      log('Syncing cloud', localDevice.name, 'for', beeName, 'from', localDevice.updatedAt);
+
+      var url = 'bees/' + localDevice.beeId + '/params',
+          data = {
+            device_param_type_slug: localDevice.slug,
+            value: localDevice.value
+          };
+
+      if(!!cloudDevice) {
+        // edit device param url
+        url = url + '/' + cloudDevice.id;
+      }
+
+      // console.log(url, data)
+
+      client.put(url, data, function(err, res, body) {
+        if(res.statusCode == 200){
+          log('Updated', localDevice.name, 'for bee', beeName);
+        } else {
+          log('Error syncing', localDevice.name, 'for bee', beeName);
+        }
+      });
+    }
+  });
+
+  _.each(cloudDevices, function(cloudDevice, index){
+    var cloudUpdatedAt = cloudDevice.updated_at,
+        deviceName = cloudDevice.device_param_type.name,
+        localDevice = _.find(localDevices, function(device){
+          return device.beeId == cloudDevice.bee_id && cloudDevice.device_param_type.slug == device.slug;
+        }),
+        localUpdatedAt = !!localDevice ? localDevice.updatedAt : 0,
+        shouldSyncToLocal = cloudUpdatedAt > localUpdatedAt,
+        cloudBee = _.find(cloudBees, function(bee){
+          return bee.id == cloudDevice.bee_id;
+        }),
+        slug = cloudDevice.device_param_type.slug,
+        value = cloudDevice.value,
+        beeName = !!cloudBee ? cloudBee.name : 'unknown bee';
+
+    // console.log('shouldSyncToLocal', shouldSyncToLocal, 'deviceName', deviceName)
+
+    if(shouldSyncToLocal && localDevice) {
+      var realLocalDevice = new HiveBackbone.Models.Device({
+        _id: localDevice._id
+      });
+
+      realLocalDevice.once('sync', function(){
+        var data = {
+          updatedAt: cloudUpdatedAt
+        };
+
+        // console.log(deviceName, realLocalDevice.get(slug).toString(), value, realLocalDevice.get('updatedAt'), cloudUpdatedAt)
+
+        if(realLocalDevice.get(slug).toString() != value && realLocalDevice.get('updatedAt') != cloudUpdatedAt){
+          log('Syncing local', deviceName, 'for', beeName, 'from', cloudUpdatedAt);
+
+          data[slug] = value;
+
+          // update
+          realLocalDevice.set(data);
+
+          realLocalDevice.once('sync', function(){
+            log('Updated local device', deviceName);
+          });
+
+          realLocalDevice.save();
+        } else {
+          log('Skipping local', deviceName, 'for', beeName, 'from', cloudUpdatedAt);
+        }
+      });
+
+      setTimeout(function(){
+        realLocalDevice.fetch();
+      }, index * 500);
+    }
+  });
+
   ev.trigger('get_cloud_alerts');
 });
 
@@ -532,6 +713,14 @@ function getLocalBeeId(cloudBeeId){
     localBeeId = !!localBee ? localBee.get('_id') : null;
 
   return localBeeId;
+}
+
+function getDeviceDefinition(deviceDefinitionUUID){
+  var deviceDefinition = _.find(deviceDefinitions.models, function(deviceDefinition){
+      return parseInt(deviceDefinition.get('firmwareUUID'), 16) == parseInt(deviceDefinitionUUID, 16);
+    });
+
+  return deviceDefinition;
 }
 
 function getAlertTypeSymbol(value){

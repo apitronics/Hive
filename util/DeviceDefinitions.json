@@ -4,7 +4,7 @@
     "firmwareUUID": "0x8000",
     "kind": "DeviceDefinition",
     "name": "Bee",
-    "sensors": ["0x1", "0x2"],
+    "sensors": [],
     "parameters": [
       {
         "name": "Sample Rate",
