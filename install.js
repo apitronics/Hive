@@ -27,7 +27,7 @@ sensorDefinitions.rows.forEach(function(sensorDefinition) {
 
 // Add some default Settings objects in config
 cmd += 'curl -XPUT ' + server + '/config/HoneyJarsSettings' + ' -d \'{"lastHarvest": 0, "status": "on"}\'; \n'
-cmd += 'curl -XPUT ' + server + '/config/Settings' + ' -d \'{"gmailUserName": "", "gmailPassword":"", "gmailEmailAddress":"", "sendAlertsTo":""}\'; \n'
+cmd += 'curl -XPUT ' + server + '/config/Settings' + ' -d \'{"gmailUserName": "", "gmailPassword":"", "gmailEmailAddress":"", "sendAlertsTo":"", "autoUpdateHive":true, "saveToCloud":true}\'; \n'
 cmd += 'curl -XPUT ' + server + '/config/drives' + ' -d \'{}\'; \n'
 
 // Run the commands

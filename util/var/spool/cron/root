@@ -2,3 +2,4 @@
 5 * * * * python2 /root/Hive/util/compaction.py
 */10 * * * * node /root/Hive/Wunderground/sync.js
 */10 * * * * node /root/Hive/CloudSync/sync.js
+0 0 * * * node /root/.Hive-Updater/check.js

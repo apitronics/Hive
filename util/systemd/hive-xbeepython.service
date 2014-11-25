@@ -1,6 +1,6 @@
 [Unit]
-Description=XbeePython Launcher
-After=couchdb.service openntpd.service systemd-remount-fs.service
+Description=Hive XbeePython Launcher
+After=couchdb.service
 Requires=hive-honeycomb.service
 
 [Service]

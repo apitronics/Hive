@@ -1,8 +1,10 @@
-var Settings = require('../Settings')
-var log = require('../util/log.js')
-var express = require('express')
-var tellCouchDbAboutDrives = require('./lib/TellCouchDbAboutDrives.js')
-var harvestHoneyJars = require('./lib/HarvestHoneyJars.js')
+var Settings = require('../Settings'),
+    log = require('../util/log.js'),
+    express = require('express'),
+    cors = require('cors'),
+    timeout = require('connect-timeout'),
+    tellCouchDbAboutDrives = require('./lib/TellCouchDbAboutDrives.js'),
+    harvestHoneyJars = require('./lib/HarvestHoneyJars.js');
 
 
 /*
@@ -40,10 +42,11 @@ ui.get('/download', function(req, res){
 
 ui.get(/^(.+)$/, function(req, res) {
   var filePath = Settings.Beekeeper.path + '/attachments/' + req.params[0];
-  res.sendfile(filePath);
+  res.sendFile(filePath);
 });
 
-ui.use(express.timeout(30 * 60 * 1000)); // 30 min timeout for downloads
+ui.use(cors());
+ui.use(timeout('30m')); // 30 min timeout for downloads
 ui.listen(8800);
 log('Beekeeper', 'UI listening on port 8800');
 

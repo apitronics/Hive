@@ -24,7 +24,8 @@ $(function() {
       'saveToCloud': 'Checkbox',
       'gmailUserName': 'Text',
       'gmailPassword': 'Password',
-      'gmailEmailAddress': 'Text'
+      'gmailEmailAddress': 'Text',
+      'autoUpdateHive': 'Checkbox'
     }
 
   })

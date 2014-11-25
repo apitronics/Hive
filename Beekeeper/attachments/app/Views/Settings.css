@@ -2,29 +2,29 @@
   float: left;
   width: 20%;
 }
-.drives, .cloud {
+.drives {
   float: right;
   width: 70%;
 }
 .settings .help-inline {
   display: none;
 }
-.field-saveToCloud {
+.field-saveToCloud, .field-autoUpdateHive {
   float: right;
   width: 100%;
 }
-.field-saveToCloud label, .field-saveToCloud .controls {
+.field-saveToCloud label, .field-saveToCloud .controls, .field-autoUpdateHive label, .field-autoUpdateHive .controls {
   float: right;
   margin: 0 5px;
 }
-.field-saveToCloud .controls {
+.field-saveToCloud .controls, .field-autoUpdateHive .controls {
   position: relative;
   top: -3px;
 }
 .settings form {
   margin: 0;
 }
-.settings .btn-save {
+.settings .btn-form {
   margin: 0;
   text-transform: capitalize;
   width: 100%;
@@ -32,4 +32,7 @@
 .settings .register {
   float: right;
   margin-bottom: 20px;
+}
+.settings .btn-update-hive {
+  margin: 20px 0;
 }

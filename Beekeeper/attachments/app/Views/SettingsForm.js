@@ -8,6 +8,7 @@ $(function() {
 
     events: {
       "click #save": "setForm",
+      "click .btn-update-hive": "confirmUpdate",
       "submit form" : "setFormFromEnterKey",
       "click input[name='saveToCloud']": "clickSaveToCloud"
     },
@@ -23,8 +24,12 @@ $(function() {
       $(this.$el).find('.field-saveToCloud').append($register);
 
       // give the form a submit button
-      var $button = $('<a class="btn btn-save" id="save">save</a>');
-      this.$el.append($button);
+      var $save = $('<a class="btn btn-form btn-save" id="save">save</a>');
+      this.$el.append($save);
+
+      // add update hive button
+      var $update = $('<a class="btn btn-form btn-update-hive" href="/update/check">Update Hive</a>');
+      this.$el.append($update);
     },
 
     delete: function() {
@@ -41,6 +46,28 @@ $(function() {
         alert('Please type in your cloud username and password or create a new account.');
         $el.prop('checked', false);
       }
+    },
+
+    confirmUpdate: function(e) {
+      var $link = $(e.target),
+          checkUrl = $link.attr('href');
+
+      $.get(checkUrl, function(data){
+        var updates = data;
+
+        console.log(updates);
+        if(updates !== '') {
+          if(confirm('Do you want to install these updates?\n\n' + updates + '\n\nNote: please do not turn off Hive until done updating.')){
+            $.get('/update/run', function(){
+              window.location = '/beekeeper/?updated';
+            });
+          }
+        } else {
+          alert('There are currently no updates.');
+        }
+      });
+
+      return false;
     },
 
     setFormFromEnterKey: function(event) {

@@ -1,15 +1,15 @@
-var log = require('../util/log.js')
-var express = require('express');
-var Backbone = require('backbone')
-var request = require('request-json')
-var HiveBackbone = require('../HiveBackbone/HiveBackbone')
-var Settings = require('../Settings')
-var queenClient = request.newClient(Settings.Queen.URL)
-var server = express();
-var _ = require('underscore');
+var log = require('../util/log.js'),
+    express = require('express'),
+    Backbone = require('backbone'),
+    request = require('request-json'),
+    HiveBackbone = require('../HiveBackbone/HiveBackbone'),
+    Settings = require('../Settings'),
+    queenClient = request.newClient(Settings.Queen.URL),
+    server = express(),
+    bodyParser = require('body-parser'),
+    _ = require('underscore');
 
-server.use(express.bodyParser())
-
+server.use(bodyParser.json());
 
 server.post('/egg/new', function(req, res){
   var egg = new HiveBackbone.Models.Egg(req.body)

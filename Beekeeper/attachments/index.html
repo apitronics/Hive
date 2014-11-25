@@ -12,7 +12,6 @@
     <link href="vendor/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.css" rel="stylesheet" media="screen" />
     <link href="app/app.css" rel="stylesheet" />
     <link href="app/Views/SensorReadingsGraph.css" rel="stylesheet" />
-    <link href="app/Views/HiveUpdates.css" rel="stylesheet"/>
     <link href="app/Views/Settings.css" rel="stylesheet" />
     <link href="images/favicon.png" rel="icon" type="image/png" />
 
@@ -53,7 +52,6 @@
     <script src="app/Router.js"></script>
 
     <script src="app/Models/Bee.js"></script>
-    <script src="app/Models/CloudRow.js"></script>
     <script src="app/Models/Csq.js"></script>
     <script src="app/Models/Drive.js"></script>
     <script src="app/Models/HourlyReading.js"></script>
@@ -62,12 +60,10 @@
     <script src="app/Models/Sensor.js"></script>
     <script src="app/Models/SensorDefinition.js"></script>
     <script src="app/Models/Settings.js"></script>
-    <script src="app/Models/HiveUpdates.js"></script>
 
     <script src="app/Collections/BeeRecipes.js"></script>
     <script src="app/Collections/BeeSensors.js"></script>
     <script src="app/Collections/Bees.js"></script>
-    <script src="app/Collections/CloudRows.js"></script>
     <script src="app/Collections/Drives.js"></script>
     <script src="app/Collections/SensorDefinitionsByFirmwareUUID.js"></script>
     <script src="app/Collections/SensorJarHourlyAverageReadings.js"></script>
@@ -82,8 +78,6 @@
     <script src="app/Views/BeeSensorsTable.js"></script>
     <script src="app/Views/BeesBreadcrumb.js"></script>
     <script src="app/Views/BeesTable.js"></script>
-    <script src="app/Views/CloudRow.js"></script>
-    <script src="app/Views/CloudTable.js"></script>
     <script src="app/Views/DriveRow.js"></script>
     <script src="app/Views/DrivesTable.js"></script>
     <script src="app/Views/RecipeBreadcrumb.js"></script>
@@ -96,7 +90,6 @@
     <script src="app/Views/SensorRow.js"></script>
     <script src="app/Views/SettingsBreadcrumb.js"></script>
     <script src="app/Views/SettingsForm.js"></script>
-    <script src="app/Views/HiveUpdates.js"></script>
 
     <!--
       Templates
@@ -117,7 +110,6 @@
               <ul class="nav">
                 <li><a href="#">Bees</a></li>
                 <li><a href="#settings">Settings</a></li>
-                <li class='hive-updates'></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>
@@ -140,21 +132,6 @@
           <!-- Content -->
         </div>
       </div>
-    </script>
-
-    <script type="text/template" id="template-HiveUpdates">
-      <a class='hive-updates-available' href="http://hive.local:124"><%= info %></a>
-    </script>
-
-    <script type="text/template" id="template-CloudTable">
-      <th>
-        <h2>Cloud</h2>
-      </th>
-    </script>
-
-    <script type="text/template" id="template-CloudRow">
-     <td><%= key %></td>
-     <td><%= value %> </td>
     </script>
 
     <script type="text/template" id="template-DrivesTable">

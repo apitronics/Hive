@@ -1,6 +1,6 @@
 [Unit]
 Description=Hive Updater Launcher
-After=couchdb.service openntpd.service systemd-remount-fs.service
+After=couchdb.service
 Requires=couchdb.service
 
 [Service]

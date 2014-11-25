@@ -17,8 +17,8 @@ $(function() {
       App.sensorReadingsGraph.collection = new App.Collections.SensorReadings()
       // start the app
       this.$el.html(_.template(this.template))
-      this.monitorUpdates()
       Backbone.history.start({pushState: false})
+      App.setUpdated();
     },
 
 
@@ -28,6 +28,13 @@ $(function() {
 
     append: function(content) {
       App.$el.children('.body').append(content)
+    },
+
+    setUpdated: function() {
+      if(/[?&]updated/.test(location.href)){
+        var $flash = $('<div class="alert alert-success">Update successful.</div>');
+        $('.body').prepend($flash);
+      }
     },
 
     setBreadcrumb: function() {
@@ -51,16 +58,6 @@ $(function() {
         $ul.append(lastLi);
         $('.breadcrumb-wrapper').html($ul);
       }
-    },
-
-    monitorUpdates: function() {
-      var hiveUpdatesModel = new App.Models.HiveUpdates()
-      var hiveUpdatesView = new App.Views.HiveUpdates({model: hiveUpdatesModel})
-      App.$el.find('.hive-updates').html(hiveUpdatesView.el)
-      hiveUpdatesModel.fetch()
-      setTimeout(function() {
-        hiveUpdatesModel.fetch()
-      }, 60*1000)
     },
 
     sampleInterval: 5*60,

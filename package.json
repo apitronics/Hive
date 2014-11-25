@@ -1,6 +1,6 @@
 {
   "name": "Hive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "start.sh",
   "directories": {
@@ -8,17 +8,20 @@
   },
   "dependencies": {
     "backbone": "1.1.0",
-    "underscore": "1.5.2",
-    "moment": "2.5.1",
-    "express": "3.4.2",
-    "http-proxy": "0.10.3",
-    "nano": "5.7.1",
+    "body-parser": "1.9.3",
+    "commander": "2.1.0",
+    "connect-timeout": "1.4.0",
+    "cors": "2.5.2",
     "couchapp": "0.11.0",
+    "express": "4.10.3",
+    "http-proxy": "1.6.2",
+    "moment": "2.5.1",
+    "nano": "5.7.1",
     "node-diskfree": "0.1.0",
-    "request-json": "0.4.12",
     "nodemailer": "0.6.0",
     "request": "2.44.0",
-    "commander": "2.1.0"
+    "request-json": "0.5.0",
+    "underscore": "1.5.2"
   },
   "devDependencies": {
     "chai":"1.9.0"

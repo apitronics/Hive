@@ -1,15 +1,16 @@
-var express = require('express')
-var log = require('../util/log.js')
-var _ = require('underscore')
-var Backbone = require('backbone')
-var HiveBackbone = require('../HiveBackbone/HiveBackbone')
-var honeyPacketProcessor = require('./lib/HoneyPacketProcessor')
-var processRecipes = require('./lib/ProcessRecipes.js');
-var server = express();
-var spawn = require('child_process').spawn;
-var moment = require('moment');
+var express = require('express'),
+    log = require('../util/log.js'),
+    _ = require('underscore'),
+    Backbone = require('backbone'),
+    HiveBackbone = require('../HiveBackbone/HiveBackbone'),
+    honeyPacketProcessor = require('./lib/HoneyPacketProcessor'),
+    processRecipes = require('./lib/ProcessRecipes.js'),
+    server = express(),
+    spawn = require('child_process').spawn,
+    bodyParser = require('body-parser'),
+    moment = require('moment');
 
-server.use(express.bodyParser())
+server.use(bodyParser.json());
 
 server.post('/*', function(req, res){
   // Respond

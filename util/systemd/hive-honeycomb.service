@@ -1,6 +1,6 @@
 [Unit]
-Description=Beekeeper Launcher
-After=couchdb.service openntpd.service systemd-remount-fs.service
+Description=Hive Honeycomb Launcher
+After=couchdb.service
 Requires=couchdb.service
 
 [Service]

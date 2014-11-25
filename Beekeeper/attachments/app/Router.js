@@ -7,10 +7,10 @@ $(function() {
       'bee/:beeId' : 'Bee',
       'bee/csq/:beeId' : 'BeeCsq',
       'bee/edit/:beeId' : 'BeeForm',
-      'sensor/:sensorId' : 'Sensor',
-      'sensor/edit/:beeId/:sensorId' : 'SensorForm',
       'recipe/add/:beeId' : 'RecipeAdd',
       'recipe/:triggerId' : 'Recipe',
+      'sensor/:sensorId' : 'Sensor',
+      'sensor/edit/:beeId/:sensorId' : 'SensorForm',
       'settings' : 'Settings'
     },
 
@@ -18,13 +18,11 @@ $(function() {
     Settings: function() {
 
       var ev = new Backbone.Model(),
-          settings = new App.Models.Settings(),
-          settingsForm = new App.Views.SettingsForm(),
-          settingsBreadcrumb = new App.Views.SettingsBreadcrumb();
           drives = new App.Collections.Drives(),
           drivesTable = new App.Views.DrivesTable(),
-          cloudRows = new App.Collections.CloudRows(),
-          cloudTable = new App.Views.CloudTable();
+          settings = new App.Models.Settings(),
+          settingsBreadcrumb = new App.Views.SettingsBreadcrumb(),
+          settingsForm = new App.Views.SettingsForm();
 
       settingsForm.once('done', function() {
         Backbone.history.navigate('', {trigger: true});
@@ -34,39 +32,31 @@ $(function() {
 
       App.append(settingsForm.el);
       App.append(drivesTable.el);
-      App.append(cloudTable.el);
 
-      ev.once('A0', function() {
+      ev.once('load_settings', function() {
         settings.fetch({success: function() {
-          ev.trigger('A1');
+          ev.trigger('load_settings_form');
         }});
       });
 
-      ev.once('A1', function() {
+      ev.once('load_settings_form', function() {
         settingsForm.model = settings;
         settingsForm.render();
-
-        if(settings.toJSON().saveToCloud){
-          cloudRows.fetch({success: function(){
-            cloudTable.collection = cloudRows;
-            cloudTable.render();
-          }});
-        }
       });
 
-      ev.once('B0', function() {
+      ev.once('load_drives', function() {
         drives.fetch({success: function() {
-          ev.trigger('B1');
+          ev.trigger('load_drives_table');
         }});
       });
 
-      ev.once('B1', function () {
+      ev.once('load_drives_table', function () {
         drivesTable.collection = drives;
         drivesTable.render();
       });
 
-      ev.trigger('A0')
-      ev.trigger('B0')
+      ev.trigger('load_settings');
+      ev.trigger('load_drives');
 
     },
 

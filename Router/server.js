@@ -1,22 +1,39 @@
-var Settings = require('../Settings')
-var log = require('../util/log.js')
-var httpProxy = require('http-proxy')
+var Settings = require('../Settings'),
+    log = require('../util/log.js'),
+    express = require('express'),
+    server = express(),
+    cors = require('cors'),
+    timeout = require('connect-timeout'),
+    httpProxy = require('http-proxy');
 
 /*
- * On port 8000 we wire everything together using httpProxy. 
- * Put the App at /app/ and redirect all other requests to CouchDB.
+ * On port 8000 we wire everything together using httpProxy.
  */
 
-var router = '{'
-router += '"' + Settings.domain + '/queen": "127.0.0.1:125",'
-router += '"' + Settings.domain + '/honeycomb":"127.0.0.1:126",'
-router += '"' + Settings.domain + '/beekeeper":"127.0.0.1:8800",'
-router += '"' + Settings.domain + '/*":"' + Settings.CouchDB.URL + '"'
-router += '}'
-var options = {
-  router: JSON.parse(router)
-}
+var proxy = httpProxy.createServer({});
 
-httpProxy.createServer(options).listen(8000)
-log('Hive Router', 'httpProxy listening at port 8000')
+server.use('/queen', function(req, res){
+  proxy.web(req, res, { target: 'http://127.0.0.1:125' });
+});
 
+server.use('/beekeeper', function(req, res){
+  proxy.web(req, res, { target: 'http://127.0.0.1:8800' });
+});
+
+server.use('/honeycomb', function(req, res){
+  proxy.web(req, res, { target: 'http://127.0.0.1:126' });
+});
+
+server.use('/update', function(req, res){
+  proxy.web(req, res, { target: 'http://127.0.0.1:124' });
+});
+
+server.use(function(req, res){
+  proxy.web(req, res, { target: Settings.CouchDB.URL });
+});
+
+server.use(cors());
+server.use(timeout('30m')); // 30 min timeout
+
+server.listen(8000);
+log('Hive Router', 'httpProxy listening at port 8000');
